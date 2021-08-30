@@ -3,28 +3,24 @@ import { useForm } from "react-hook-form";
 
 
 const Signup = () => {
+    const [email, setEmail] = useState('');
+    const [pseudo, setPseudo] = useState('');
+    const [password, setPassword] = useState('');
 
-    const { register } = useForm({
-        defaultValues: {
-            email: '',
-            pseudo: '',
-            password: ''
-        }
-    });
 
-    const {getValues } = useForm();
-        const signup = () => {
-        const values = getValues('email');
-        console.log(values);
+    const signup = () => {
+        console.log(email, pseudo, password);
     }
+
+
 
     return (
         <div>
             {/* <form> */}
-                <input {...register('email')}></input>
-                <input {...register('pseudo')}></input>
-                <input {...register('password')}></input>
-                <button onClick={signup}>Login</button>
+            <input type='email' name='email' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)}></input>
+            <input type='text' name='pseudo' placeholder='Pseudo' value={pseudo} onChange={e => setPseudo(e.target.value)}></input>
+            <input type='password' name='password' placeholder='Password' value={password} onChange={e => setPassword(e.target.value)}></input>
+            <button onClick={signup}>Login</button>
             {/* </form> */}
         </div>
     );
