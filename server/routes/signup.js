@@ -2,6 +2,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const uuid = require('uuid').v4;
 const { body, validationResult } = require('express-validator');
 
 const router = express.Router();
@@ -12,27 +13,33 @@ const mongodb = mongoose.connection;
 
 router.post('/',
     body('email').isEmail().normalizeEmail().notEmpty(),
+    body('pseudo').notEmpty(),
     body('password').notEmpty().isLength({ min: 4 }),
     (req, res) => {
         const err = validationResult(req);
-        if (!err) {
-            res.send('check your Email or Password');
-        }
-        else {
+        if (!err.isEmpty()) {
+            res.send('error');
+        } else {
             const password = req.body.password;
             const email = req.body.email;
+            const pseudo = req.body.pseudo;
+            let userID = uuid();
+            console.log(email, password, pseudo);
             const encryptPassword = async () => {
-                mongodb.collection('users').find({ email: `${email}` }).toArray((err, data) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log(data);
-                    }
-                })
+                const salt = await bcrypt.genSalt(10);
+                const cryptedPassword = await bcrypt.hash(password, salt);
+                const user = {
+                    id: userID,
+                    email: email,
+                    pseudo: pseudo,
+                    password: cryptedPassword,
+                    avatar: ''
+                }
+                mongodb.collection('users').insertOne(user);
             }
             encryptPassword();
-            console.log(password, email);
-            res.send('okey');
+
+            // res.send('okey');
         }
     }
 )
