@@ -20,9 +20,9 @@ router.post('/',
         if (!err.isEmpty()) {
             res.send('error');
         } else {
-            const password = req.body.password;
-            const email = req.body.email;
-            const pseudo = req.body.pseudo;
+            const password = req.body.password.trim();
+            const email = req.body.email.trim();
+            const pseudo = req.body.pseudo.trim();
             let userID = uuid();
             console.log(email, password, pseudo);
             const encryptPassword = async () => {
@@ -39,7 +39,7 @@ router.post('/',
             }
             encryptPassword();
 
-            // res.send('okey');
+            res.send('200');
         }
     }
 )

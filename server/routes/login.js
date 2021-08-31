@@ -15,24 +15,32 @@ router.post('/',
     body('password').notEmpty().isLength({ min: 4 }),
     (req, res) => {
         const err = validationResult(req);
-        if (!err) {
-            res.send('check your Email or Password');
+        if (!err.isEmpty()) {
+            res.send({status: '404 email'});
+            console.log('login err')
         }
-        else {
-            const password = req.body.password;
-            const email = req.body.email;
-            const encryptPassword = async () => {
-                mongodb.collection('users').find({ email: `${email}` }).toArray((err, data) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log(data);
+        else{
+            const password = req.body.password.trim();
+            const email = req.body.email.trim();
+            
+            mongodb.collection('users').find({ email: `${email}` }).toArray((err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    const encryptPassword = async () => {
+                        const validPassword = await bcrypt.compare(password, data[0].password);
+                        if (validPassword) {
+                            res.send({ status: '200', id: data[0].id });
+                        }else{
+                        // else if (!validPassword) {
+                            res.send({ status: '404' });
+                        }
+                        // console.log(data);
                     }
-                })
-            }
-            encryptPassword();
+                    encryptPassword();
+                }
+            });
             console.log(password, email);
-            res.send('okey');
         }
     }
 )

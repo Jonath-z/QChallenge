@@ -1,0 +1,25 @@
+*{
+    font-family: sans-serif;
+}
+div{
+    margin-top: -20px;
+    background: chartreuse;
+}
+li{
+    text-decoration: none;
+    list-style: none;
+    text-align: center;
+}
+.headerComponent{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+    justify-content: center;
+    /* align-items: center; */
+}
+.optionHeader,.documentationHeader,.AccountHeader{
+    margin-top: 2em;
+    float: right;
+}
+.searchBar{
+    width: 20em;
+}

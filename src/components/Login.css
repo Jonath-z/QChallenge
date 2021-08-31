@@ -1,0 +1,78 @@
+.loginContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    /* background: yellowgreen; */
+
+}
+
+.appName{
+    font-family: sans-serif;
+    margin-top: 10em;
+    margin-left:20em;
+
+}
+
+.login{
+    margin-top: 15em;
+    /* margin-right: 5em; */
+    display: flex;
+    flex-direction: column;
+    width: 20em;
+
+}
+
+input{
+    margin-top: 30px;
+    outline: rgb(245, 69, 0);
+    outline-color: blue;
+    background: transparent;
+    border: 1px solid black;
+    height: 25px;
+    padding-left: 20px;
+    border-radius: 10px;
+}
+input::placeholder{
+    background: transparent;
+    font-family: sans-serif;
+    padding-left: 30px;
+}
+input:-ms-input-placeholder{
+    background: transparent;
+    font-family: sans-serif;
+}
+input::-webkit-input-placeholder{
+    background: transparent;
+    font-family: sans-serif;
+    
+}
+
+button{
+    margin-top: 30px;
+    font-family: sans-serif;
+    border: none;
+    height: 3em;
+    border-radius: 20px;
+
+}
+.signupBtn{
+    background: rgb(77, 45, 62);
+    color: rgb(251, 251, 219);
+}
+.signupBtn:hover{
+    background: rgb(44, 0, 24);
+    color: rgb(251, 251, 219); 
+}
+.loginBtn{
+    background: rgba(11, 7, 65, 0.657);
+    color: beige;
+}
+.loginBtn:hover{
+    background: rgb(2, 0, 27);
+    color: beige;
+}
+.loginErr{
+    font-family: sans-serif;
+    color: rgb(255, 5, 5);
+    font-size: 10px;
+}
