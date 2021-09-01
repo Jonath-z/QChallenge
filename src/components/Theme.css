@@ -1,0 +1,43 @@
+.spaniner{
+    animation: spine infinite 1s linear;
+}
+@keyframes spine {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+.gamespaceDiv{
+    display: grid;
+    grid-template-columns: 1fr 2fr;   
+    margin-top: 30px;
+    grid-gap: 20px;
+}
+.ThemeContainer{
+    border: 1px solid black;
+    padding-left: 20px;
+    border-radius: 5px;
+    padding-bottom: 20px;
+}
+.gameWindowDiv{
+ text-align: center;
+ border: 1px solid black;
+ padding-bottom: 20px;
+ padding-top: 20px;
+ border-radius: 5px;
+}
+.themeContainer{
+    margin-top: 20px;
+    height: 2em;
+    background: rgb(3, 4, 56);
+    color: beige;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+.theme{
+    padding-left: 20px;
+}
