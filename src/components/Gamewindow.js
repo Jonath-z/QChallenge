@@ -17,7 +17,12 @@ const Gamewindow = (props) => {
         <div>
             <h4>{props.challengeTheme}</h4>
             <div>
-        
+                <div className='chronoContainer'>
+                    <p>{props.chrono}S</p>
+                </div>
+                {props.showQuestion && <div className='questionContainer'>
+                    <p>The capital of {props.contry} is:</p>
+                </div>}
             </div>
             {props.showButton && <button onClick={props.startChallenge}>Start the Challenge</button>}
         </div>

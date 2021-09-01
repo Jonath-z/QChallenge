@@ -3,12 +3,16 @@ import { useState, useEffect } from "react";
 import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import Gamewindow from "./Gamewindow";
+import { scryRenderedComponentsWithType } from "react-dom/cjs/react-dom-test-utils.development";
 
 const Gamespace = () => {
     const [myThemes, setMyThemes] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const [questionInCurrentTheme, setQuestionIncurrentTheme] = useState(null);
     const [showStart, setShowStart] = useState(false);
+    let timmer = 10;
+    const [chrono, setChrono] = useState(timmer);
+    const [showQuestion, setShowQuestion] = useState(false);
     const [challengeTheme, setChallengeTheme] = useState(null);
 
     useEffect(() => {
@@ -28,13 +32,30 @@ const Gamespace = () => {
       allQuestions.map(question => {
           `${question.theme}` === `${challengeTheme}` ? setQuestionIncurrentTheme(question) : console.log('no data');
       });
-    
+      setShowQuestion(true);
+      setInterval(setChronoGame, 1000);
+      getTheCurrentQuestion();
+  }
+      
+    const setChronoGame = () => {
+        chrono <= 10 ? setChrono(timmer--) :  timmer = 10;
+    }
+
+    const getTheCurrentQuestion = () => {
+        const questionIndex = generateRandomIndex(3);
+        console.log(questionIndex);        
+    }
+
+    chrono == 0 && clearInterval();
+    const generateRandomIndex = (max) => {
+        return Math.floor(Math.random() * max);
     }
 
     const openChallenge = (e) => {
         // console.log(e.target.innerHTML);
         setShowStart(true);
         setChallengeTheme(e.target.innerHTML);
+        setShowQuestion(false);
     }
 
     return (
@@ -57,6 +78,8 @@ const Gamespace = () => {
                     startChallenge={startChallenge}
                     showButton={showStart}
                     challengeTheme={challengeTheme}
+                    showQuestion={showQuestion}
+                    chrono = {chrono}
                 />
             </div>
         </div>
