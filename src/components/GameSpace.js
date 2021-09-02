@@ -1,19 +1,23 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import Gamewindow from "./Gamewindow";
-import { scryRenderedComponentsWithType } from "react-dom/cjs/react-dom-test-utils.development";
+// import { scryRenderedComponentsWithType } from "react-dom/cjs/react-dom-test-utils.development";
 
 const Gamespace = () => {
+    const [challengeTheme, setChallengeTheme] = useState(null);
     const [myThemes, setMyThemes] = useState(null);
-    const [currentQuestion, setCurrentQuestion] = useState(null);
-    const [questionInCurrentTheme, setQuestionIncurrentTheme] = useState(null);
+    // const [currentQuestion, setCurrentQuestion] = useState(null);
+    const [questions, setQuestions] = useState(null);
+    // const [questionsInCurrentTheme, setQuestionsIncurrentTheme] = useState(null);
     const [showStart, setShowStart] = useState(false);
-    let timmer = 10;
+    let timmer = useRef(10);
+    let maxSecond = 10;
+    let questionsInCurrentTheme = useRef(null);
+
     const [chrono, setChrono] = useState(timmer);
     const [showQuestion, setShowQuestion] = useState(false);
-    const [challengeTheme, setChallengeTheme] = useState(null);
 
     useEffect(() => {
         async function data() {
@@ -25,37 +29,77 @@ const Gamespace = () => {
         data();
     }, []);
 
-  const  startChallenge = () => {
-      setShowStart(false);
-      const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
-    //   console.log(allQuestions);
-      allQuestions.map(question => {
-          `${question.theme}` === `${challengeTheme}` ? setQuestionIncurrentTheme(question) : console.log('no data');
-      });
-      setShowQuestion(true);
-      setInterval(setChronoGame, 1000);
-      getTheCurrentQuestion();
-  }
-      
+    useEffect(() => {
+        const allQuestions = () => {
+            const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
+            setQuestions(allQuestions);
+        }
+        allQuestions();
+    }, []);
+
+    useEffect(() => {
+        if (challengeTheme) {
+            const currentQuestions = questions.filter(question => question.theme == `${challengeTheme}`);
+            questionsInCurrentTheme.current = currentQuestions;
+            console.log('current questions', questionsInCurrentTheme);
+
+        }
+    }, [challengeTheme]);
+
+    const startChallenge = () => {
+        generateTheCurrentQuestion();
+        setShowStart(false);
+        setShowQuestion(true);
+        setChronoInterval();
+        return timmer = 10;
+    }
+
+    let questionIndex = 0;
+    let interval;
     const setChronoGame = () => {
-        chrono <= 10 ? setChrono(timmer--) :  timmer = 10;
+        timmer.current = setChrono(maxSecond - 1);
+        if (timmer.current === -1) {
+            generateTheCurrentQuestion();
+            return timmer.current = 10;
+        }
     }
+    
+    const setChronoInterval = () => {
+        interval = setInterval(setChronoGame, 1000);
+    }
+ 
 
-    const getTheCurrentQuestion = () => {
-        const questionIndex = generateRandomIndex(3);
-        console.log(questionIndex);        
-    }
+    const generateTheCurrentQuestion = () => {
+        if (questionsInCurrentTheme !== 'undefined') {
+            const randomMaxValue = questionsInCurrentTheme.length;
+            const myQuestions = questionsInCurrentTheme.current[questionIndex];
+            console.log(myQuestions, 'on index', questionIndex);
+            questionIndex++;
+            if (questionIndex === randomMaxValue) {
 
-    chrono == 0 && clearInterval();
-    const generateRandomIndex = (max) => {
-        return Math.floor(Math.random() * max);
+                return {
+                    // timer : timmer = 10,
+                    resetInterval: clearInterval(interval)
+                }
+                
+            }
+        }
     }
+        // generateTheCurrentQuestion();
+
+
+    // const generateRandomIndex = (max) => {
+    //     return Math.floor(Math.random() * max);
+    // }
+
 
     const openChallenge = (e) => {
-        // console.log(e.target.innerHTML);
-        setShowStart(true);
         setChallengeTheme(e.target.innerHTML);
+        setShowStart(true)
         setShowQuestion(false);
+        questionIndex = 0;
+        console.log(questionIndex);
+            // timer : timmer = 10,
     }
 
     return (
@@ -74,12 +118,12 @@ const Gamespace = () => {
 
             </div>
             <div className='gameWindowDiv'>
-                <Gamewindow
+                <Gamewindow ref={timmer}
                     startChallenge={startChallenge}
                     showButton={showStart}
                     challengeTheme={challengeTheme}
                     showQuestion={showQuestion}
-                    chrono = {chrono}
+                    chrono={chrono.current}
                 />
             </div>
         </div>

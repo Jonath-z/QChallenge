@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 // import Theme from "./Theme";
 
 const Gamewindow = (props) => {
-    const [questions, setQuestions] = useState(null);
+    // const [questions, setQuestions] = useState(null);
     useEffect(() => {
         const getQuestions = async () => {
             const questions = await fetch('../challenges');
             const myQuestions = await questions.json();
-            console.log(myQuestions);
+            // console.log(myQuestions);
             window.localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
         }
         getQuestions();
