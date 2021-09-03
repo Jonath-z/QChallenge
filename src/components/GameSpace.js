@@ -3,22 +3,27 @@ import { useState, useEffect,useRef } from "react";
 import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import Gamewindow from "./Gamewindow";
-// import { scryRenderedComponentsWithType } from "react-dom/cjs/react-dom-test-utils.development";
+
+function usePrevious(data){
+    const ref = useRef();
+    useEffect(()=>{
+      ref.current = data
+    }, [data])
+    return ref.current
+  }
 
 const Gamespace = () => {
-    const [challengeTheme, setChallengeTheme] = useState(null);
-    const [myThemes, setMyThemes] = useState(null);
-    // const [currentQuestion, setCurrentQuestion] = useState(null);
-    const [questions, setQuestions] = useState(null);
-    // const [questionsInCurrentTheme, setQuestionsIncurrentTheme] = useState(null);
-    const [showStart, setShowStart] = useState(false);
-    let timmer = useRef(10);
     let maxSecond = 10;
     let questionsInCurrentTheme = useRef(null);
 
-    const [chrono, setChrono] = useState(timmer);
+    const [challengeTheme, setChallengeTheme] = useState(null);
+    const [myThemes, setMyThemes] = useState(null);
+    const [questions, setQuestions] = useState(null);
+    const [showStart, setShowStart] = useState(false);
+    const [chrono, setChrono] = useState(maxSecond);
     const [showQuestion, setShowQuestion] = useState(false);
-
+    const prevTheme = usePrevious(challengeTheme);
+  
     useEffect(() => {
         async function data() {
             const data = await fetch('../theme');
@@ -36,6 +41,7 @@ const Gamespace = () => {
         }
         allQuestions();
     }, []);
+ 
 
     useEffect(() => {
         if (challengeTheme) {
@@ -46,44 +52,86 @@ const Gamespace = () => {
         }
     }, [challengeTheme]);
 
+    const changeTheme = () => {
+        if (challengeTheme) {
+            setShowStart(true);
+        }
+        if (showQuestion) {
+            clearInterval(interval);
+            prevTheme && setChallengeTheme(prevTheme);
+            const confirmResponse = window.confirm('Do want to leave the challenge ?');
+            if (confirmResponse) {
+                setShowQuestion(false);
+                return reset();
+            }
+            else {
+                setChrono(maxSecond);
+            }
+            
+        }
+    }
+
+    // useEffect(() => {
+    //     // console.log(prevTheme);
+    //     if (challengeTheme) {
+    //         setShowStart(true);
+    //     }
+    //     if (showQuestion) {
+    //         clearInterval(interval);
+    //         prevTheme && setChallengeTheme(prevTheme);
+    //         const confirmResponse = window.confirm('Do want to leave the challenge ?');
+    //         if (confirmResponse) {
+    //             setShowQuestion(false);
+    //             return reset();
+    //         }
+    //         else {
+    //             setChrono(maxSecond);
+    //         }
+            
+    //     }
+    // }, [challengeTheme]);
+
     const startChallenge = () => {
         generateTheCurrentQuestion();
         setShowStart(false);
         setShowQuestion(true);
         setChronoInterval();
-        return timmer = 10;
+        // reset();
     }
 
     let questionIndex = 0;
     let interval;
     const setChronoGame = () => {
-        timmer.current = setChrono(maxSecond - 1);
-        if (timmer.current === -1) {
+        setChrono(maxSecond--);
+        if (maxSecond == -1) {
             generateTheCurrentQuestion();
-            return timmer.current = 10;
+            return maxSecond = 10;
         }
     }
     
     const setChronoInterval = () => {
         interval = setInterval(setChronoGame, 1000);
     }
- 
+
 
     const generateTheCurrentQuestion = () => {
         if (questionsInCurrentTheme !== 'undefined') {
-            const randomMaxValue = questionsInCurrentTheme.length;
+            const randomMaxValue = questionsInCurrentTheme.current.length + 1;
             const myQuestions = questionsInCurrentTheme.current[questionIndex];
             console.log(myQuestions, 'on index', questionIndex);
+            console.log(randomMaxValue);
             questionIndex++;
-            if (questionIndex === randomMaxValue) {
-
-                return {
-                    // timer : timmer = 10,
-                    resetInterval: clearInterval(interval)
-                }
-                
+            if (questionIndex == randomMaxValue) {
+                return reset();
             }
         }
+    }
+
+    const reset = () => {
+        maxSecond = 10;
+        setChrono(maxSecond);
+        clearInterval(interval);
+        console.log('reset');
     }
         // generateTheCurrentQuestion();
 
@@ -95,10 +143,7 @@ const Gamespace = () => {
 
     const openChallenge = (e) => {
         setChallengeTheme(e.target.innerHTML);
-        setShowStart(true)
-        setShowQuestion(false);
-        questionIndex = 0;
-        console.log(questionIndex);
+        // console.log(questionIndex);
             // timer : timmer = 10,
     }
 
@@ -118,12 +163,12 @@ const Gamespace = () => {
 
             </div>
             <div className='gameWindowDiv'>
-                <Gamewindow ref={timmer}
+                <Gamewindow 
                     startChallenge={startChallenge}
                     showButton={showStart}
                     challengeTheme={challengeTheme}
                     showQuestion={showQuestion}
-                    chrono={chrono.current}
+                    chrono={chrono}
                 />
             </div>
         </div>
