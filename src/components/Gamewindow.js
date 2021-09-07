@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import './Gamewindow.css'
 // import Theme from "./Theme";
 
 const Gamewindow = (props) => {
@@ -21,10 +22,10 @@ const Gamewindow = (props) => {
                     <p>{props.chrono}S</p>
                 </div>
                 {props.showQuestion && <div className='questionContainer'>
-                    <p>The capital of {props.contry} is:</p>
+                    <p><span>{props.contry}</span></p>
                 </div>}
             </div>
-            {props.showButton && <button onClick={props.startChallenge}>Start the Challenge</button>}
+            {props.showButton && <button className="startButton" onClick={props.startChallenge}>Start the Challenge</button>}
         </div>
     );
 }

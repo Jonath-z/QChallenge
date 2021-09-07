@@ -40,7 +40,7 @@ router.post('/',
                     encryptPassword();
                 }
             });
-            console.log(password, email);
+            console.log(email);
         }
     }
 )

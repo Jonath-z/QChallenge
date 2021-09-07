@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Index from "./components/Index";
 
-
 function App() {
+
   return (
     <Router>
       <>

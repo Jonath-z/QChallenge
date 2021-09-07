@@ -14,6 +14,12 @@ router.get('/', (req, res) => {
             console.log(err)
         }
         else {
+            data.map(challenge => {
+                delete challenge.city;
+                delete challenge.correct;
+                delete challenge.rationale;
+                challenge['question'] = challenge['country'];
+            })
             res.send(data);
         }
     })

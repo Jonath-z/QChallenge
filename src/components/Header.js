@@ -15,13 +15,13 @@ const Header = () => {
         setPlaceholder('Search');
     }
     return (
-        <div>
+        <div className="headerContainer">
             <ul className='headerComponent'>
                 <li><h1 className='appNameNav'>QChallenge</h1></li>
                 <li><input type='search' className="searchBar" placeholder={placeholder} onFocus={setFucus} onBlur={setFucusOut}></input></li>
-                <li  className='optionHeader'>Options</li>
-                <li className='documentationHeader'>Documentation</li>
-                <li className='AccountHeader'>Account</li>
+                <li  className='optionHeader option'>Options</li>
+                <li className='documentationHeader option'>Documentation</li>
+                <li className='AccountHeader option'>Account</li>
             </ul>
         </div>
     );

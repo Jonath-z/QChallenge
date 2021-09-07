@@ -2,7 +2,11 @@
 import { useState, useEffect,useRef } from "react";
 import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
+import './Gamewindow.css'
 import Gamewindow from "./Gamewindow";
+import { io } from "socket.io-client";
+
+const socket = io('/');
 
 
 // custome hook
@@ -12,19 +16,20 @@ function usePrevious(data){
       ref.current = data
     }, [data])
     return ref.current
-  }
+}
 
 const Gamespace = () => {
-    let maxSecond = 10;
     let questionsInCurrentTheme = useRef(null);
-
     const [challengeTheme, setChallengeTheme] = useState('Contry and Capital');
     const [myThemes, setMyThemes] = useState(null);
-    // const [questions, setQuestions] = useState(null);
+    let timmer = useRef(10);
+    let interval = useRef();
     const questions = useRef();
     const [showStart, setShowStart] = useState(false);
-    const [chrono, setChrono] = useState(maxSecond);
+    const [chrono, setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
+    const [contry, setContry] = useState('');
+    // const [questionFormula, setQuestionFormula] = useState('');
     const prevTheme = usePrevious(challengeTheme);
   
     useEffect(() => {
@@ -46,7 +51,7 @@ const Gamespace = () => {
     useEffect(() => {
         setShowStart(true);
         if (challengeTheme) {
-            const currentQuestions = questions.current.filter(question => question.theme == `${challengeTheme}`);
+            const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
             questionsInCurrentTheme.current = currentQuestions;
             console.log('current questions', questionsInCurrentTheme);
 
@@ -62,17 +67,18 @@ const Gamespace = () => {
     }
 
     let questionIndex = 0;
-    let interval;
+    // let interval;
     const setChronoGame = () => {
-        setChrono(maxSecond--);
-        if (maxSecond == -1) {
+        setChrono(timmer.current--);
+
+        if (timmer.current === -1) {
             generateTheCurrentQuestion();
-            return maxSecond = 10;
+            return setChrono(timmer.current = 10);
         }
     }
     
     const setChronoInterval = () => {
-        interval = setInterval(setChronoGame, 1000);
+        interval.current = setInterval(setChronoGame, 1000);
     }
 
 
@@ -80,19 +86,22 @@ const Gamespace = () => {
         if (questionsInCurrentTheme !== 'undefined') {
             const randomMaxValue = questionsInCurrentTheme.current.length + 1;
             const myQuestions = questionsInCurrentTheme.current[questionIndex];
-            console.log(myQuestions, 'on index', questionIndex);
-            console.log(randomMaxValue);
+            // console.log(myQuestions, 'on index', questionIndex);
+            setContry(myQuestions.question);
+            socket.emit('question', { theme: challengeTheme, question: myQuestions.question });
+            // console.log(randomMaxValue);
             questionIndex++;
-            if (questionIndex == randomMaxValue) {
+            if (questionIndex === randomMaxValue) {
                 return reset();
             }
         }
     }
 
     const reset = () => {
-        maxSecond = 10;
-        setChrono(maxSecond);
-        clearInterval(interval);
+        // maxSecond = 10;
+        clearInterval(interval.current);
+        timmer.current = 10;
+        setChrono(timmer.current);
         setShowQuestion(false);
         setShowStart(true);
         console.log('reset');
@@ -100,22 +109,19 @@ const Gamespace = () => {
 
 
     const openChallenge = (e) => {
+        console.log('timmer current', timmer.current);
         if (prevTheme !== e.target.innerHTML && !showStart) {
-            clearInterval(interval);
+            clearInterval(interval.current);
             prevTheme && setChallengeTheme(prevTheme);
             const confirmResponse = window.confirm('Do want to leave the challenge ?');
            
             if (confirmResponse) {
                 setChallengeTheme(e.target.innerHTML)
-                maxSecond = 10;
-                setChrono(maxSecond);
-                clearInterval(interval);
-                setShowQuestion(false);
-                setShowStart(true);
-                
+                // e.target.innerHTML === 'Contry and Capital' && setQuestionFormula('what is the Capital of');
+                reset();
             }
             else {
-                return setChrono(maxSecond);
+                return setChrono(timmer.current);
             }
         }
         else {
@@ -132,7 +138,7 @@ const Gamespace = () => {
                 {
                     myThemes ? myThemes.map((theme, i) => (
                         <div className='themeContainer'>
-                            <p key={i} className='theme' onClick={openChallenge}>{theme.theme}</p>
+                            <p key={theme.index} className='theme' onClick={openChallenge}>{theme.theme}</p>
                         </div>
                     )) : <p>loading Challenges <FaSpinner className='spaniner' /></p>
                 }
@@ -145,6 +151,8 @@ const Gamespace = () => {
                     challengeTheme={challengeTheme}
                     showQuestion={showQuestion}
                     chrono={chrono}
+                    contry={contry}
+                    // questionFormula={questionFormula}
                 />
             </div>
         </div>

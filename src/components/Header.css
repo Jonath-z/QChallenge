@@ -1,15 +1,29 @@
 *{
     font-family: sans-serif;
 }
-div{
+.headerContainer{
     margin-top: -20px;
+    background-color:  hsl(200, 20%, 70%);
     /* background: chartreuse; */
 }
 li{
     text-decoration: none;
     list-style: none;
     text-align: center;
+    padding-top: 20px;
 }
+.option{
+    border-radius: 30px;
+    margin-bottom: 30px;
+    height: 3em;
+    width: 10em;
+}
+.option:hover{
+    background: rgb(3, 4, 56);
+    color: white;
+    transition: 200ms;
+}
+
 .headerComponent{
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
