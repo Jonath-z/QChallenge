@@ -15,7 +15,6 @@ router.get('/', (req, res) => {
         }
         else {
             data.map(challenge => {
-                delete challenge.city;
                 delete challenge.correct;
                 delete challenge.rationale;
                 challenge['question'] = challenge['country'];

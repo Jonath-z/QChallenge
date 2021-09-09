@@ -24,21 +24,22 @@ app.use('/theme', theme);
 
 io.on('connection', (socket) => {
     console.log(socket.id);
-    socket.on('question', (data) => {
-        if (data.theme === 'Contry and Capital') {
-            mongodb.collection(`${data.theme}`).find({ country: `${data.question}` }).toArray((err, data) => {
-                err && console.log(err);
-                socket.emit('response', data[0].city);
-            })
-        }
-        else {
-            mongodb.collection(`${data.theme}`).find({ question: `${data.question}` }).toArray((err, data) => {
-                err && console.log(err);
-                socket.emit('response', data[0].correct);
-            });
-        }
-        
-    });
+    // socket.on('question', (data) => {
+    //     if (data.theme === 'Contry and Capital') {
+    //         mongodb.collection(`${data.theme}`).find({ country: `${data.question}` }).toArray((err, response) => {
+    //             err && console.log(err);
+    //             console.log(response,data.theme);
+    //             socket.emit('response', data);
+    //         })
+    //     }
+    //     else {
+    //         mongodb.collection(`${data.theme}`).find({ question: `${data.question}` }).toArray((err, data) => {
+    //             err && console.log(err);
+    //             console.log(data);
+    //             socket.emit('response', data);
+    //         });
+    //     }  
+    // });
 });
 
 server.listen(5050, () => { console.log('server is running') });
