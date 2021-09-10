@@ -4,8 +4,10 @@ import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import './Gamewindow.css'
 import Gamewindow from "./Gamewindow";
+import generateOption from '../modules/option';
+import generateQuestionOtherThanCountryAndCapital from "../modules/question";
 import { io } from "socket.io-client";
-// import { options } from "../../server/routes/challenge";
+
 
 const socket = io('/');
 
@@ -30,7 +32,8 @@ const Gamespace = () => {
     const [showQuestion, setShowQuestion] = useState(false);
     const [contry, setContry] = useState('');
     const questionAswersOptions = useRef();
-    // const [questionFormula, setQuestionFormula] = useState('');
+    let questionIndex = useRef(0);
+    const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
   
     useEffect(() => {
@@ -69,7 +72,7 @@ const Gamespace = () => {
         // reset();
     }
 
-    let questionIndex = 0;
+// **************************** SET GAME TIMER*************************************************************// 
     const setChronoGame = () => {
         setChrono(timmer.current--);
         if (timmer.current === -1) {
@@ -82,52 +85,35 @@ const Gamespace = () => {
         interval.current = setInterval(setChronoGame, 1000);
     }
 
-    //**************************************GENERATE THE CURRENTE QUESTION************************************************ */
+    //**************************************GENERATE THE CURRENTE QUESTION********************************/
+    
     const generateTheCurrentQuestion = () => {
         if (questionsInCurrentTheme !== 'undefined') {
             const randomMaxValue = questionsInCurrentTheme.current.length + 1;
-            const myQuestions = questionsInCurrentTheme.current[questionIndex];
-            // console.log(myQuestions, 'on index', questionIndex);
+            const myQuestions = questionsInCurrentTheme.current[questionIndex.current];
+            // console.log(myQuestions, 'on index', questionIndex.current);
             setContry(myQuestions.question);
-            // socket.emit('question', { theme: challengeTheme, question: myQuestions.question });
             // console.log(randomMaxValue);
-            questionIndex++;
+            questionIndex.current++;
             if (challengeTheme === 'Contry and Capital') {
-                const answeroptions = generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current);
+                const answeroptions = generateOption.generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current,contry);
                 questionAswersOptions.current = answeroptions;
                 console.log(answeroptions);
-                // const display = displayAnswerOptions();
                 // console.log(display);
             } else {
-
-                console.log(questionsInCurrentTheme.current.options);
-                questionAswersOptions.current = questionsInCurrentTheme.current.options;
+                const options = questionsInCurrentTheme.current.map(question => question.options);
+                // console.log(options)
+                const currentQuestion = generateQuestionOtherThanCountryAndCapital(questionsInCurrentTheme.current, questionIndex.current);
+                setOtherQuestion(currentQuestion);
+                console.log(currentQuestion);
+                const currentOptions = generateOption.generateOptionsOtherThanCountryAndCapital(options, questionIndex.current);
+                questionAswersOptions.current = currentOptions;
+                
             }
-            if (questionIndex === randomMaxValue) {
+            if (questionIndex.current === randomMaxValue) {
                 return reset();
             }
         }
-    }
-
-// *************************************GENERATE THE ANSWERS OPTION********************************************************/
-    const generateOptionForContryAndCapital = (correct, allCountries) => {
-        let wrongCountries = allCountries.filter(country => country.city !== contry.correct);
-        // console.log(wrongCountries);
-        const answerOption = 5;
-        const correctAnswerPosition = Math.floor(Math.random() * (answerOption + 1));
-        const answers = [];
-        for (let i = 0; i < answerOption; i++) {
-            if (i === correctAnswerPosition) {
-                answers.push(correct);
-            }
-            else {
-                let randomAnswer = wrongCountries[Math.floor(Math.random() * wrongCountries.length)];
-                wrongCountries = wrongCountries.filter(country => country.city !== randomAnswer.city);
-                answers.push(randomAnswer.city);
-            }
-        }
-        // console.log(answers);
-        return answers;
     }
 
 // ****************************** RESET THE CHRONO ***********************************************************/
@@ -144,7 +130,6 @@ const Gamespace = () => {
 //**************************** OPEN CHALLENGE EVENT (CLICK ON THEME)********************************************/
     const openChallenge = (e) => {
         console.log('timmer current', timmer.current);
-        // timmer.current = timmer.current
         if (prevTheme !== e.target.innerHTML && !showStart) {
             clearInterval(interval.current);
             prevTheme && setChallengeTheme(prevTheme);
@@ -152,14 +137,19 @@ const Gamespace = () => {
            
             if (confirmResponse) {
                 setChallengeTheme(e.target.innerHTML)
+                setContry(questionsInCurrentTheme.current[0]);
+                setOtherQuestion('');
                 // e.target.innerHTML === 'Contry and Capital' && setQuestionFormula('what is the Capital of');
                return reset();
             }
             else {
-              return  setChrono(timmer.current);
+                setChrono(timmer.current);
+                setChronoInterval();
+                questionIndex.current = 0;
             }
         }
         else {
+            questionIndex.current = 0;
            return setChallengeTheme(e.target.innerHTML);
         }
     }
@@ -188,6 +178,7 @@ const Gamespace = () => {
                     chrono={chrono}
                     contry={contry}
                     answerOption={questionAswersOptions.current}
+                    question = {otherQuestion}
                     // questionFormula={questionFormula}
                 />
             </div>

@@ -21,9 +21,9 @@ const Gamewindow = (props) => {
                 <div className='chronoContainer'>
                     <p>{props.chrono}S</p>
                 </div>
-                {props.showQuestion && <div className='questionContainer'>
+                {props.challengeTheme === 'Contry and Capital' ? props.showQuestion && <div className='questionContainer'>
                     <p><span>{props.contry}</span></p>
-                </div>}
+                </div> : <p>{props.question}</p>}
             </div>
             {props.showButton && <button className="startButton" onClick={props.startChallenge}>Start the Challenge</button>}
             {props.showQuestion && <div className='AnswerOptionContainer'>
@@ -31,7 +31,7 @@ const Gamewindow = (props) => {
                     // if (option === null) {
                     //     option[i] = 'no capital available';
                     // }
-                   return <p className='option' key = {i}>{option}</p>
+                    return <p className='option' key={i}>{option}</p>
                 }
                 )}
             </div>}

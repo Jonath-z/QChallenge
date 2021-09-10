@@ -62,6 +62,10 @@ const Login = () => {
                 <button onClick={updateShowState} className='signupBtn'>Signup</button>
             </div>}
             {showSignup && <Signup />}
+            <form method='POST' action='/upload'>
+                <input type='file' name='file' id='inputfile'></input>
+                <button type='submit' value='upload file'></button>
+            </form>
         </div>
     );
 }

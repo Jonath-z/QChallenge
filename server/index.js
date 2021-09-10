@@ -8,6 +8,7 @@ const login = require('./routes/login.js');
 const signup = require('./routes/signup.js');
 const challenges = require('./routes/challenge.js');
 const theme = require('./routes/theme.js');
+const upload = require('./routes/upload.js');
 // const math = require('./routes/math.js');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -20,6 +21,7 @@ app.use('/login', login);
 app.use('/signup', signup);
 app.use('/challenges', challenges);
 app.use('/theme', theme);
+app.use('/upload', upload);
 // app.use('/math', math);
 
 io.on('connection', (socket) => {
