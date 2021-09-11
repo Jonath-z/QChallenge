@@ -26,7 +26,7 @@ const generateOptionForContryAndCapital = (correct, allCountries,currentCountry)
     return answers;
 }
 
-export default {
+export {
     generateOptionsOtherThanCountryAndCapital,
-    generateOptionForContryAndCapital
+    generateOptionForContryAndCapital as default
 }

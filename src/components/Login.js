@@ -1,7 +1,11 @@
 import Signup from "./SignUp";
 import './Login.css';
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import { useHistory } from "react-router-dom";
+// import upload from "../modules/upload";
+import getdefaultAvatar from "../modules/firbaseConfig";
+
+
 
 const Login = () => {
     let history = useHistory();
@@ -10,6 +14,7 @@ const Login = () => {
     const [loginErr, setLoginErr] = useState('');
     const [showSignup, setShowSignup] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
+    const [avatar, setAvatar] = useState(null);
     
     const updateShowState = () => {
         setShowSignup(true);
@@ -51,8 +56,15 @@ const Login = () => {
         }
         postLogins();
     }
+    useEffect(() => {
+        const userAvatar = getdefaultAvatar();
+        setAvatar(userAvatar);
+    }, []);
+   
+
     return (
         <div className='loginContainer'>
+            <img src={avatar} alt="profile"/>
             <h1 className="appName">QChallenge</h1>
             {showLogin && <div className='login'>
                 <input type='email' name='email' placeholder='Email' value={email} onChange={e => { setEmail(e.target.value)}}></input>
@@ -62,10 +74,6 @@ const Login = () => {
                 <button onClick={updateShowState} className='signupBtn'>Signup</button>
             </div>}
             {showSignup && <Signup />}
-            <form method='POST' action='/upload'>
-                <input type='file' name='file' id='inputfile'></input>
-                <button type='submit' value='upload file'></button>
-            </form>
         </div>
     );
 }

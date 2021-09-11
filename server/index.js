@@ -9,10 +9,21 @@ const signup = require('./routes/signup.js');
 const challenges = require('./routes/challenge.js');
 const theme = require('./routes/theme.js');
 const upload = require('./routes/upload.js');
+const Grids = require('gridfs-stream');
 // const math = require('./routes/math.js');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;
+
+
+// let gfs;
+// connection();
+
+// const conn = mongoose.connection;
+// conn.once("open", function () {
+//     gfs = Grid(conn.db, mongoose.mongo);
+//     gfs.collection("photos");
+// });
 
 app.use('/statics', express.static(path.join(__dirname, './src/index.css')));
 app.use('/static', express.static(path.join(__dirname, './public')));
@@ -21,8 +32,8 @@ app.use('/login', login);
 app.use('/signup', signup);
 app.use('/challenges', challenges);
 app.use('/theme', theme);
-app.use('/upload', upload);
-// app.use('/math', math);
+// app.use('/upload', upload);
+
 
 io.on('connection', (socket) => {
     console.log(socket.id);
