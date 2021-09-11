@@ -2,9 +2,8 @@ import Signup from "./SignUp";
 import './Login.css';
 import { useState,useEffect} from "react";
 import { useHistory } from "react-router-dom";
-// import upload from "../modules/upload";
-import getdefaultAvatar from "../modules/firbaseConfig";
-
+import storage from "../modules/firbaseConfig";
+import { FaSpinner } from 'react-icons/fa';
 
 
 const Login = () => {
@@ -16,6 +15,18 @@ const Login = () => {
     const [showLogin, setShowLogin] = useState(true);
     const [avatar, setAvatar] = useState(null);
     
+    useEffect(() => {
+        const getdefaultAvatar = async () => {
+            await storage.ref('NicePng_avatar-png_3012856.png').getDownloadURL()
+                .then(url => {
+                    setAvatar(url);
+                    // console.log(url);
+                    return url;
+                });
+        }
+        getdefaultAvatar();
+    }, []);
+
     const updateShowState = () => {
         setShowSignup(true);
         setShowLogin(false);
@@ -56,24 +67,26 @@ const Login = () => {
         }
         postLogins();
     }
-    useEffect(() => {
-        const userAvatar = getdefaultAvatar();
-        setAvatar(userAvatar);
-    }, []);
-   
 
     return (
-        <div className='loginContainer'>
-            <img src={avatar} alt="profile"/>
-            <h1 className="appName">QChallenge</h1>
-            {showLogin && <div className='login'>
-                <input type='email' name='email' placeholder='Email' value={email} onChange={e => { setEmail(e.target.value)}}></input>
-                <input type='password' name='password' placeholder='Password' value={password} onChange={e => { setPassword(e.target.value) }}></input>
-                <p className='loginErr'>{loginErr}</p>
-                <button onClick={login} className='loginBtn'>Submit</button>
-                <button onClick={updateShowState} className='signupBtn'>Signup</button>
-            </div>}
-            {showSignup && <Signup />}
+        <div>
+            <div className='avatart-container'>
+                {
+                    avatar ? <img src={avatar} alt='profile' id='default-avatar' />
+                        : <p><FaSpinner className='spaniner' /></p>
+                }
+            </div>
+            <div className='loginContainer'>
+                <h1 className="appName">QChallenge</h1>
+                {showLogin && <div className='login'>
+                    <input type='email' name='email' placeholder='Email' value={email} onChange={e => { setEmail(e.target.value) }}></input>
+                    <input type='password' name='password' placeholder='Password' value={password} onChange={e => { setPassword(e.target.value) }}></input>
+                    <p className='loginErr'>{loginErr}</p>
+                    <button onClick={login} className='loginBtn'>Submit</button>
+                    <button onClick={updateShowState} className='signupBtn'>Signup</button>
+                </div>}
+                {showSignup && <Signup />}
+            </div>
         </div>
     );
 }

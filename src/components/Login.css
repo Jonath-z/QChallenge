@@ -8,18 +8,17 @@
 
 .appName{
     font-family: sans-serif;
-    margin-top: 10em;
-    margin-left:20em;
-
+    margin-top: 5em;
+    margin-left:21em;
+    width: 300px;
 }
 
 .login{
-    margin-top: 15em;
-    /* margin-right: 5em; */
+    margin-top: 1em;
+    padding-left: 50px;
     display: flex;
     flex-direction: column;
     width: 20em;
-
 }
 
 input{
@@ -54,6 +53,14 @@ button{
     height: 3em;
     border-radius: 20px;
 
+}
+#default-avatar{
+    width: 200px;
+    border-radius: 50%;
+}
+.avatart-container{
+    text-align: center;
+    margin-top: 10em;
 }
 .signupBtn{
     background: rgb(77, 45, 62);

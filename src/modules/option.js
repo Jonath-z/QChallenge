@@ -1,9 +1,3 @@
- 
-// *************** GENERATE THE ANSWER OPTION FOR OTHER CHALLEGES***********************/
-const generateOptionsOtherThanCountryAndCapital = (allOptions, questonIndex) => {
-    const currentOptions = allOptions[questonIndex];
-    return currentOptions
-}
 
 // *****************GENERATE THE ANSWERS OPTION FOR COUNTRY AND CAPITAL***********************/
 const generateOptionForContryAndCapital = (correct, allCountries,currentCountry) => {
@@ -26,7 +20,5 @@ const generateOptionForContryAndCapital = (correct, allCountries,currentCountry)
     return answers;
 }
 
-export {
-    generateOptionsOtherThanCountryAndCapital,
-    generateOptionForContryAndCapital as default
-}
+export default generateOptionForContryAndCapital
+

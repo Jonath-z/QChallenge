@@ -4,7 +4,8 @@ import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import './Gamewindow.css'
 import Gamewindow from "./Gamewindow";
-import generateOption from '../modules/option';
+import generateOptionForContryAndCapital from '../modules/option';
+import generateOptionsOtherThanCountryAndCapital from "../modules/generateOption";
 import generateQuestionOtherThanCountryAndCapital from "../modules/question";
 import { io } from "socket.io-client";
 
@@ -96,7 +97,7 @@ const Gamespace = () => {
             // console.log(randomMaxValue);
             questionIndex.current++;
             if (challengeTheme === 'Contry and Capital') {
-                const answeroptions = generateOption.generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current,contry);
+                const answeroptions = generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current,contry);
                 questionAswersOptions.current = answeroptions;
                 console.log(answeroptions);
                 // console.log(display);
@@ -106,7 +107,7 @@ const Gamespace = () => {
                 const currentQuestion = generateQuestionOtherThanCountryAndCapital(questionsInCurrentTheme.current, questionIndex.current);
                 setOtherQuestion(currentQuestion);
                 console.log(currentQuestion);
-                const currentOptions = generateOption.generateOptionsOtherThanCountryAndCapital(options, questionIndex.current);
+                const currentOptions = generateOptionsOtherThanCountryAndCapital(options, questionIndex.current);
                 questionAswersOptions.current = currentOptions;
                 
             }

@@ -33,7 +33,7 @@ router.post('/',
                     email: email,
                     pseudo: pseudo,
                     password: cryptedPassword,
-                    avatar: ''
+                    avatar: req.body.avatar
                 }
                 mongodb.collection('users').insertOne(user);
             }

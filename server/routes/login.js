@@ -16,10 +16,10 @@ router.post('/',
     (req, res) => {
         const err = validationResult(req);
         if (!err.isEmpty()) {
-            res.send({status: '404 email'});
+            res.send({ status: '404 email' });
             console.log('login err')
         }
-        else{
+        else {
             const password = req.body.password.trim();
             const email = req.body.email.trim();
             
@@ -30,9 +30,11 @@ router.post('/',
                     const encryptPassword = async () => {
                         const validPassword = await bcrypt.compare(password, data[0].password);
                         if (validPassword) {
-                            res.send({ status: '200', id: data[0].id });
-                        }else{
-                        // else if (!validPassword) {
+                            res.send({
+                                status: '200',
+                                id: data[0].id,
+                            });
+                        } else {
                             res.send({ status: '404' });
                         }
                         // console.log(data);
@@ -43,6 +45,6 @@ router.post('/',
             console.log(email);
         }
     }
-)
+);
 
 module.exports = router;

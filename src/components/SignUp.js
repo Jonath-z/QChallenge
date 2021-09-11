@@ -1,52 +1,66 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Login from './Login';
 import './Login.css';
-// import { useForm } from "react-hook-form";
+import storage from "../modules/firbaseConfig";
 
 
 const Signup = () => {
-
     const [email, setEmail] = useState('');
     const [pseudo, setPseudo] = useState('');
     const [password, setPassword] = useState('');
     const [loginErr, setLoginErr] = useState('');
     const [showLogin, setShowLogin] = useState(false);
     const [showSignup, setShowSignup] = useState(true);
+    const [avatar, setAvatar] = useState(null);
 
     // console.log(email, pseudo, password);
-    const registerUser = () => {
-        const fetchData = async () => {
-            const data = await fetch('../signup', {
-                method: 'POST',
-                headers: {
-                    'accept': '*/*',
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    pseudo: pseudo,
-                    password: password
-                })
-            });
-            const response = await data.text();
-            if (response === "error") {
-                setLoginErr('something went wrong,(your password must have 4 characters minimum)');
-                console.log(response);
-            }
-            else if (response === '200') {
-                console.log(response);
-                setShowSignup(!showSignup);
-                setShowLogin(!showLogin);
-            }
-            
-            return () => {
-                setEmail('');
-                setPseudo('');
-                setPassword('');
-                setLoginErr('');
-            }
+    useEffect(() => {
+        const getdefaultAvatar = async () => {
+            await storage.ref('NicePng_avatar-png_3012856.png').getDownloadURL()
+                .then(url => {
+                    setAvatar(url);
+                    return url;
+                });
         }
-        fetchData();
+        getdefaultAvatar();
+    }, []);
+
+    const registerUser = () => {
+        if (avatar !== null) {
+            const fetchData = async () => {
+                const data = await fetch('../signup', {
+                    method: 'POST',
+                    headers: {
+                        'accept': '*/*',
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        pseudo: pseudo,
+                        password: password,
+                        avatar: `${avatar}`
+                    })
+                });
+                const response = await data.text();
+                if (response === "error") {
+                    setLoginErr('something went wrong,(your password must have 4 characters minimum)');
+                    console.log(response);
+                }
+                else if (response === '200') {
+                    console.log(response);
+                    setShowSignup(!showSignup);
+                    setShowLogin(!showLogin);
+                }
+            
+                return () => {
+                    setEmail('');
+                    setPseudo('');
+                    setPassword('');
+                    setLoginErr('');
+                }
+            }
+            fetchData();
+        }
     }
 
     return (

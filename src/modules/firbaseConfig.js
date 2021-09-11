@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from 'firebase';
 import 'firebase/storage';
 
 const firebaseConfig = {
@@ -12,17 +12,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage()
+export default storage;
 
-const getdefaultAvatar = async() => {
-    await storage.ref('QChallenge-default-avatar.png').getDownloadURL()
-        .then(url => {
-            console.log(url);
-            return url;
-    })
-}
 
-export default getdefaultAvatar;
-
-// export {
-//     firebase ,storage as default
-// }
