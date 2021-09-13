@@ -4,7 +4,7 @@ const generateOptionForContryAndCapital = (correct, allCountries,currentCountry)
    let wrongCountries = allCountries.filter(country => country.city !== currentCountry.correct);
     // console.log(wrongCountries);
     const answerOption = 5;
-    const correctAnswerPosition = Math.floor(Math.random() * (answerOption + 1));
+    const correctAnswerPosition = Math.floor(Math.random() * (answerOption));
     const answers = [];
     for (let i = 0; i < answerOption; i++) {
         if (i === correctAnswerPosition) {

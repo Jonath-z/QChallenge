@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import './Gamewindow.css'
+import './Gamewindow.css';
+
 // import Theme from "./Theme";
 
 const Gamewindow = (props) => {
@@ -13,14 +14,14 @@ const Gamewindow = (props) => {
         }
         getQuestions();
     }, []);
-
+    
     return (
         <div>
             <h4>{props.challengeTheme}</h4>
             <div>
-                <div className='chronoContainer'>
+                {/* <div className='chronoContainer'>
                     <p>{props.chrono}S</p>
-                </div>
+                </div> */}
                 {props.challengeTheme === 'Contry and Capital' ? props.showQuestion && <div className='questionContainer'>
                     <p><span>{props.contry}</span></p>
                 </div> : <p>{props.question}</p>}
@@ -31,7 +32,7 @@ const Gamewindow = (props) => {
                     // if (option === null) {
                     //     option[i] = 'no capital available';
                     // }
-                    return <p className='option' key={i}>{option}</p>
+                    return <p className='option' key={i} onClick={props.getAnswer}>{option}</p>
                 }
                 )}
             </div>}

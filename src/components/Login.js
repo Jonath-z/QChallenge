@@ -27,7 +27,7 @@ const Login = () => {
         getdefaultAvatar();
     }, []);
 
-    const updateShowState = () => {
+    const goToSignup = () => {
         setShowSignup(true);
         setShowLogin(false);
     }
@@ -83,7 +83,7 @@ const Login = () => {
                     <input type='password' name='password' placeholder='Password' value={password} onChange={e => { setPassword(e.target.value) }}></input>
                     <p className='loginErr'>{loginErr}</p>
                     <button onClick={login} className='loginBtn'>Submit</button>
-                    <button onClick={updateShowState} className='signupBtn'>Signup</button>
+                    <button onClick={goToSignup} className='signupBtn'>Signup</button>
                 </div>}
                 {showSignup && <Signup />}
             </div>

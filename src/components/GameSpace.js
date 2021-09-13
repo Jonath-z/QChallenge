@@ -4,9 +4,13 @@ import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import './Gamewindow.css'
 import Gamewindow from "./Gamewindow";
+import ScoreBar from "./ScoreBar";
 import generateOptionForContryAndCapital from '../modules/option';
 import generateOptionsOtherThanCountryAndCapital from "../modules/generateOption";
 import generateQuestionOtherThanCountryAndCapital from "../modules/question";
+import checkAnwers from "../modules/checkAnswer";
+// import gameLevel from "../modules/gameLevel";
+import scoreProgress from "../modules/scoreProgress";
 import { io } from "socket.io-client";
 
 
@@ -25,7 +29,8 @@ const Gamespace = () => {
     let questionsInCurrentTheme = useRef(null);
     const [challengeTheme, setChallengeTheme] = useState('Contry and Capital');
     const [myThemes, setMyThemes] = useState(null);
-    let timmer = useRef(10);
+    let maxTimmer = useRef(10);
+    let timmer = useRef(maxTimmer);
     let interval = useRef();
     const questions = useRef();
     const [showStart, setShowStart] = useState(false);
@@ -34,9 +39,11 @@ const Gamespace = () => {
     const [contry, setContry] = useState('');
     const questionAswersOptions = useRef();
     let questionIndex = useRef(0);
+    let score = useRef(0);
+    let progressBar = useRef(0);
     const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
-  
+// *************************** FETCH DATA (THEME AND QUESTIONS) ****************************************/  
     useEffect(() => {
         async function data() {
             const data = await fetch('../theme');
@@ -54,17 +61,18 @@ const Gamespace = () => {
         }
         allQuestions();
     }, []);
-
+// *********************************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************/
     useEffect(() => {
         setShowStart(true);
         if (challengeTheme) {
             const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
-            questionsInCurrentTheme.current = currentQuestions;
+            const currentQuestionsWithCity = currentQuestions.filter(question => question.city !== null);
+            questionsInCurrentTheme.current = currentQuestionsWithCity;
             console.log('current questions', questionsInCurrentTheme);
 
         }
     }, [challengeTheme]);
-
+// *************************** START CHALLENGE EVENT HANDLER**********************************/
     const startChallenge = () => {
         generateTheCurrentQuestion();
         setShowStart(false);
@@ -73,7 +81,7 @@ const Gamespace = () => {
         // reset();
     }
 
-// **************************** SET GAME TIMER*************************************************************// 
+// **************************** SET GAME TIMER ************************************************************// 
     const setChronoGame = () => {
         setChrono(timmer.current--);
         if (timmer.current === -1) {
@@ -115,6 +123,34 @@ const Gamespace = () => {
                 return reset();
             }
         }
+    }
+// ********************************* CHECK ANSWERS *********************************************/
+    const getAnswer = (e) => {
+        const answer = e.target.innerHTML;
+        const answerState = checkAnwers(answer, contry, questionsInCurrentTheme.current);
+        if (answerState === true) {
+            score.current++;
+            progressBar.current = scoreProgress(score.current, questionsInCurrentTheme.current);
+            // progressBar.current = currentProgressBar;
+            // console.log(currentProgressBar, '%');
+            clearInterval(interval.current);
+            setTimeout(answerChecked,1000);
+            generateTheCurrentQuestion(); 
+        } else {
+            navigator.vibrate(200);
+            clearInterval(interval.current);
+            setTimeout(answerChecked,1000);
+            generateTheCurrentQuestion(); 
+        }
+        // console.log(answer, answerState);
+    }
+
+// *************************** ANSWER CHECKED ******************************************//
+    const answerChecked = () => {
+        timmer.current =10;
+        setChrono(timmer.current);
+        setChronoInterval();
+        console.log('answerChecked');
     }
 
 // ****************************** RESET THE CHRONO ***********************************************************/
@@ -171,15 +207,22 @@ const Gamespace = () => {
 
             </div>
             <div className='gameWindowDiv'>
+                <ScoreBar
+                    progress={progressBar.current}
+                    score={score.current}
+                    chrono={chrono}
+                    // setLevel={gameLevel}
+                />
                 <Gamewindow
                     startChallenge={startChallenge}
                     showButton={showStart}
                     challengeTheme={challengeTheme}
                     showQuestion={showQuestion}
-                    chrono={chrono}
+                    // chrono={chrono}
                     contry={contry}
                     answerOption={questionAswersOptions.current}
-                    question = {otherQuestion}
+                    question={otherQuestion}
+                    getAnswer={getAnswer}
                     // questionFormula={questionFormula}
                 />
             </div>
