@@ -1,5 +1,6 @@
 const scoreProgress = (score, allQuestions) => {
-    const progressValue = (score * allQuestions.length) / 100;
+    const progressValue = (score / allQuestions.length) * 100;
+    console.log(score);
     return progressValue;
 }
 

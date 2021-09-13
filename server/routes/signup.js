@@ -33,7 +33,9 @@ router.post('/',
                     email: email,
                     pseudo: pseudo,
                     password: cryptedPassword,
-                    avatar: req.body.avatar
+                    avatar: req.body.avatar,
+                    score: [],
+                    socketID: ''
                 }
                 mongodb.collection('users').insertOne(user);
             }

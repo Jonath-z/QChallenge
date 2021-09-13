@@ -10,6 +10,7 @@ function App() {
       <>
         <Route path='/' exact render={() => (
           <>
+            {window.localStorage.clear()}
             <Login />
           </>
         )} />

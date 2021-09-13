@@ -2,14 +2,14 @@
 import { useState, useEffect,useRef } from "react";
 import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
-import './Gamewindow.css'
+import './Gamewindow.css';
 import Gamewindow from "./Gamewindow";
 import ScoreBar from "./ScoreBar";
 import generateOptionForContryAndCapital from '../modules/option';
 import generateOptionsOtherThanCountryAndCapital from "../modules/generateOption";
 import generateQuestionOtherThanCountryAndCapital from "../modules/question";
 import checkAnwers from "../modules/checkAnswer";
-// import gameLevel from "../modules/gameLevel";
+import gameLevel from "../modules/gameLevel";
 import scoreProgress from "../modules/scoreProgress";
 import { io } from "socket.io-client";
 
@@ -30,13 +30,15 @@ const Gamespace = () => {
     const [challengeTheme, setChallengeTheme] = useState('Contry and Capital');
     const [myThemes, setMyThemes] = useState(null);
     let maxTimmer = useRef(10);
-    let timmer = useRef(maxTimmer);
+    let timmer = useRef(maxTimmer.current);
     let interval = useRef();
     const questions = useRef();
     const [showStart, setShowStart] = useState(false);
-    const [chrono, setChrono] = useState(timmer.current);
+    const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
     const [contry, setContry] = useState('');
+    const [success, setSuccess] = useState(false);
+    let scoreIncrement = useRef(1);
     const questionAswersOptions = useRef();
     let questionIndex = useRef(0);
     let score = useRef(0);
@@ -86,7 +88,7 @@ const Gamespace = () => {
         setChrono(timmer.current--);
         if (timmer.current === -1) {
             generateTheCurrentQuestion();
-            return setChrono(timmer.current = 10);
+            return setChrono(timmer.current = maxTimmer.current);
         }
     }
     
@@ -129,15 +131,17 @@ const Gamespace = () => {
         const answer = e.target.innerHTML;
         const answerState = checkAnwers(answer, contry, questionsInCurrentTheme.current);
         if (answerState === true) {
-            score.current++;
-            progressBar.current = scoreProgress(score.current, questionsInCurrentTheme.current);
-            // progressBar.current = currentProgressBar;
+            // let incrementValue = scoreIncrement.current 
+            score.current += scoreIncrement.current;
+           progressBar.current = scoreProgress(score.current, questionsInCurrentTheme.current);
             // console.log(currentProgressBar, '%');
+            setSuccess(true)
             clearInterval(interval.current);
             setTimeout(answerChecked,1000);
             generateTheCurrentQuestion(); 
         } else {
             navigator.vibrate(200);
+            setSuccess(false);
             clearInterval(interval.current);
             setTimeout(answerChecked,1000);
             generateTheCurrentQuestion(); 
@@ -147,7 +151,7 @@ const Gamespace = () => {
 
 // *************************** ANSWER CHECKED ******************************************//
     const answerChecked = () => {
-        timmer.current =10;
+        timmer.current = maxTimmer.current;
         setChrono(timmer.current);
         setChronoInterval();
         console.log('answerChecked');
@@ -157,7 +161,7 @@ const Gamespace = () => {
     const reset = () => {
         // maxSecond = 10;
         clearInterval(interval.current);
-        timmer.current = 10;
+        timmer.current = maxTimmer.current;
         setChrono(timmer.current);
         setShowQuestion(false);
         setShowStart(true);
@@ -211,7 +215,21 @@ const Gamespace = () => {
                     progress={progressBar.current}
                     score={score.current}
                     chrono={chrono}
-                    // setLevel={gameLevel}
+                    setLevel={(e) => {
+                        maxTimmer.current = gameLevel(e, maxTimmer);
+                        timmer.current = maxTimmer.current
+                        setChrono(timmer.current)
+                        if (maxTimmer.current = 20) {
+                           scoreIncrement.current = 1;
+                        }
+                        if (maxTimmer.current = 10) {
+                           scoreIncrement.current = 5;
+                        }
+                        if (maxTimmer.current = 5) {
+                            scoreIncrement.current = 10;
+                        }
+                    }}
+                    success={success}
                 />
                 <Gamewindow
                     startChallenge={startChallenge}

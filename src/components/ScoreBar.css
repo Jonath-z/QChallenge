@@ -1,12 +1,39 @@
 .ScoreBar{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 2fr;
+    background: rgb(3, 4, 56);
+    color: white;
+    padding: 20px 0px 10px 0px;
+    margin-left: 13px;
+    border-radius: 10px;
+    /* border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px; */
+}
+.chechAnswerSuccess{
+    font-size: 25px;
+    text-align: center;
+    background:green;
+    margin-left: 20px;
+    width: 2em;
+    border-radius: 20px;
+    height: 20px;
+}
+.chechAnswerNoSuccess{
+    font-size: 25px;
+    text-align: center;
+    background:red;
+    margin-left: 20px;
+    width: 2em;
+    border-radius: 20px;
+    height: 20px;
 }
 .progress-bar{
     /* border-radius: 20px;  */
     margin-left: 20px;
     width: 70% !important;
     height: fit-content !important;
+    display: flex;
+    flex-direction: row;
 
 }
 progress {
@@ -38,6 +65,10 @@ progress::-moz-progress-bar {
 .chrono-para{
     margin-top: 0 !important;
 }
+.level-container{
+    cursor: pointer;
+    height: 30px;
+}
 .level-para{
     margin-top: 0 !important;
 }
@@ -46,6 +77,10 @@ progress::-moz-progress-bar {
     background:  rgb(3, 4, 56);
     color: white;
     border-radius: 5px;
+    position: absolute;
+    width: 220px;
+    /* margin-top: 8px; */
+    
 }
 .level-list-li{
     text-align: left;
@@ -64,17 +99,21 @@ hr{
     color: rgb(236, 218, 218);
     height: 1px;
 }
-.level-para:hover .level-list{
+.level-container:hover .level-list{
     display: flex;
     flex-direction: column;
     transition: 500ms;
-    animation: topToBottom ease 500ms;
+    animation: topToBottom ease 100ms;
+    cursor: pointer;
 }
 @keyframes topToBottom{
     0%{
-        margin-top: -30px;
+        height: 0px;
+    }
+    50%{
+        height: 40px;
     }
     100%{
-        margin-top: 0px;
+        height: 60px;
     }
 }

@@ -30,9 +30,16 @@ router.post('/',
                     const encryptPassword = async () => {
                         const validPassword = await bcrypt.compare(password, data[0].password);
                         if (validPassword) {
+                            // console.log(data[0]);
                             res.send({
                                 status: '200',
-                                id: data[0].id,
+                                data: {
+                                    id: data[0].id,
+                                    avatar: data[0].avatar,
+                                    score: data[0].score,
+                                    pseudo: data[0].pseudo,
+                                    socketID: data[0].socketID
+                                }
                             });
                         } else {
                             res.send({ status: '404' });

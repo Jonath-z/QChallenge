@@ -38,7 +38,9 @@ const Signup = () => {
                         email: email,
                         pseudo: pseudo,
                         password: password,
-                        avatar: `${avatar}`
+                        avatar: `${avatar}`,
+                        score: [],
+                        socketID: ''
                     })
                 });
                 const response = await data.text();

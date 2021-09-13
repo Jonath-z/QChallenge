@@ -47,10 +47,10 @@ const Login = () => {
             const data = await response.json();
             if (data.status === '200') {
                 console.log(data.id);
+                // console.log('data', data);
+                window.localStorage.setItem('user', JSON.stringify(data));
                 history.push(`/QChallenge/?id=${data.id}`);
                 window.location.reload();
-                // window.location.href='/QChallenge';
-                // <Redirect to='/QChallenge' />
             }
             else if (data.status === '404') {
                 setLoginErr('Incorrect password');
