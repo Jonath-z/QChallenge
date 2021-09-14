@@ -8,6 +8,7 @@ const login = require('./routes/login.js');
 const signup = require('./routes/signup.js');
 const challenges = require('./routes/challenge.js');
 const theme = require('./routes/theme.js');
+const updateScore = require('./routes/updateScore.js');
 const Grids = require('gridfs-stream');
 // const math = require('./routes/math.js');
 
@@ -22,6 +23,7 @@ app.use('/login', login);
 app.use('/signup', signup);
 app.use('/challenges', challenges);
 app.use('/theme', theme);
+app.use('/update', updateScore);
 
 io.on('connection', (socket) => {
     console.log(socket.id);
