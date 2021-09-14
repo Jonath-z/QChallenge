@@ -11,10 +11,7 @@ import generateQuestionOtherThanCountryAndCapital from "../modules/question";
 import checkAnwers from "../modules/checkAnswer";
 import gameLevel from "../modules/gameLevel";
 import scoreProgress from "../modules/scoreProgress";
-import { io } from "socket.io-client";
-
-
-const socket = io('/');
+import updateUserStat from "../modules/updateUserStat";
 
 // custome hook
 function usePrevious(data){
@@ -36,13 +33,16 @@ const Gamespace = () => {
     const [showStart, setShowStart] = useState(false);
     const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
+    const [showDropLevelList, setShowDropLevelList] = useState(true);
     const [contry, setContry] = useState('');
     const [success, setSuccess] = useState(false);
+    const [level, setLevel] = useState('Medium');
     let scoreIncrement = useRef(1);
     const questionAswersOptions = useRef();
     let questionIndex = useRef(0);
     let score = useRef(0);
     let progressBar = useRef(0);
+    const isUseEffectInitialRender = useRef(true);
     const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
 // *************************** FETCH DATA (THEME AND QUESTIONS) ****************************************/  
@@ -74,12 +74,25 @@ const Gamespace = () => {
 
         }
     }, [challengeTheme]);
+// *************************** UPDATE USER SCORE,QUESTION AND LEVEL ****************************/
+    useEffect(() => {
+        if (isUseEffectInitialRender.current) {
+            isUseEffectInitialRender.current = false;
+        } else {
+            const param = window.location.search;
+            const userID = param.replace('?id=', '');
+            console.log(score.current);
+            updateUserStat(score.current, prevTheme, questionIndex.current, userID);
+        }
+    },[prevTheme]);
 // *************************** START CHALLENGE EVENT HANDLER**********************************/
     const startChallenge = () => {
         generateTheCurrentQuestion();
         setShowStart(false);
         setShowQuestion(true);
         setChronoInterval();
+        setShowDropLevelList(false);
+        score.current = 0
         // reset();
     }
 
@@ -165,6 +178,7 @@ const Gamespace = () => {
         setChrono(timmer.current);
         setShowQuestion(false);
         setShowStart(true);
+        setShowDropLevelList(true);
         console.log('reset');
     }
 
@@ -219,17 +233,22 @@ const Gamespace = () => {
                         maxTimmer.current = gameLevel(e, maxTimmer);
                         timmer.current = maxTimmer.current
                         setChrono(timmer.current)
-                        if (maxTimmer.current = 20) {
+                        if (maxTimmer.current === 20) {
+                            setLevel('Low');
                            scoreIncrement.current = 1;
                         }
-                        if (maxTimmer.current = 10) {
+                        if (maxTimmer.current === 10) {
+                            setLevel('Medium');
                            scoreIncrement.current = 5;
                         }
-                        if (maxTimmer.current = 5) {
+                        if (maxTimmer.current === 5) {
+                            setLevel('Hight');
                             scoreIncrement.current = 10;
                         }
                     }}
                     success={success}
+                    showDropLevelList={showDropLevelList}
+                    level = {level}
                 />
                 <Gamewindow
                     startChallenge={startChallenge}
