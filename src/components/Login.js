@@ -46,10 +46,10 @@ const Login = () => {
             });
             const data = await response.json();
             if (data.status === '200') {
-                console.log(data.id);
+                // console.log(data.data.id);
                 // console.log('data', data);
                 window.localStorage.setItem('user', JSON.stringify(data));
-                history.push(`/QChallenge/?id=${data.id}`);
+                history.push(`/QChallenge/?id=${data.data.id}`);
                 window.location.reload();
             }
             else if (data.status === '404') {
@@ -69,13 +69,7 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <div className='avatart-container'>
-                {
-                    avatar ? <img src={avatar} alt='profile' id='default-avatar' />
-                        : <p><FaSpinner className='spaniner' /></p>
-                }
-            </div>
+
             <div className='loginContainer'>
                 <h1 className="appName">QChallenge</h1>
                 {showLogin && <div className='login'>
@@ -87,7 +81,6 @@ const Login = () => {
                 </div>}
                 {showSignup && <Signup />}
             </div>
-        </div>
     );
 }
 
