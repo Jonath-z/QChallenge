@@ -28,6 +28,16 @@ const Signup = () => {
     const registerUser = () => {
         if (avatar !== null) {
             const fetchData = async () => {
+                const theme = await fetch('../theme');
+                const responseTheme = await theme.json();
+                const themeDetails = responseTheme.map(theme => {
+                    return {
+                        theme: theme.theme,
+                        score: 0,
+                        level: 0
+                    }
+                });
+                console.log(themeDetails);
                 const data = await fetch('../signup', {
                     method: 'POST',
                     headers: {
@@ -39,7 +49,7 @@ const Signup = () => {
                         pseudo: pseudo,
                         password: password,
                         avatar: `${avatar}`,
-                        score: [],
+                        score: themeDetails,
                         socketID: ''
                     })
                 });
