@@ -1,0 +1,23 @@
+.controlsTolls{
+    display: flex;
+    flex-direction: column;
+    float: right;
+    background: rgb(3,4,56);
+    margin-top: 20px;
+    padding: 0px 10px 20px 0px;
+    border-radius: 10px;
+}
+.save-button{
+    width: 7em;
+    margin-left: 10px;
+    float: right;
+    background-color:  hsl(190, 47%, 86%);
+    cursor: pointer;
+}
+.pause-button{
+    width:7em;
+    margin-left: 10px;
+    float: right;
+    background-color:  hsl(190, 47%, 86%);
+    cursor: pointer;
+}

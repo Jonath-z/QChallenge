@@ -37,7 +37,7 @@ const Signup = () => {
                         level: 0
                     }
                 });
-                console.log(themeDetails);
+                // console.log(themeDetails);
                 const data = await fetch('../signup', {
                     method: 'POST',
                     headers: {

@@ -1,16 +1,18 @@
 
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import './Gamewindow.css';
 import Gamewindow from "./Gamewindow";
 import ScoreBar from "./ScoreBar";
+import ControlTools from "./ControlTools";
+import DiscutionIcon from "./Discution";
 import generateOptionForContryAndCapital from '../modules/option';
 import generateOptionsOtherThanCountryAndCapital from "../modules/generateOption";
 import generateQuestionOtherThanCountryAndCapital from "../modules/question";
 import checkAnwers from "../modules/checkAnswer";
 import gameLevel from "../modules/gameLevel";
-import scoreProgress from "../modules/scoreProgress";
+import userChallengeProgress from "../modules/userChallengeProgress";
 import updateUserStat from "../modules/updateUserStat";
 
 // custome hook
@@ -37,62 +39,58 @@ const Gamespace = () => {
     const [contry, setContry] = useState('');
     const [success, setSuccess] = useState(false);
     const [level, setLevel] = useState('Medium');
+    const [saveState, setSaveState] = useState('Save');
+    const [pauseState, setPauseState] = useState('Pause')
     let scoreIncrement = useRef(1);
     const questionAswersOptions = useRef();
     let questionIndex = useRef(0);
     let score = useRef(0);
     let progressBar = useRef(0);
-    const isUseEffectInitialRender = useRef(true);
     const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
-// *************************** FETCH DATA (THEME AND QUESTIONS) ****************************************/  
-    useEffect(() => {
-        async function data() {
-            const data = await fetch('../theme');
-            const themes = await data.json();
-            window.localStorage.setItem('theme', JSON.stringify(themes));
-            const myThemes = JSON.parse(localStorage.getItem('theme'));
-            setMyThemes(myThemes);
+
+// *************************** FETCH INITAL DATA (THEME AND QUESTIONS) ****************************************/  
+useEffect(() => {
+    async function data() {
+        const data = await fetch('../theme');
+        const themes = await data.json();
+        window.localStorage.setItem('theme', JSON.stringify(themes));
+        const myThemes = JSON.parse(localStorage.getItem('theme'));
+        setMyThemes(myThemes);
+    }
+    data();
+    const allQuestions = () => {
+        const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
+        console.log(allQuestions);
+        allQuestions !== null ? questions.current = allQuestions : console.log('loading...');
         }
-        data();
-        const allQuestions = () => {
-            const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
-            // setQuestions(allQuestions);
-            questions.current = allQuestions;
-            // console.log(allQuestions);
-        }
-        allQuestions();
-    }, []);
+    allQuestions();
+    const userData = JSON.parse(localStorage.getItem('user'));
+    // console.log(userScoreState);
+    score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
+    questionIndex.current = userData.data.score.find(({ theme }) => theme === challengeTheme).level;
+    // console.log(questionIndex.current);
+    // progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
+}, []);
 // *********************************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************/
     useEffect(() => {
         setShowStart(true);
-        if (challengeTheme) {
+        if (challengeTheme && questions.current !== null) {
             const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
             const currentQuestionsWithCity = currentQuestions.filter(question => question.city !== null);
             questionsInCurrentTheme.current = currentQuestionsWithCity;
-            console.log('current questions', questionsInCurrentTheme);
-
+            // console.log('current questions', questionsInCurrentTheme);
         }
     }, [challengeTheme]);
-// *************************** UPDATE USER SCORE,QUESTION AND LEVEL ****************************/
-    useEffect(() => {
-        if (isUseEffectInitialRender.current) {
-            isUseEffectInitialRender.current = false;
-        } else {
-            const param = window.location.search;
-            const userID = param.replace('?id=', '');
-            console.log(score.current);
-            updateUserStat(score.current, prevTheme, questionIndex.current, userID);
-        }
-    },[prevTheme]);
-// *************************** START CHALLENGE EVENT HANDLER**********************************/
+//  ******************* START CHALLENGE EVENT HANDLER**********************************/
     const startChallenge = () => {
         generateTheCurrentQuestion();
         setShowStart(false);
         setShowQuestion(true);
         setChronoInterval();
         setShowDropLevelList(false);
-        score.current = 0
+        const userData = JSON.parse(localStorage.getItem('user'));
+        score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
         // reset();
     }
 
@@ -100,8 +98,9 @@ const Gamespace = () => {
     const setChronoGame = () => {
         setChrono(timmer.current--);
         if (timmer.current === -1) {
+            setChrono(timmer.current = maxTimmer.current);
             generateTheCurrentQuestion();
-            return setChrono(timmer.current = maxTimmer.current);
+            // return setChrono(timmer.current = maxTimmer.current);
         }
     }
     
@@ -116,20 +115,20 @@ const Gamespace = () => {
             const randomMaxValue = questionsInCurrentTheme.current.length + 1;
             const myQuestions = questionsInCurrentTheme.current[questionIndex.current];
             // console.log(myQuestions, 'on index', questionIndex.current);
-            setContry(myQuestions.question);
+            setTimeout(() => setContry(myQuestions.question), 1000);
             // console.log(randomMaxValue);
             questionIndex.current++;
             if (challengeTheme === 'Contry and Capital') {
                 const answeroptions = generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current,contry);
                 questionAswersOptions.current = answeroptions;
-                console.log(answeroptions);
+                // console.log(answeroptions);
                 // console.log(display);
             } else {
                 const options = questionsInCurrentTheme.current.map(question => question.options);
                 // console.log(options)
                 const currentQuestion = generateQuestionOtherThanCountryAndCapital(questionsInCurrentTheme.current, questionIndex.current);
                 setOtherQuestion(currentQuestion);
-                console.log(currentQuestion);
+                // console.log(currentQuestion);
                 const currentOptions = generateOptionsOtherThanCountryAndCapital(options, questionIndex.current);
                 questionAswersOptions.current = currentOptions;
                 
@@ -141,23 +140,23 @@ const Gamespace = () => {
     }
 // ********************************* CHECK ANSWERS *********************************************/
     const getAnswer = (e) => {
+        e.preventDefault();
         const answer = e.target.innerHTML;
         const answerState = checkAnwers(answer, contry, questionsInCurrentTheme.current);
         if (answerState === true) {
-            // let incrementValue = scoreIncrement.current 
+            clearInterval(interval.current);
             score.current += scoreIncrement.current;
-           progressBar.current = scoreProgress(score.current, questionsInCurrentTheme.current);
+           progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
             // console.log(currentProgressBar, '%');
             setSuccess(true)
-            clearInterval(interval.current);
-            setTimeout(answerChecked,1000);
-            generateTheCurrentQuestion(); 
+            answerChecked();
+            generateTheCurrentQuestion();
         } else {
+            clearInterval(interval.current);
             navigator.vibrate(200);
             setSuccess(false);
-            clearInterval(interval.current);
-            setTimeout(answerChecked,1000);
-            generateTheCurrentQuestion(); 
+            answerChecked();
+            generateTheCurrentQuestion();
         }
         // console.log(answer, answerState);
     }
@@ -172,7 +171,6 @@ const Gamespace = () => {
 
 // ****************************** RESET THE CHRONO ***********************************************************/
     const reset = () => {
-        // maxSecond = 10;
         clearInterval(interval.current);
         timmer.current = maxTimmer.current;
         setChrono(timmer.current);
@@ -189,7 +187,6 @@ const Gamespace = () => {
             clearInterval(interval.current);
             prevTheme && setChallengeTheme(prevTheme);
             const confirmResponse = window.confirm('Do want to leave the challenge ?');
-           
             if (confirmResponse) {
                 setChallengeTheme(e.target.innerHTML)
                 setContry(questionsInCurrentTheme.current[0]);
@@ -204,7 +201,11 @@ const Gamespace = () => {
             }
         }
         else {
-            questionIndex.current = 0;
+        const userData = JSON.parse(localStorage.getItem('user'));
+        // console.log(userScoreState);
+        score.current = userData.data.score.find(({ theme }) => theme === e.target.innerHTML).score;
+        questionIndex.current = userData.data.score.find(({ theme }) => theme === e.target.innerHTML).level;
+            // questionIndex.current = 0;
            return setChallengeTheme(e.target.innerHTML);
         }
     }
@@ -235,11 +236,11 @@ const Gamespace = () => {
                         setChrono(timmer.current)
                         if (maxTimmer.current === 20) {
                             setLevel('Low');
-                           scoreIncrement.current = 1;
+                            scoreIncrement.current = 1;
                         }
                         if (maxTimmer.current === 10) {
                             setLevel('Medium');
-                           scoreIncrement.current = 5;
+                            scoreIncrement.current = 5;
                         }
                         if (maxTimmer.current === 5) {
                             setLevel('Hight');
@@ -248,8 +249,33 @@ const Gamespace = () => {
                     }}
                     success={success}
                     showDropLevelList={showDropLevelList}
-                    level = {level}
+                    level={level}
                 />
+                <ControlTools
+                    save={saveState}
+                    pause={pauseState}
+                    saveHandler={() => {
+                        if (!showStart) {
+                            updateUserStat(score.current, prevTheme, questionIndex.current);
+                            setSaveState('Saved');
+                            const setToSave = () => { setSaveState('Save') }
+                            setTimeout(setToSave, 2000);
+                        }
+                    }}
+                    pauseHandler={() => {
+                        if (!showStart) {
+                            if (pauseState === 'Pause') {
+                                clearInterval(interval.current);
+                                setPauseState('Resume');
+                            } else {
+                                setChrono(timmer.current);
+                                setChronoInterval();
+                                setPauseState('Pause');
+                            }
+                        }
+                    }}
+                />
+                <DiscutionIcon />
                 <Gamewindow
                     startChallenge={startChallenge}
                     showButton={showStart}
@@ -260,7 +286,7 @@ const Gamespace = () => {
                     answerOption={questionAswersOptions.current}
                     question={otherQuestion}
                     getAnswer={getAnswer}
-                    // questionFormula={questionFormula}
+                // questionFormula={questionFormula}
                 />
             </div>
         </div>

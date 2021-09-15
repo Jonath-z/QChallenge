@@ -1,0 +1,13 @@
+.dicution-incon-container{
+    right: 0;
+    position: absolute;
+    bottom: 50px;
+    margin-right: 20px;
+
+
+}
+.discution-icon{
+    font-size: 70px;
+    color: rgb(3,4,56);
+    cursor: pointer;
+}

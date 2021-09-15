@@ -37,30 +37,30 @@
 
 }
 progress {
-    height: 20px;
+    margin-top: 5px;
+    height: 10px;
     width: 100%;
     border:none;
-    border-radius: 10px;
     color: green;
   }
 progress::-webkit-progress-bar {
-    height: 20px;
+    height: 10px;
     width: 100%;
+    border:none;
+    /* border-radius: 10px; */
     color: green;
   }
 progress::-webkit-progress-value {
-    height: 20px;
+    height: 10px;
     width: 100%;
     border:none;
-    border-radius: 10px;
     color: green;
   }
 progress::-moz-progress-bar {
-   height: 20px;
-   width: 100%;
-   border:none;
-   border-radius: 10px;
-   color: green;
+    height: 10px;
+    width: 100%;
+    border:none;
+    color: green;
   }
 .chrono-para{
     margin-top: 0 !important;

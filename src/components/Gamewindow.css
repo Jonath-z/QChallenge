@@ -12,6 +12,55 @@
     overflow: scroll;
     /* background-color:  hsl(200, 20%, 70%); */
    }
+.country{
+    display: block;
+    transition: 200ms;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.AnswerOptionContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white; 
+}
+
+.Answeroption{
+    text-align: left !important;
+    margin: 20px 0px 0px 0px ;
+    background:  rgb(3,4,56);
+    height: 2em;
+    width: 10em;
+    padding-left: 40%;
+    padding-top: 10px;
+    padding-bottom: 10px ;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 200ms;
+    animation: transit ease 500ms;
+}
+@keyframes transit{
+    0%{
+        width: 0;
+    }
+    25%{
+        width: 2.5em;
+    }
+    50%{
+        width: 5em;
+    }
+    75%{
+        width: 7.5em;
+    }
+    100%{
+        width: 10em;
+    }
+}
+.Answeroption:hover{
+    background-color:  hsl(190, 47%, 86%);
+    color:black;
+}
 
 .startButton{
     color: rgb(255, 255, 255);
