@@ -9,8 +9,8 @@ const signup = require('./routes/signup.js');
 const challenges = require('./routes/challenge.js');
 const theme = require('./routes/theme.js');
 const updateScore = require('./routes/updateScore.js');
+const googleLogin = require('./routes/googleLogin');
 const Grids = require('gridfs-stream');
-// const math = require('./routes/math.js');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;
@@ -24,6 +24,7 @@ app.use('/signup', signup);
 app.use('/challenges', challenges);
 app.use('/theme', theme);
 app.use('/update', updateScore);
+app.use('/login-With-Google', googleLogin);
 
 io.on('connection', (socket) => {
     console.log(socket.id);

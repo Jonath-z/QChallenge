@@ -78,6 +78,7 @@ const Signup = () => {
     return (
         <div className='loginContainer'>
             {showSignup && <div className='login'>
+                <h1>Sign Up</h1>
                 {/* <form> */}
                 <input type='email' name='email' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)}></input>
                 <input type='text' name='pseudo' placeholder='Pseudo' value={pseudo} onChange={e => setPseudo(e.target.value)}></input>

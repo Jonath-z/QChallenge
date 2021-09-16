@@ -4,6 +4,7 @@ import { useState,useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import storage from "../modules/firbaseConfig";
 import { FaSpinner } from 'react-icons/fa';
+import LoginWithGoogle from "./LoginWithGoole";
 
 
 const Login = () => {
@@ -14,6 +15,8 @@ const Login = () => {
     const [showSignup, setShowSignup] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
     const [avatar, setAvatar] = useState(null);
+    const [isDisable, setIsDisable] = useState(false);
+    const [err, setErr] = useState(false);
     
     useEffect(() => {
         const getdefaultAvatar = async () => {
@@ -32,7 +35,8 @@ const Login = () => {
         setShowLogin(false);
     }
     const login = () => {
-        const postLogins = async() => {
+        setIsDisable(true);
+        const postLogins = async () => {
             const response = await fetch('../login', {
                 method: 'POST',
                 headers: {
@@ -51,12 +55,17 @@ const Login = () => {
                 window.localStorage.setItem('user', JSON.stringify(data));
                 history.push(`/QChallenge/?id=${data.data.id}`);
                 window.location.reload();
+                setIsDisable(true);
             }
             else if (data.status === '404') {
                 setLoginErr('Incorrect password');
+                setIsDisable(true);
+                setErr(true);
             }
             else if (data.status === '404 email') {
                 setLoginErr('Incorrect password or email');
+                setIsDisable(true);
+                setErr(true);
             }
 
             return () => {
@@ -70,17 +79,21 @@ const Login = () => {
 
     return (
 
-            <div className='loginContainer'>
-                <h1 className="appName">QChallenge</h1>
-                {showLogin && <div className='login'>
-                    <input type='email' name='email' placeholder='Email' value={email} onChange={e => { setEmail(e.target.value) }}></input>
-                    <input type='password' name='password' placeholder='Password' value={password} onChange={e => { setPassword(e.target.value) }}></input>
-                    <p className='loginErr'>{loginErr}</p>
-                    <button onClick={login} className='loginBtn'>Submit</button>
-                    <button onClick={goToSignup} className='signupBtn'>Signup</button>
-                </div>}
-                {showSignup && <Signup />}
-            </div>
+        <div className='loginContainer'>
+            {showLogin ? <h1 className="logPageTitle">Log In</h1> : <h1>Sign Up</h1>}
+            {showLogin && <div className='login'>
+                <input type='email' name='email' placeholder='Email' value={email} onChange={e => { setEmail(e.target.value) }}></input>
+                <input type='password' name='password' placeholder='Password' value={password} onChange={e => { setPassword(e.target.value) }}></input>
+                {err && <p className='loginErr'>{loginErr}</p>}
+                <button onClick={login} disabled={isDisable} className='loginBtn'>Submit</button>
+                <p style={{
+                    textAlign: 'center',
+                }}>or</p>
+                <LoginWithGoogle />
+                <button onClick={goToSignup} className='signupBtn'>Signup</button>
+            </div>}
+            {showSignup && <Signup />}
+        </div>
     );
 }
 
