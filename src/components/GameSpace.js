@@ -6,7 +6,6 @@ import './Gamewindow.css';
 import Gamewindow from "./Gamewindow";
 import ScoreBar from "./ScoreBar";
 import ControlTools from "./ControlTools";
-import DiscutionIcon from "./Discution";
 import generateOptionForContryAndCapital from '../modules/option';
 import generateOptionsOtherThanCountryAndCapital from "../modules/generateOption";
 import generateQuestionOtherThanCountryAndCapital from "../modules/question";
@@ -275,7 +274,6 @@ useEffect(() => {
                         }
                     }}
                 />
-                <DiscutionIcon />
                 <Gamewindow
                     startChallenge={startChallenge}
                     showButton={showStart}

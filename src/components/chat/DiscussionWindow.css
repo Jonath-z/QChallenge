@@ -1,0 +1,42 @@
+.discussion-window{
+        position: absolute;
+        right: 70px;
+        width: 30%;
+        top: 157px;
+        bottom: 45px;
+        background: rgb(99, 147, 224);
+        z-index: 3;
+}
+.receiver-details{
+display:grid;
+grid-template-columns:2fr 1fr;
+width: 100%;
+}
+.faArrow-left{
+    margin-left: 10px;
+    font-size: 25px;
+    margin-top: 20px;
+
+}
+.receiver-details-profile-avatar{
+    width: 50px;
+    margin-left: 20px;
+    border-radius: 50%;
+}
+.receiver-details-profile-pseudo{
+    margin-left: 10px;
+}
+
+.receiver-details-icon{
+    float: right;
+    text-align: right;
+    position: absolute;
+    right: 20px;
+    top:20px;
+    font-size: 30px;
+}
+.receiver-details-profile{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}

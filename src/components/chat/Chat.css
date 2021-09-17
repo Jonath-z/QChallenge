@@ -1,0 +1,29 @@
+.chat-div-container{
+    position: absolute;
+    right: 70px;
+    width: 30%;
+    top: 157px;
+    bottom: 45px;
+    background: rgb(76, 126, 190);
+    z-index: 3;
+}
+.arrowRight{
+    float : left;
+    margin: 20px 00px 0px 20px;
+    font-size: 25px;
+}
+.userAvatar{
+    width: 50px;
+}
+.chat-user-div{
+    display: flex;
+    flex-direction: row;
+    background: royalblue;
+    margin-top: 50px;
+}
+.chat-user-div .userAvatar{
+    margin-left: 20px;
+}
+.pseudo{
+    margin-left: 10px;
+}

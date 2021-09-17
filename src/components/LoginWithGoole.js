@@ -40,8 +40,13 @@ const LoginWithGoogle = () => {
                     .then(res => { return res.json() })
                     .then(data => {
                         window.localStorage.setItem('user', JSON.stringify(data));
-                        history.push(`/QChallenge/?id=${data.data.id}`);
-                        console.log('[Login sucess] current user:', res.profileObj.email);
+                        const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
+                        console.log('all questions :', allQuestions);
+                        if (allQuestions !== null) {
+                            history.push(`/QChallenge/?id=${data.data.id}`);
+                            console.log('question is null');
+                        }
+                        // console.log('[Login sucess] current user:', res.profileObj.email);
                     })
             }
             registerUSer();

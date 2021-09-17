@@ -28,6 +28,13 @@ const Login = () => {
                 });
         }
         getdefaultAvatar();
+        const getQuestions = async () => {
+            const questionChallenge = await fetch('../challenges');
+            const myQuestions = await questionChallenge.json();
+            // console.log(myQuestions);
+             window.localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
+        }
+        getQuestions()
     }, []);
 
     const goToSignup = () => {
@@ -50,11 +57,15 @@ const Login = () => {
             });
             const data = await response.json();
             if (data.status === '200') {
-                // console.log(data.data.id);
-                // console.log('data', data);
+
                 window.localStorage.setItem('user', JSON.stringify(data));
-                history.push(`/QChallenge/?id=${data.data.id}`);
-                window.location.reload();
+                const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
+                console.log('all questions :', allQuestions);
+                if (allQuestions !== null) {
+                    history.push(`/QChallenge/?id=${data.data.id}`);
+                    console.log('question is null');
+                }
+                // window.location.reload();
                 setIsDisable(true);
             }
             else if (data.status === '404') {

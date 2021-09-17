@@ -1,10 +1,10 @@
 import { AiFillMessage } from 'react-icons/ai'
 import './Discution-icon.css'
 
-const DiscutionIcon = () => {
+const DiscutionIcon = (props) => {
     return (
         <div className='dicution-incon-container'>
-            <AiFillMessage className='discution-icon'/>
+            <AiFillMessage className='discution-icon' onClick={props.openChatWindow}/>
         </div>
     )
 }

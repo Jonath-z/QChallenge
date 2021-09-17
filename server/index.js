@@ -10,6 +10,7 @@ const challenges = require('./routes/challenge.js');
 const theme = require('./routes/theme.js');
 const updateScore = require('./routes/updateScore.js');
 const googleLogin = require('./routes/googleLogin');
+const getAllUser = require('./routes/getAllUsers');
 const Grids = require('gridfs-stream');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -25,25 +26,21 @@ app.use('/challenges', challenges);
 app.use('/theme', theme);
 app.use('/update', updateScore);
 app.use('/login-With-Google', googleLogin);
+app.use('/all-users', getAllUser);
 
-io.on('connection', (socket) => {
+io.on('connect', (socket) => {
     console.log(socket.id);
-    // socket.on('question', (data) => {
-    //     if (data.theme === 'Contry and Capital') {
-    //         mongodb.collection(`${data.theme}`).find({ country: `${data.question}` }).toArray((err, response) => {
-    //             err && console.log(err);
-    //             console.log(response,data.theme);
-    //             socket.emit('response', data);
-    //         })
-    //     }
-    //     else {
-    //         mongodb.collection(`${data.theme}`).find({ question: `${data.question}` }).toArray((err, data) => {
-    //             err && console.log(err);
-    //             console.log(data);
-    //             socket.emit('response', data);
-    //         });
-    //     }  
-    // });
+    socket.on('user-socket-id', ({ userID, socketID }) => {
+        console.log(userID, socketID);
+        mongodb.collection('users').updateOne(
+            { id: `${userID}` },
+            {
+                $set: {
+                    "socketID": socketID
+                }
+            }
+        )
+    });
 });
 
 server.listen(5050, () => { console.log('server is running') });
