@@ -9,8 +9,9 @@ const signup = require('./routes/signup.js');
 const challenges = require('./routes/challenge.js');
 const theme = require('./routes/theme.js');
 const updateScore = require('./routes/updateScore.js');
-const googleLogin = require('./routes/googleLogin');
-const getAllUser = require('./routes/getAllUsers');
+const googleLogin = require('./routes/googleLogin.js');
+const getAllUser = require('./routes/getAllUsers.js');
+const getAllMessages = require('./routes/getAllMessages.js')
 const Grids = require('gridfs-stream');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -27,6 +28,7 @@ app.use('/theme', theme);
 app.use('/update', updateScore);
 app.use('/login-With-Google', googleLogin);
 app.use('/all-users', getAllUser);
+app.use('/all-messages', getAllMessages);
 
 io.on('connect', (socket) => {
     console.log(socket.id);
@@ -40,6 +42,25 @@ io.on('connect', (socket) => {
                 }
             }
         )
+    });
+    socket.on('send-message', ({ message, senderID, receiverID }) => {
+        const Newmessage = `${message}`;
+        const sender = `${senderID}`;
+        const receiver = `${receiverID.current}`;
+        console.log('my message',message,'from',senderID,'to',receiverID.current)
+        mongodb.collection('messages').insertOne({
+            message: message,
+            sender: senderID,
+            receiver: receiverID.current
+        });
+        mongodb.collection('users').find({ id: `${receiverID.current}` }).toArray((err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(data);
+                socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver }));
+            }
+        });
     });
 });
 
