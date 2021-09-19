@@ -6,7 +6,23 @@
         bottom: 45px;
         background: rgb(99, 147, 224);
         z-index: 3;
+        /* overflow: scroll; */
 }
+.message-container{
+    position: absolute;
+    width: 100%;
+    bottom: 50px;
+    top:90px;
+    overflow: scroll;
+    display:flex;
+    flex-direction: column;
+}
+.income-message,.outcome-message{
+    width: fit-content;
+    padding: 5px 5px 5px 5px ;
+    border-radius: 5px;
+}
+
 .receiver-details{
 display:grid;
 grid-template-columns:2fr 1fr;

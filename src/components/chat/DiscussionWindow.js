@@ -2,24 +2,20 @@ import { FiMenu } from "react-icons/fi"
 import { IoMdSend } from 'react-icons/io';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import TextareaAutosize from "react-textarea-autosize";
-import Messages from "./Messages";
-import { useState } from "react";
+import { useRef,useState } from "react"
 
 import './DiscussionWindow.css';
-import { set } from "mongoose";
-const userID = window.location.search.replace('?id=', '');
+import CryptoJS from "crypto-js";
+
+const localSearch = window.location.search;
+const userID = localSearch.replace('?id=', '');
+
+const getCryptedMessages = localStorage.getItem('messages');
+const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8));
 
 const DiscussionWindow = (props) => {
-    const [message, setMessage] = useState('');
-    // const [outcomeMessage, setOutcomeMessage] = useState();
-    
-    const getMessage = (e) => {
-        setMessage(e.target.value);
-        return outcomeMessage(message);
-    }
-    const outcomeMessage = (message) => {
-        return <p className='outcome-message'>{ message}</p>
-    }
+    const allMessages = useRef(decryptMessage);
+
     return (
         <div className='discussion-window'>
             <div className='receiver-details'>
@@ -31,17 +27,32 @@ const DiscussionWindow = (props) => {
                 < FiMenu className='receiver-details-icon' />
             </div>
             <div className='message-container'>
-                <Messages
-                    incomeMessage={props.incomeMessage}
-                    outcomeMessage={outcomeMessage}
-                />
+
+                {
+                    allMessages.current.map((message) => {
+                        if (message.sender === userID) {
+                            return <p className="outcome-message" style={{
+                                float: 'right',
+                                background: 'red'
+                            }}>{message.message}</p>
+                        }
+                        else {
+                            return <p className='income-message' style={{
+                                float: 'left',
+                                background: 'green'
+                            }}>{message.message}</p>
+                        }
+                    })
+                }
+                {props.outMessage}
+
             </div>
             <div className='input-container'>
                 <div>
-                    <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage,getMessage}/>
+                    <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage}/>
                 </div>
                 
-                    <IoMdSend className='input-container-send-incon' onClick={props.sendMessage,sendMessage} />
+                    <IoMdSend className='input-container-send-incon' onClick={props.sendMessage} />
                 
             </div>
         </div>
