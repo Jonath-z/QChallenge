@@ -2,6 +2,7 @@ import Signup from "./SignUp";
 import './Login.css';
 import { useState,useEffect} from "react";
 import { useHistory } from "react-router-dom";
+import CryptoJS from 'crypto-js';
 import storage from "../modules/firbaseConfig";
 import { FaSpinner } from 'react-icons/fa';
 import LoginWithGoogle from "./LoginWithGoole";
@@ -32,9 +33,16 @@ const Login = () => {
             const questionChallenge = await fetch('../challenges');
             const myQuestions = await questionChallenge.json();
             // console.log(myQuestions);
-             window.localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
+            window.localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
         }
         getQuestions()
+        const getMessages = async () => {
+            const allMessages = await fetch('../all-messages');
+            const formatedMessages = await allMessages.json();
+            const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages), 'QChallenge001');
+            localStorage.setItem('messages', encryptMessages);
+        }
+        getMessages();
     }, []);
 
     const goToSignup = () => {
@@ -61,10 +69,10 @@ const Login = () => {
                 window.localStorage.setItem('user', JSON.stringify(data));
                 const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
                 console.log('all questions :', allQuestions);
-                if (allQuestions !== null) {
+                // if (allQuestions !== null) {
                     history.push(`/QChallenge/?id=${data.data.id}`);
                     console.log('question is null');
-                }
+                // }
                 // window.location.reload();
                 setIsDisable(true);
             }
