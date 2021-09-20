@@ -2,19 +2,16 @@ import { FiMenu } from "react-icons/fi"
 import { IoMdSend } from 'react-icons/io';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import TextareaAutosize from "react-textarea-autosize";
-import { useRef,useState } from "react"
+import { useRef, useState, useEffect } from "react";
 
 import './DiscussionWindow.css';
 import CryptoJS from "crypto-js";
 
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
-
 const getCryptedMessages = localStorage.getItem('messages');
-const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8));
 
 const DiscussionWindow = (props) => {
-    const allMessages = useRef(decryptMessage);
 
     return (
         <div className='discussion-window'>
@@ -29,7 +26,7 @@ const DiscussionWindow = (props) => {
             <div className='message-container'>
 
                 {
-                    allMessages.current.map((message) => {
+                props.allMessages.map((message) => {
                         if (message.sender === userID) {
                             return <p className="outcome-message" style={{
                                 float: 'right',
@@ -44,14 +41,11 @@ const DiscussionWindow = (props) => {
                         }
                     })
                 }
-                {props.outMessage}
 
             </div>
             <div className='input-container'>
-                <div>
-                    <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage}/>
-                </div>
                 
+                    <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage}/>
                     <IoMdSend className='input-container-send-incon' onClick={props.sendMessage} />
                 
             </div>
