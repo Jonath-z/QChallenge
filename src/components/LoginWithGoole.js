@@ -1,12 +1,16 @@
 import { GoogleLogin } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
+import { FaSpinner } from 'react-icons/fa';
+import { useState } from 'react';
 
 
 const clientID = '688414082981-656lplq2khvpkpucff94dv5080u79h9f.apps.googleusercontent.com'
-const clientSecret = 'QFVMBStjdCTy8DmpzdALow7D';
+// const clientSecret = 'QFVMBStjdCTy8DmpzdALow7D';
+const allQuestions = JSON.parse(localStorage.getItem('userQuestions')); 
 
 const LoginWithGoogle = () => {
     let history = useHistory();
+    const [waitForLogin, setWaitForLogin] = useState(true);
     const onSuccess = (res) => {
         if (res !== null) {
             const registerUSer = async () => {
@@ -40,11 +44,13 @@ const LoginWithGoogle = () => {
                     .then(res => { return res.json() })
                     .then(data => {
                         window.localStorage.setItem('user', JSON.stringify(data));
-                        const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
                         console.log('all questions :', allQuestions);
                         if (allQuestions !== null) {
                             history.push(`/QChallenge/?id=${data.data.id}`);
                             console.log('question is null');
+                            setWaitForLogin(true);
+                        } else {
+                            setWaitForLogin(false)
                         }
                         // console.log('[Login sucess] current user:', res.profileObj.email);
                     })
@@ -59,15 +65,15 @@ const LoginWithGoogle = () => {
 
     return (
         <div style={{ textAlign: 'center', marginTop: '-20px'}}>
-            <GoogleLogin
+            {waitForLogin ?<GoogleLogin
                 clientId={clientID}
                 buttonText='Login with Google'
                 onSuccess={onSuccess}
                 onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}
-                style={{ marginTop: '0px',borderRadius:'10px'}}
+                style={{ marginTop: '0px', borderRadius: '10px' }}
                 isSignedIn={true}
-            />
+            />:<p><FaSpinner className='spaniner' /></p>}
         </div>
     )
 }

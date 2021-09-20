@@ -93,3 +93,14 @@ button{
     padding-top: 8px;
     background: rgba(255, 0, 0, 0.424);
 }
+.spaniner{
+    animation: spine infinite 1s linear;
+}
+@keyframes spine {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}

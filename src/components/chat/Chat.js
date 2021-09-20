@@ -21,15 +21,6 @@ const Chat = (props) => {
         }
         getUsers();
     }, []);
-    // useEffect(() => {
-    //     const getMessages = async () => {
-    //         const allMessages = await fetch('../all-messages');
-    //         const formatedMessages = await allMessages.json();
-    //         const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages),'QChallenge001');
-    //         localStorage.setItem('messages', encryptMessages);
-    //     }
-    //     getMessages();
-    // },[])
     
     return (
         <>
@@ -41,7 +32,7 @@ const Chat = (props) => {
                         return (
                             <div key={user.id}>
                                 <div className='chat-user-div'>
-                                    <p><img src={user.avatar} className='userAvatar' alt='image' /></p>
+                                    <p><img src={user.avatar} className='userAvatar' alt='profile' /></p>
                                     <div className='pseudo-Container' onClick={props.openChat}>
                                         <p className="pseudo">{user.pseudo}</p>
                                     </div>

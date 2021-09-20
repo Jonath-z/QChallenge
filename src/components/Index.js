@@ -11,7 +11,9 @@ import CryptoJS from "crypto-js";
 const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
-const getCryptedMessages = localStorage.getItem('messages');                                                                
+const getCryptedMessages = localStorage.getItem('messages');
+const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+const formatedInitalsMessages = JSON.parse(initialGetMessages);
 
 const Index = () => {
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
@@ -22,7 +24,7 @@ const Index = () => {
     const receiverID = useRef();
     const reciverPseudo = useRef();
     const receiverAvatar = useRef();
-    const [allMessages, setAllMessages] = useState();
+    const [allMessages, setAllMessages] = useState(formatedInitalsMessages);
 
     useEffect(() => {
         socket.on('connect', () => {
@@ -33,6 +35,9 @@ const Index = () => {
             userData.data.socketID = socketID;
             localStorage.setItem('user', JSON.stringify(userData));
         });
+    }, []);
+
+    useEffect(() => {
         socket.on('receive-message', ({ message, senderID, receiver }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
             const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArrayOfMessage, 'QChallenge001').toString(CryptoJS.enc.Utf8));
@@ -43,17 +48,15 @@ const Index = () => {
                 receiver: receiver
             })
             
-           const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
+            const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
             localStorage.setItem('messages', encryptedMessages);
-            const newDecription = localStorage.getItem('messages'); 
+            const newDecription = localStorage.getItem('messages');
             setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-            console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+            console.log('from local storage',JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+            console.log('decrypt message',decryptMessage);
+
         });
     }, []);
-    useEffect(() => {
-        const decyptedMessage = JSON.parse(CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8));
-        setAllMessages(decyptedMessage);
-    },[])
 
     const openChatWindow = ()=>{
         setOpendiscution(true);
@@ -66,7 +69,8 @@ const Index = () => {
         setCloseDiscussionWindow(false);
     }
 
-    const sendMessage = () => {
+    const sendMessage = (e) => {
+        e.preventDefault();
         const senderID = userID;
         const receiver = receiverID.current;
         console.log(senderID, receiver);
@@ -85,7 +89,7 @@ const Index = () => {
         localStorage.setItem('messages', encryptedMessages);
         const newDecription = localStorage.getItem('messages'); 
         setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-        // console.log(decryptMessage);
+        console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
     }
 
     return (
@@ -100,10 +104,11 @@ const Index = () => {
                 openChat={(e) => {
                     // console.log(e.target.innerText);
                     reciverPseudo.current = e.target.innerText;
-                    const receiver = allUsers.current.find(data => data.pseudo === e.target.innerText);
-                    // console.log(receiver);
+                    const receiver = JSON.parse(localStorage.getItem('allUsers')).find(data => data.pseudo === reciverPseudo.current);
+                    console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
                     receiverID.current = receiver.id;
                     receiverAvatar.current = receiver.avatar;
+                    console.log('allMessage', allMessages);
                     setCloseDiscussionWindow(true);
                 }}
             />}
@@ -114,6 +119,7 @@ const Index = () => {
                 getMessage={(e) => {
                     const messageForSending = e.target.value;
                     setMessage(messageForSending);
+                    console.log('allMessage', allMessages);
                 }}
                 sendMessage={sendMessage}
                 allMessages={allMessages}
