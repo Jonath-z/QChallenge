@@ -1,7 +1,7 @@
 import { useState,useEffect,useRef } from 'react';
 import './Chat.css';
 import { FaArrowCircleLeft } from 'react-icons/fa';
-import CryptoJS from 'crypto-js';
+// import CryptoJS from 'crypto-js';
 
 
 const currentUser = window.location.search
@@ -21,36 +21,38 @@ const Chat = (props) => {
         }
         getUsers();
     }, []);
-    useEffect(() => {
-        const getMessages = async () => {
-            const allMessages = await fetch('../all-messages');
-            const formatedMessages = await allMessages.json();
-            const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages),'QChallenge001');
-            localStorage.setItem('messages', encryptMessages);
-        }
-        getMessages();
-    },[])
+    // useEffect(() => {
+    //     const getMessages = async () => {
+    //         const allMessages = await fetch('../all-messages');
+    //         const formatedMessages = await allMessages.json();
+    //         const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages),'QChallenge001');
+    //         localStorage.setItem('messages', encryptMessages);
+    //     }
+    //     getMessages();
+    // },[])
     
     return (
-        <div className='chat-div-container'>
+        <>
+            <div className='chat-div-container'>
                 <FaArrowCircleLeft className='arrowRight' onClick={props.closeChatWindow} />
 
-            {
-               users !== null && users.map((user) => {
-                 return (
-                       <div key={user.id}>
-                           <div className='chat-user-div'>
-                               <p><img src={user.avatar} className='userAvatar' alt='image' /></p>
-                               <div className='pseudo-Container' onClick={props.openChat}>
-                                   <p className="pseudo">{user.pseudo}</p>
-                               </div>
-                           </div>
-                       </div>
-                   )
+                {
+                    users !== null && users.map((user) => {
+                        return (
+                            <div key={user.id}>
+                                <div className='chat-user-div'>
+                                    <p><img src={user.avatar} className='userAvatar' alt='image' /></p>
+                                    <div className='pseudo-Container' onClick={props.openChat}>
+                                        <p className="pseudo">{user.pseudo}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )
                        
-                })
-            }
-        </div >
+                    })
+                }
+            </div >
+        </>
     );
 }
 
