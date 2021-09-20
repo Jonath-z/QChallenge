@@ -71,6 +71,7 @@ useEffect(() => {
     // console.log(questionIndex.current);
     // progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
 }, []);
+    
 // *********************************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************/
     useEffect(() => {
         setShowStart(true);
