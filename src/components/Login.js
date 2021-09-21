@@ -7,6 +7,21 @@ import storage from "../modules/firbaseConfig";
 import { FaSpinner } from 'react-icons/fa';
 import LoginWithGoogle from "./LoginWithGoole";
 
+const getMessages = async () => {
+    const allMessages = await fetch('../all-messages');
+    const formatedMessages = await allMessages.json();
+    const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages), 'QChallenge001');
+    localStorage.setItem('messages', encryptMessages);
+}
+getMessages();
+
+const getQuestions = async () => {
+    const questionChallenge = await fetch('../challenges');
+    const myQuestions = await questionChallenge.json();
+    // console.log(myQuestions);
+    window.localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
+}
+getQuestions()
 
 const Login = () => {
     let history = useHistory();
@@ -30,20 +45,6 @@ const Login = () => {
                 });
         }
         getdefaultAvatar();
-        const getQuestions = async () => {
-            const questionChallenge = await fetch('../challenges');
-            const myQuestions = await questionChallenge.json();
-            // console.log(myQuestions);
-            window.localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
-        }
-        getQuestions()
-        const getMessages = async () => {
-            const allMessages = await fetch('../all-messages');
-            const formatedMessages = await allMessages.json();
-            const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages), 'QChallenge001');
-            localStorage.setItem('messages', encryptMessages);
-        }
-        getMessages();
     }, []);
 
     const goToSignup = () => {

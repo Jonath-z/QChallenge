@@ -1,11 +1,17 @@
-.dicution-incon-container{
+/* .dicution-incon-container{
     right: 0;
     position: absolute;
     bottom: 50px;
     margin-right: 100px;
-}
+    background: rgb(3,4,56);
+} */
 .discution-icon{
+    right: 0;
+    position: absolute;
+    bottom: 50px;
+    margin-right: 100px;
     font-size: 70px;
     color: rgb(3,4,56);
     cursor: pointer;
+    /* box-shadow: 1px 1px 20px 10px  rgb(3,4,56); */
 }

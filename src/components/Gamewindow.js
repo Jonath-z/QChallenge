@@ -4,7 +4,7 @@ import './Gamewindow.css';
 const Gamewindow = (props) => {
     return (
         <div>
-            <h4>{props.challengeTheme}</h4>
+            <h4 className='challenge-title'>{props.challengeTheme}</h4>
             <div >
                 {/* <div className='chronoContainer'>
                     <p>{props.chrono}S</p>

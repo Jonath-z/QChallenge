@@ -3,9 +3,9 @@ import './Discution-icon.css'
 
 const DiscutionIcon = (props) => {
     return (
-        <div className='dicution-incon-container'>
+        // <div className='dicution-incon-container'>
             <AiFillMessage className='discution-icon' onClick={props.openChatWindow}/>
-        </div>
+        // </div>
     )
 }
 

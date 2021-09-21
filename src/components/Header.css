@@ -2,12 +2,15 @@
     font-family: sans-serif;
 }
 .headerContainer{
-    margin-top: -20px;
+    /* margin-top: -20px; */
     background-color:  hsl(200, 20%, 70%);
-    /* background: chartreuse; */
+    border-radius: 10px;
+    /* background: rgb(3, 4, 56); */
+    margin: 0px 20px 0px 20px ;
 }
-li{
-    text-decoration: none;
+
+ li{
+ text-decoration: none;
     list-style: none;
     text-align: center;
     padding-top: 20px;

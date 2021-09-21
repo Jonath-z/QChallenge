@@ -1,42 +1,84 @@
+@import url('https://fonts.googleapis.com/css');
+
 .discussion-window{
         position: absolute;
         right: 70px;
         width: 20%;
-        top: 157px;
+        top: 250px;
         bottom: 45px;
-        background: rgb(99, 147, 224);
+        /* background:white; */
         z-index: 3;
-        /* overflow: scroll; */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
 }
 .message-container{
     position: absolute;
     width: 100%;
     bottom: 50px;
     top:90px;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
     display:flex;
     flex-direction: column;
+    padding-top:20px;
 }
 .income-message,.outcome-message{
     width: fit-content;
     padding: 5px 5px 5px 5px ;
-    border-radius: 5px;
+    border-radius: 10px;
+    margin-top: -10px;
+    max-width: 70%;
+    font-size: 14px;
+    overflow-wrap: break-word;
+    font-family: 'Roboto',
+}
+.income-message{
+    margin-left:10px;
 }
 .outcome-message{
   margin-left: auto;
   /* order: 1; */
+  margin-right: 10px;
+  background: rgb(3,4,56) !important;
+  color: white;
 }
+
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255);
+    width: 5px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(3, 4, 56, 0.561);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(3,4,56);
+  }
+
 
 .receiver-details{
 display:grid;
 grid-template-columns:2fr 1fr;
 width: 100%;
+background: rgb(3,4,56);
+color: white;
+padding-bottom: 10px;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
 }
 .faArrow-left{
     margin-left: 10px;
     font-size: 25px;
-    margin-top: 20px;
-
+    margin-top: 10px;
+    cursor: pointer;
 }
 .receiver-details-profile-avatar{
     width: 50px;
@@ -55,6 +97,32 @@ width: 100%;
     top:20px;
     font-size: 30px;
 }
+.backgroung-color-menu{
+    display:none ;
+    background: rgb(3,4,56);
+    color: white;
+    z-index: 4;
+    margin-top: 50px;
+    position: absolute;
+    right: 0px;
+    padding-right: 40px;
+    box-shadow: 0px 0px 10px 0px rgb(3,4,56);
+    margin-top: -10px;
+}
+
+.receiver-details-icon:hover{
+    cursor: pointer;
+}
+.drop-down-option:hover .backgroung-color-menu{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    cursor: pointer;
+}
+.color-option:hover{
+    font-size: 19px;
+    transition: 100ms;
+}
 .receiver-details-profile{
     display: flex;
     flex-direction: row;
@@ -64,7 +132,7 @@ width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
 }
 .input-container-textarea{
     width: 20em;
@@ -89,4 +157,5 @@ width: 100%;
     right: 10px;
     margin-top: 8px;
     cursor: pointer;
+    color: rgb(3,4,56);
 }

@@ -4,8 +4,10 @@
     float: right;
     background: rgb(3,4,56);
     margin-top: 20px;
+    margin-right: 13px;
     padding: 0px 10px 20px 0px;
     border-radius: 10px;
+    box-shadow: 1px 1px 5px  rgb(3,4,56); 
 }
 .save-button{
     width: 7em;
@@ -20,4 +22,5 @@
     float: right;
     background-color:  hsl(190, 47%, 86%);
     cursor: pointer;
+
 }

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from "./Header";
 import Gamespace from "./GameSpace";
 import Chat from "./chat/Chat";
 import DiscutionIcon from "./Discution";
 import './chat/DiscussionWindow.css';
+import './Notification.css';
 import DiscussionWindow from "./chat/DiscussionWindow";
 import io from "socket.io-client";
 import CryptoJS from "crypto-js";
@@ -14,7 +17,15 @@ const userID = localSearch.replace('?id=', '');
 const getCryptedMessages = localStorage.getItem('messages');
 const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
 const formatedInitalsMessages = JSON.parse(initialGetMessages);
-
+toast.configure();
+const CustomNotification = (props) => {
+    return (
+        <div>
+            <p style={{color:'black'}}>New message</p>
+            <p>{props.message}</p>
+       </div>
+    )
+}
 const Index = () => {
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
     const [openDiscution, setOpendiscution] = useState(false);
@@ -53,8 +64,8 @@ const Index = () => {
             const newDecription = localStorage.getItem('messages');
             setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
             console.log('from local storage',JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-            console.log('decrypt message',decryptMessage);
-
+            console.log('decrypt message', decryptMessage);
+            notify(message);
         });
     }, []);
 
@@ -69,6 +80,11 @@ const Index = () => {
         setCloseDiscussionWindow(false);
     }
 
+    const notify = (message) => {
+        toast(<CustomNotification message={ message}/>, {
+            autoClose:true
+        });
+    }
     const sendMessage = (e) => {
         e.preventDefault();
         const senderID = userID;

@@ -5,9 +5,11 @@
     color: white;
     padding: 20px 0px 10px 0px;
     margin-left: 13px;
+    margin-right: 13px;
     border-radius: 10px;
     /* border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px; */
+    box-shadow: 1px 1px 5px  rgb(3,4,56); 
 }
 .chechAnswerSuccess{
     font-size: 25px;
@@ -79,7 +81,8 @@ progress::-moz-progress-bar {
     border-radius: 5px;
     position: absolute;
     width: 220px;
-    /* margin-top: 8px; */
+    box-shadow: 1px 1px 10px 0px  rgb(3,4,56); 
+    margin-top: -8px;
     
 }
 .level-list-li{
@@ -91,9 +94,8 @@ progress::-moz-progress-bar {
     margin-top: 10px;
 }
 .level-list-li:hover{
-    background-color:  hsl(200, 20%, 70%);
-    color: black;
-    border-radius: 5px;
+    font-size: 18px;
+    transition:100ms;
 }
 hr{
     color: rgb(236, 218, 218);

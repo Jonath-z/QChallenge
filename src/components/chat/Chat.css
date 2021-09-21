@@ -2,15 +2,54 @@
     position: absolute;
     right: 70px;
     width: 20%;
-    top: 157px;
+    top: 250px;
     bottom: 45px;
-    background: rgb(76, 126, 190);
+    background: white;
     z-index: 3;
+    box-shadow: 1px 1px 20px grey;
+    border-top-left-radius:10px ;
+    border-top-right-radius:10px;
+    animation: open-chat 300ms ease;
 }
+@keyframes open-chat{
+    0%{
+        width: 1%;
+    }
+    25%{
+        width: 5%;
+    }
+    50%{
+        width: 10%;
+    }
+    75%{
+        width: 15%;
+    }
+    100%{
+        width: 20%;
+    }
+}
+/* @keyframes close-chat{
+    0%{
+        width: 20%;
+    }
+    25%{
+        width: 15%;
+    }
+    50%{
+        width: 10%;
+    }
+    75%{
+        width: 5%;
+    }
+    100%{
+        width: 1%;
+    } 
+} */
 .arrowRight{
     float : left;
-    margin: 20px 00px 0px 20px;
+    margin: 10px 00px 0px 20px;
     font-size: 25px;
+    cursor: pointer;
 }
 .userAvatar{
     width: 50px;
@@ -18,12 +57,22 @@
 .chat-user-div{
     display: flex;
     flex-direction: row;
-    background: royalblue;
-    margin-top: 50px;
+    background: white;
+    margin-left: 10px;
+    margin-right: 10px;
 }
+.chat-user-div-container{
+        margin-top: 50px;
+}
+.chat-user-div:hover{
+    box-shadow: 0px 0px 1px gray;
+    transition: 200ms;
+}
+
 .chat-user-div .userAvatar{
     margin-left: 20px;
 }
 .pseudo{
     margin-left: 10px;
+    cursor: pointer;
 }

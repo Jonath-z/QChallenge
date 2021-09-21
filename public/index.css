@@ -9,4 +9,7 @@ body,#root{
     right: 0;
     top: 0;
     position: absolute;
+    background-image: url('index.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
