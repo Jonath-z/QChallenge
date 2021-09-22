@@ -30,7 +30,8 @@
     max-width: 70%;
     font-size: 14px;
     overflow-wrap: break-word;
-    font-family: 'Roboto',
+    line-height: 1.6;
+    font-family: sans-serif;
 }
 .income-message{
     margin-left:10px;

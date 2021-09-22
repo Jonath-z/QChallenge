@@ -20,13 +20,34 @@
     margin-bottom: 30px;
     height: 3em;
     width: 10em;
+    cursor: pointer;
 }
 .option:hover{
     background: rgb(3, 4, 56);
     color: white;
     transition: 200ms;
 }
-
+.Options-dropList{
+   display: none;
+   background: rgb(3, 4, 56);
+   color: white; 
+   padding:20px 0px 20px 0px;
+   box-shadow: 1px 1px 10px rgb(3, 4, 56);
+   position: absolute;
+   width: 10em;
+}
+.option:hover .Options-dropList{
+    display: block;
+    z-index:6;
+}
+.duel-option{
+    text-align: left;
+    margin-left: 20px;
+}
+.duel-option:hover{
+    cursor: pointer;
+    font-size: larger;
+}
 .headerComponent{
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr 1fr;

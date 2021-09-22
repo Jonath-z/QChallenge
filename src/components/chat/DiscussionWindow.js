@@ -2,21 +2,46 @@ import { FiMenu } from "react-icons/fi"
 import { IoMdSend } from 'react-icons/io';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import TextareaAutosize from "react-textarea-autosize";
-import { useState,useRef } from "react";
-
+import { useState, useRef, useEffect } from "react";
+import ScrollableFeed from 'react-scrollable-feed'
 import './DiscussionWindow.css';
 // import CryptoJS from "crypto-js";
 
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
-// const getCryptedMessages = localStorage.getItem('messages');
+const user = JSON.parse(localStorage.getItem('user'));
 
 const DiscussionWindow = (props) => {
-    const [DiscussionBacgroungColor, setDiscussionBacgroungColor] = useState('white');
+    const [DiscussionBacgroungColor, setDiscussionBacgroungColor] = useState(() => {
+        if (user.fontColor) {
+            return user.fontColor
+        } else {
+            return 'white'
+        }
+    }
+    );
+
     const setBackgroungColor = (e) => {
         // console.log(e.target.innerHTML);
         setDiscussionBacgroungColor(e.target.innerHTML);
+        user.fontColor = `${e.target.innerHTML}`;
+        localStorage.setItem('user', JSON.stringify(user));
+        const updateFontColor = async () => {
+            await fetch('../update-font-color', {
+                method: 'POST',
+                headers: {
+                    'accept': '*/*',
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fontColor: e.target.innerHTML,
+                    userID:userID
+                })
+            });
+        }
+        updateFontColor();
     }
+
     return (
         <div className='discussion-window' style={{ background: DiscussionBacgroungColor }} >
             <div className='receiver-details'>
@@ -36,7 +61,7 @@ const DiscussionWindow = (props) => {
                     </div>
                 </p>
             </div>
-            <div className='message-container'>
+            <ScrollableFeed className='message-container' ref={props.scrollDown}>
 
                 {
                     props.allMessages.map((message) => {
@@ -55,7 +80,7 @@ const DiscussionWindow = (props) => {
                     })
                 }
 
-            </div>
+            </ScrollableFeed>
             <div className='input-container'>
                 
                 <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage} />

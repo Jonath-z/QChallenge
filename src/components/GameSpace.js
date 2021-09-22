@@ -23,7 +23,7 @@ function usePrevious(data){
     return ref.current
 }
 
-const Gamespace = () => {
+const Gamespace = (props) => {
     let questionsInCurrentTheme = useRef(null);
     const [challengeTheme, setChallengeTheme] = useState('Contry and Capital');
     const [myThemes, setMyThemes] = useState(null);
@@ -32,6 +32,7 @@ const Gamespace = () => {
     let interval = useRef();
     const questions = useRef();
     const [showStart, setShowStart] = useState(false);
+    const [showTheme, setShowTheme] = useState(true);
     const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
     const [showDropLevelList, setShowDropLevelList] = useState(true);
@@ -213,7 +214,7 @@ useEffect(() => {
     return (
         <div className='gamespaceDiv'>
             
-            <div className='ThemeContainer'>
+            { showTheme && <div className='ThemeContainer'>
                 <h3>Challenges</h3>
                 
                 {
@@ -224,7 +225,7 @@ useEffect(() => {
                     )) : <p>loading Challenges <FaSpinner className='spaniner' /></p>
                 }
 
-            </div>
+            </div>}
             <div className='gameWindowDiv'>
                 <ScoreBar
                     progress={progressBar.current}

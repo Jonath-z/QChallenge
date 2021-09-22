@@ -17,15 +17,18 @@ const userID = localSearch.replace('?id=', '');
 const getCryptedMessages = localStorage.getItem('messages');
 const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
 const formatedInitalsMessages = JSON.parse(initialGetMessages);
+
+
 toast.configure();
 const CustomNotification = (props) => {
     return (
         <div>
-            <p style={{color:'black'}}>New message</p>
+            <p style={{ color: 'black' }}>{props.sender}</p>
             <p>{props.message}</p>
        </div>
     )
 }
+
 const Index = () => {
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
     const [openDiscution, setOpendiscution] = useState(false);
@@ -49,7 +52,7 @@ const Index = () => {
     }, []);
 
     useEffect(() => {
-        socket.on('receive-message', ({ message, senderID, receiver }) => {
+        socket.on('receive-message', ({ message, senderID, receiver,senderPseudo }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
             const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArrayOfMessage, 'QChallenge001').toString(CryptoJS.enc.Utf8));
             decryptMessage.push({
@@ -65,7 +68,8 @@ const Index = () => {
             setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
             console.log('from local storage',JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
             console.log('decrypt message', decryptMessage);
-            notify(message);
+            notify(message, senderPseudo);
+            navigator.vibrate([200, 200]);
         });
     }, []);
 
@@ -80,17 +84,19 @@ const Index = () => {
         setCloseDiscussionWindow(false);
     }
 
-    const notify = (message) => {
-        toast(<CustomNotification message={ message}/>, {
-            autoClose:true
+    const notify = (message,sender) => {
+        toast(<CustomNotification message={message} sender={sender} />, {
+            autoClose: true
         });
     }
     const sendMessage = (e) => {
         e.preventDefault();
+        const textarea = document.querySelector('.input-container-textarea')
         const senderID = userID;
         const receiver = receiverID.current;
         console.log(senderID, receiver);
-        socket.emit('send-message', ({ message, senderID, receiverID }));
+        const senderPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo;
+        socket.emit('send-message', ({ message, senderID, receiverID,senderPseudo }));
         newMessage.current = message;
         const getNewArray = localStorage.getItem('messages');
         const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArray, 'QChallenge001').toString(CryptoJS.enc.Utf8));
@@ -106,6 +112,7 @@ const Index = () => {
         const newDecription = localStorage.getItem('messages'); 
         setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
         console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+        textarea.value = '';
     }
 
     return (
@@ -121,10 +128,10 @@ const Index = () => {
                     // console.log(e.target.innerText);
                     reciverPseudo.current = e.target.innerText;
                     const receiver = JSON.parse(localStorage.getItem('allUsers')).find(data => data.pseudo === reciverPseudo.current);
-                    console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
+                    // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
                     receiverID.current = receiver.id;
                     receiverAvatar.current = receiver.avatar;
-                    console.log('allMessage', allMessages);
+                    // console.log('allMessage', allMessages);
                     setCloseDiscussionWindow(true);
                 }}
             />}
@@ -135,7 +142,7 @@ const Index = () => {
                 getMessage={(e) => {
                     const messageForSending = e.target.value;
                     setMessage(messageForSending);
-                    console.log('allMessage', allMessages);
+                    // console.log('allMessage', allMessages);
                 }}
                 sendMessage={sendMessage}
                 allMessages={allMessages}

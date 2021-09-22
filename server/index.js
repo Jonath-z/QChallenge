@@ -11,7 +11,8 @@ const theme = require('./routes/theme.js');
 const updateScore = require('./routes/updateScore.js');
 const googleLogin = require('./routes/googleLogin.js');
 const getAllUser = require('./routes/getAllUsers.js');
-const getAllMessages = require('./routes/getAllMessages.js')
+const getAllMessages = require('./routes/getAllMessages.js');
+const updateFontColor = require('./routes/updateFontColor.js');
 const Grids = require('gridfs-stream');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -29,6 +30,7 @@ app.use('/update', updateScore);
 app.use('/login-With-Google', googleLogin);
 app.use('/all-users', getAllUser);
 app.use('/all-messages', getAllMessages);
+app.use('/update-font-color', updateFontColor);
 
 io.on('connect', (socket) => {
     console.log(socket.id);
@@ -43,7 +45,7 @@ io.on('connect', (socket) => {
             }
         )
     });
-    socket.on('send-message', ({ message, senderID, receiverID }) => {
+    socket.on('send-message', ({ message, senderID, receiverID,senderPseudo }) => {
         const Newmessage = `${message}`;
         const sender = `${senderID}`;
         const receiver = `${receiverID.current}`;
@@ -58,7 +60,7 @@ io.on('connect', (socket) => {
                 console.log(err);
             } else {
                 console.log(data);
-                socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver }));
+                socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver,senderPseudo }));
             }
         });
     });
