@@ -13,6 +13,7 @@ import checkAnwers from "../modules/checkAnswer";
 import gameLevel from "../modules/gameLevel";
 import userChallengeProgress from "../modules/userChallengeProgress";
 import updateUserStat from "../modules/updateUserStat";
+import DuelDetails from "./duelComponent/DuelDetails";
 
 // custome hook
 function usePrevious(data){
@@ -32,7 +33,6 @@ const Gamespace = (props) => {
     let interval = useRef();
     const questions = useRef();
     const [showStart, setShowStart] = useState(false);
-    const [showTheme, setShowTheme] = useState(true);
     const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
     const [showDropLevelList, setShowDropLevelList] = useState(true);
@@ -72,6 +72,12 @@ useEffect(() => {
     // console.log(questionIndex.current);
     // progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
 }, []);
+// *********************************** UPDATE USER GLOBAL DUEL LEVEL ***********************************//
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem('user'));
+        userData.duelLevel = level;
+        localStorage.setItem('user', JSON.stringify(userData));
+    },[])
     
 // *********************************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************/
     useEffect(() => {
@@ -214,7 +220,7 @@ useEffect(() => {
     return (
         <div className='gamespaceDiv'>
             
-            { showTheme && <div className='ThemeContainer'>
+            { !props.isGameDuel && <div className='ThemeContainer'>
                 <h3>Challenges</h3>
                 
                 {
@@ -226,7 +232,10 @@ useEffect(() => {
                 }
 
             </div>}
-            <div className='gameWindowDiv'>
+            <div className='gameWindowDiv' style={{
+                left: props.NewLeftPosition,
+                right: props.NewRightPostion
+            }}>
                 <ScoreBar
                     progress={progressBar.current}
                     score={score.current}
@@ -247,6 +256,9 @@ useEffect(() => {
                             setLevel('Hight');
                             scoreIncrement.current = 10;
                         }
+                        const userData = JSON.parse(localStorage.getItem('user'));
+                        userData.duelLevel = e.target.innerHTML;
+                        localStorage.setItem('user', JSON.stringify(userData));
                     }}
                     success={success}
                     showDropLevelList={showDropLevelList}
@@ -281,12 +293,10 @@ useEffect(() => {
                     showButton={showStart}
                     challengeTheme={challengeTheme}
                     showQuestion={showQuestion}
-                    // chrono={chrono}
                     contry={contry}
                     answerOption={questionAswersOptions.current}
                     question={otherQuestion}
                     getAnswer={getAnswer}
-                // questionFormula={questionFormula}
                 />
             </div>
         </div>

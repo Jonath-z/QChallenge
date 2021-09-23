@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import {toast}  from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import io from "socket.io-client";
+import CryptoJS from "crypto-js";
+import uuid from 'react-uuid';
 import Header from "./Header";
 import Gamespace from "./GameSpace";
 import Chat from "./chat/Chat";
@@ -8,8 +11,8 @@ import DiscutionIcon from "./Discution";
 import './chat/DiscussionWindow.css';
 import './Notification.css';
 import DiscussionWindow from "./chat/DiscussionWindow";
-import io from "socket.io-client";
-import CryptoJS from "crypto-js";
+import DuelDetails from "./duelComponent/DuelDetails";
+import ScoreBar from "./ScoreBar";
 
 const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
@@ -33,6 +36,11 @@ const Index = () => {
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
     const [openDiscution, setOpendiscution] = useState(false);
     const [message, setMessage] = useState(null);
+    const [isDuel, setIsDuel] = useState(false);
+    const [newLeftDuelPosition, setNewLeftDuelPosition] = useState('unset');
+    const [newRightDuelPostion, setNewRightDuelPosition] = useState('0');
+    const [showDuelDetails, setShowDuelDetails] = useState(true);
+    const [duelID, setDuelID] = useState('Medium');
     const newMessage= useRef(null);
     const allUsers = useRef(JSON.parse(localStorage.getItem('allUsers')));
     const receiverID = useRef();
@@ -114,11 +122,42 @@ const Index = () => {
         console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
         textarea.value = '';
     }
+    const openDuel = (e) => {
+        if (e.target.innerHTML == 'Create the duel') {
+            setIsDuel(true);
+            setNewLeftDuelPosition('100px');
+            setNewRightDuelPosition('unset');
+            const duelID = uuid();
+            setDuelID(duelID);
+        }
+        if (e.target.innerHTML == 'Join the duel') {
+            setIsDuel(true);
+            setNewLeftDuelPosition('100px');
+            setNewRightDuelPosition('unset');
+        }
+    }
+    const showDuelDetailsHandler = () => {
+        setShowDuelDetails(false);
+    }
 
     return (
         <>
-            <Header />
-            <Gamespace />
+            <Header
+                openDuel={openDuel}         
+            />
+            {isDuel && showDuelDetails && <DuelDetails
+                duelID={duelID}
+                showDuelDetails={showDuelDetailsHandler}
+                copyDuelID={() => {
+                    navigator.clipboard.writeText(duelID);
+                    toast.success('ID copied');
+                }}
+            />}
+            <Gamespace
+                isGameDuel={isDuel}
+                NewLeftPosition={newLeftDuelPosition }
+                NewRightPosition={newRightDuelPostion}
+            />
             <DiscutionIcon
                 openChatWindow={openChatWindow}
             />

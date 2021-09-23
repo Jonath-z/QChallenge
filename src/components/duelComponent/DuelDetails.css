@@ -1,0 +1,44 @@
+.DuelDetails{
+    background: rgb(3,4,56);
+    color: white;
+    position: absolute;
+    right: 20px;
+    width: 30%;
+    margin-top: -10px;
+    height: 80px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(3,4,56);
+    animation: openDuel 300ms ease;
+}
+@keyframes openDuel {
+    0%{
+        width: 0%;
+    }
+    25%{
+        width: 10%;
+    }
+    50%{
+        width: 20%;
+    }
+    75%{
+        width: 25%;
+    }
+    100%{
+        width: 30%;
+    }
+}
+.duelID,.duelLevel{
+    line-height: 5px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+.cancelIcon{
+    float: right;
+    margin: 10px 10px 0px 0px ;
+    font-size: 20px;
+    cursor: pointer;
+}
+.copyIcon{
+    margin-left: 10px;
+    cursor: pointer;
+}

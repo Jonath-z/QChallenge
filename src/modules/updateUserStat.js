@@ -5,21 +5,23 @@ const updateUserStat = async (Newscore, theme, level) => {
     const userData = JSON.parse(localStorage.getItem('user'));
     userData.data.score.find(({ theme }) => theme === theme).score = Newscore;
     userData.data.score.find(({ theme }) => theme === theme).level = level
+    userData.duelLevel = level;
     localStorage.setItem('user', JSON.stringify(userData));
     try {
         await fetch('../update', {
             method: "POST",
             headers: {
                 'accept': '*/*',
-                'content-type':'application/json'
+                'content-type': 'application/json'
             },
             body: JSON.stringify({
                 id: userID,
                 theme: theme,
                 score: Newscore,
-                level:level
+                level: level,
+                duelLevel: level
             })
-        })
+        });
     }
     catch (err) {
         console.log(err);
