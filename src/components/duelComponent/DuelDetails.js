@@ -5,15 +5,14 @@ import './DuelDetails.css';
 
 
 const DuelDetails = (props) => {
-    // const [duelLevel, setDuelLevel] = useState();
-
-    // const getduelValue = () => {
-    //     const currentUserData = JSON.parse(localStorage.getItem('user'));
-    //     const currentDuelLevel = currentUserData.duelLevel;
-    //     console.log(currentDuelLevel);
-    //     setDuelLevel(currentDuelLevel);
-    // }
-    // setInterval(getduelValue, '1');
+    // const [duelLevel, setDuelLevel] = useState('Medium');
+    // useEffect(() => {
+    //     return () => {
+    //         const level = JSON.parse(localStorage.getItem('user')).duelLevel;
+    //         setDuelLevel(level);
+    //         console.log('duel level:', level);
+    //     }
+    // },[duelLevel]);
     return (
         <div className='DuelDetails'>
             <MdCancel className='cancelIcon' onClick={props.showDuelDetails} />
@@ -21,7 +20,7 @@ const DuelDetails = (props) => {
                 className='copyIcon'
                 onClick={props.copyDuelID}
             /></p>
-            <p className='duelLevel'>Duel Level: {'Medium'}</p>
+            <p className='duelLevel'>Duel Level: {props.duelLevel}</p>
         </div>
     );
 }

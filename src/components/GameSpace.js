@@ -48,7 +48,6 @@ const Gamespace = (props) => {
     let progressBar = useRef(0);
     const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
-
 // *************************** FETCH INITAL DATA (THEME AND QUESTIONS) ****************************************/  
 useEffect(() => {
     async function data() {
@@ -259,6 +258,9 @@ useEffect(() => {
                         const userData = JSON.parse(localStorage.getItem('user'));
                         userData.duelLevel = e.target.innerHTML;
                         localStorage.setItem('user', JSON.stringify(userData));
+                        // const duelLev = JSON.parse(localStorage.getItem('user')).duelLevel;
+                        // console.log('duel Level', duelLev);
+
                     }}
                     success={success}
                     showDropLevelList={showDropLevelList}
@@ -299,6 +301,9 @@ useEffect(() => {
                     getAnswer={getAnswer}
                 />
             </div>
+            {
+                props.setDuelLevel(level)
+            }
         </div>
     );
 }

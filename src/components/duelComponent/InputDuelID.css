@@ -1,0 +1,49 @@
+.inputDuelID-container{
+    background: rgb(3,4,56);
+    color: white;
+    position: absolute;
+    right: 20px;
+    width: 30%;
+    margin-top: -10px;
+    height: 80px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(3,4,56);
+    animation: openDuelInputID 300ms ease;
+}
+@keyframes openDuelInputID {
+    0%{
+        width: 0%;
+    }
+    25%{
+        width: 10%;
+    }
+    50%{
+        width: 20%;
+    }
+    75%{
+        width: 25%;
+    }
+    100%{
+        width: 30%;
+    }
+}
+.inputDuelID-label{
+    margin-left: 10px;
+}
+.inputDuelID{
+    color: white;
+    margin-left: 10px;
+    border-radius: 2px;
+    border-color: gray;
+    box-shadow: 1px 1px -10px rgb(3,4,56);
+    width: 300px;
+}
+.sendInputDuelID{
+    border-radius: 2px;
+    margin-left: 10px;
+    padding: 0px 10px 0px 10px;
+    height: 2em;
+    cursor: pointer;
+    background: green;
+    color: white;
+}

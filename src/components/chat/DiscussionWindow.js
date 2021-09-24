@@ -64,15 +64,15 @@ const DiscussionWindow = (props) => {
             <ScrollableFeed className='message-container' ref={props.scrollDown}>
 
                 {
-                    props.allMessages.map((message) => {
+                    props.allMessages.map((message,i) => {
                         if (message.sender === userID) {
-                            return <p className="outcome-message" style={{
+                            return <p className="outcome-message" key={i} style={{
                                 float: 'background: rgb(3,4,56) ',
                                 background: 'red'
                             }}>{message.message}</p>
                         }
                         else {
-                            return <p className='income-message' style={{
+                            return <p className='income-message'key={i} style={{
                                 float: 'left',
                                 background: 'green'
                             }}>{message.message}</p>

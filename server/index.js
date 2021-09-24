@@ -64,6 +64,10 @@ io.on('connect', (socket) => {
             }
         });
     });
+    socket.on('join-duel', ({getDuelID,senderID}) => {
+        console.log(getDuelID);
+        socket.emit('request-join-duel', (joinDuelID));
+    });
 });
 
 server.listen(5050, () => { console.log('server is running') });

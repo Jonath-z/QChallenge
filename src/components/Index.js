@@ -12,7 +12,7 @@ import './chat/DiscussionWindow.css';
 import './Notification.css';
 import DiscussionWindow from "./chat/DiscussionWindow";
 import DuelDetails from "./duelComponent/DuelDetails";
-import ScoreBar from "./ScoreBar";
+import InputDuelID from "./duelComponent/InputDuelID";
 
 const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
@@ -39,14 +39,17 @@ const Index = () => {
     const [isDuel, setIsDuel] = useState(false);
     const [newLeftDuelPosition, setNewLeftDuelPosition] = useState('unset');
     const [newRightDuelPostion, setNewRightDuelPosition] = useState('0');
-    const [showDuelDetails, setShowDuelDetails] = useState(true);
-    const [duelID, setDuelID] = useState('Medium');
     const newMessage= useRef(null);
     const allUsers = useRef(JSON.parse(localStorage.getItem('allUsers')));
     const receiverID = useRef();
     const reciverPseudo = useRef();
     const receiverAvatar = useRef();
     const [allMessages, setAllMessages] = useState(formatedInitalsMessages);
+    const [showDuelDetails, setShowDuelDetails] = useState(true);
+    const [duelID, setDuelID] = useState();
+    const [duelLevel, setDuelLevel] = useState('Medium');
+    const [showDuelInputID, setShowDuelInputID] = useState(true);
+    const [getDuelID, setGetDuelID] = useState();
 
     useEffect(() => {
         socket.on('connect', () => {
@@ -56,6 +59,19 @@ const Index = () => {
              const userData = JSON.parse(localStorage.getItem('user'));
             userData.data.socketID = socketID;
             localStorage.setItem('user', JSON.stringify(userData));
+        });
+        socket.on('request-join-duel', (joinDuelID) => {
+
+            if (joinDuelID === localStorage.getItem('duelID')) {
+                console.log(joinDuelID, 'and', localStorage.getItem('duelID'));
+                setShowDuelInputID(false);
+            }
+            else {
+                console.log(joinDuelID, 'and', duelID);
+                toast.error('Duel ID not found', {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            }
         });
     }, []);
 
@@ -125,13 +141,16 @@ const Index = () => {
     const openDuel = (e) => {
         if (e.target.innerHTML == 'Create the duel') {
             setIsDuel(true);
+            setShowDuelInputID(false);
             setNewLeftDuelPosition('100px');
             setNewRightDuelPosition('unset');
-            const duelID = uuid();
-            setDuelID(duelID);
+            const uniqueDuelID = uuid();
+            setDuelID(uniqueDuelID);
+            localStorage.setItem('duelID', uniqueDuelID);
         }
         if (e.target.innerHTML == 'Join the duel') {
             setIsDuel(true);
+            setShowDuelDetails(false);
             setNewLeftDuelPosition('100px');
             setNewRightDuelPosition('unset');
         }
@@ -140,23 +159,41 @@ const Index = () => {
         setShowDuelDetails(false);
     }
 
+    const joinTheDuel = (e) => {
+        e.preventDefault();
+        socket.emit('join-duel', ({ getDuelID,userID}));
+        console.log(getDuelID);
+    }
     return (
         <>
             <Header
-                openDuel={openDuel}         
+                openDuel={openDuel}
             />
             {isDuel && showDuelDetails && <DuelDetails
                 duelID={duelID}
+                duelLevel={duelLevel}
                 showDuelDetails={showDuelDetailsHandler}
                 copyDuelID={() => {
                     navigator.clipboard.writeText(duelID);
                     toast.success('ID copied');
                 }}
             />}
+            {
+                isDuel && showDuelInputID && <InputDuelID
+                    getDuelIDFromJoiner={(e) => {
+                        setGetDuelID(e.target.value);
+                    }}
+                    joinTheDuel={joinTheDuel}
+                    showDuelInputID={() => {
+                        setShowDuelInputID(false);
+                    }}
+                />
+            }
             <Gamespace
                 isGameDuel={isDuel}
-                NewLeftPosition={newLeftDuelPosition }
+                NewLeftPosition={newLeftDuelPosition}
                 NewRightPosition={newRightDuelPostion}
+                setDuelLevel={setDuelLevel}
             />
             <DiscutionIcon
                 openChatWindow={openChatWindow}
@@ -164,13 +201,11 @@ const Index = () => {
             {openDiscution && <Chat
                 closeChatWindow={closeChatWindow}
                 openChat={(e) => {
-                    // console.log(e.target.innerText);
                     reciverPseudo.current = e.target.innerText;
                     const receiver = JSON.parse(localStorage.getItem('allUsers')).find(data => data.pseudo === reciverPseudo.current);
                     // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
                     receiverID.current = receiver.id;
                     receiverAvatar.current = receiver.avatar;
-                    // console.log('allMessage', allMessages);
                     setCloseDiscussionWindow(true);
                 }}
             />}
