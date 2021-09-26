@@ -1,0 +1,21 @@
+.duelPanel{
+    background: rgb(3,4,56);
+    color:white;
+    width: 8em;
+    position: absolute;
+    right: 26%;
+    top: 280px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(3,4,56);
+    text-align: center;
+    /* max-width: ; */
+}
+.duelPannel-button-controler{
+    display: flex;
+    flex-direction: column;
+}
+.stop-duel,.show-duel-details{
+    padding-left: 5px;
+    padding-right: 5px;
+}
