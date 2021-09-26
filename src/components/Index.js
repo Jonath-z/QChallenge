@@ -13,6 +13,7 @@ import './Notification.css';
 import DiscussionWindow from "./chat/DiscussionWindow";
 import DuelDetails from "./duelComponent/DuelDetails";
 import InputDuelID from "./duelComponent/InputDuelID";
+import DuelPanel from "./duelComponent/DuelPanel";
 
 const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
@@ -50,6 +51,8 @@ const Index = () => {
     const [duelLevel, setDuelLevel] = useState('Medium');
     const [showDuelInputID, setShowDuelInputID] = useState(true);
     const [getDuelID, setGetDuelID] = useState();
+    const [duelCreator, setDuelCreator] = useState();
+    const [duelJoiner, setDuelJoiner] = useState();
 
     useEffect(() => {
         socket.on('connect', () => {
@@ -59,19 +62,6 @@ const Index = () => {
              const userData = JSON.parse(localStorage.getItem('user'));
             userData.data.socketID = socketID;
             localStorage.setItem('user', JSON.stringify(userData));
-        });
-        socket.on('request-join-duel', (joinDuelID) => {
-
-            if (joinDuelID === localStorage.getItem('duelID')) {
-                console.log(joinDuelID, 'and', localStorage.getItem('duelID'));
-                setShowDuelInputID(false);
-            }
-            else {
-                console.log(joinDuelID, 'and', duelID);
-                toast.error('Duel ID not found', {
-                    position: toast.POSITION.TOP_CENTER
-                });
-            }
         });
     }, []);
 
@@ -94,6 +84,44 @@ const Index = () => {
             console.log('decrypt message', decryptMessage);
             notify(message, senderPseudo);
             navigator.vibrate([200, 200]);
+        });
+        socket.on('request-join-duel', ({ joinDuelID, senderID, senderPseudo }) => {
+            console.log(joinDuelID, senderID, senderPseudo);
+            const duelCreator = userID;
+            if (joinDuelID === localStorage.getItem('duelID')) {
+                console.log(joinDuelID, 'and', localStorage.getItem('duelID'));
+                socket.emit('true-duelID', ({ duelLevel, duelCreator, senderID }));
+            }
+            else {
+                console.log(joinDuelID, 'and', duelID);
+                socket.emit('false-duelID', (senderID));
+            }          
+        });
+        socket.on('joined-duel', ({ duelLevel, senderID, duelCreator }) => {
+            console.log('level:', duelLevel, 'joiner:', senderID, 'duel creator', duelCreator);
+            setShowDuelInputID(false);
+            setDuelLevel(duelLevel);
+            const creatorPseudo = JSON.parse(localStorage.getItem('allUsers')).find(({ id }) => id == duelCreator).pseudo;
+            setDuelCreator(creatorPseudo);
+            setDuelJoiner(JSON.parse(localStorage.getItem('user')).data.pseudo);
+            toast.success( 'You join the duel', {
+                position: toast.POSITION.TOP_CENTER
+            });
+            const joinerPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo
+            socket.emit('joiner', ({joinerPseudo , duelCreator }));
+        });
+        socket.on('join-duel-fail', (errorNotification) => {
+            toast.error(`Duel ID not found,${errorNotification}`, {
+                position: toast.POSITION.TOP_CENTER
+            });
+        });
+        socket.on('duel-joiner', (joinerPseudo) => {
+            setDuelJoiner(joinerPseudo);
+            setShowDuelDetails(false);
+            console.log('my joiner', joinerPseudo);
+            toast.success( `${joinerPseudo} joined your duel`, {
+                position: toast.POSITION.TOP_CENTER
+            });
         });
     }, []);
 
@@ -147,6 +175,7 @@ const Index = () => {
             const uniqueDuelID = uuid();
             setDuelID(uniqueDuelID);
             localStorage.setItem('duelID', uniqueDuelID);
+            setDuelCreator( JSON.parse(localStorage.getItem('user')).data.pseudo);
         }
         if (e.target.innerHTML == 'Join the duel') {
             setIsDuel(true);
@@ -161,8 +190,12 @@ const Index = () => {
 
     const joinTheDuel = (e) => {
         e.preventDefault();
-        socket.emit('join-duel', ({ getDuelID,userID}));
-        console.log(getDuelID);
+        const senderID = userID;
+        const receiver = receiverID.current;
+        console.log(senderID, receiver);
+        const senderPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo;
+        socket.emit('join-duel', ({ getDuelID, senderID, receiver, senderPseudo }));
+        // console.log(getDuelID);
     }
     return (
         <>
@@ -178,6 +211,15 @@ const Index = () => {
                     toast.success('ID copied');
                 }}
             />}
+            {
+                isDuel && <DuelPanel
+                duelLevel={duelLevel}
+                    duelCreatorPseudo={duelCreator}
+                    duelJoinerPseudo={duelJoiner}
+                    duelCreatorScore={0}
+                    duelJoinerScore={0}
+                />
+            }
             {
                 isDuel && showDuelInputID && <InputDuelID
                     getDuelIDFromJoiner={(e) => {

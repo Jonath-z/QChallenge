@@ -45,11 +45,11 @@ io.on('connect', (socket) => {
             }
         )
     });
-    socket.on('send-message', ({ message, senderID, receiverID,senderPseudo }) => {
+    socket.on('send-message', ({ message, senderID, receiverID, senderPseudo }) => {
         const Newmessage = `${message}`;
         const sender = `${senderID}`;
         const receiver = `${receiverID.current}`;
-        console.log('my message',message,'from',senderID,'to',receiverID.current)
+        console.log('my message', message, 'from', senderID, 'to', receiverID.current)
         mongodb.collection('messages').insertOne({
             message: message,
             sender: senderID,
@@ -60,13 +60,52 @@ io.on('connect', (socket) => {
                 console.log(err);
             } else {
                 console.log(data);
-                socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver,senderPseudo }));
+                socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver, senderPseudo }));
             }
         });
     });
-    socket.on('join-duel', ({getDuelID,senderID}) => {
-        console.log(getDuelID);
-        socket.emit('request-join-duel', (joinDuelID));
+    socket.on('join-duel', ({ getDuelID, senderID, receiver, senderPseudo }) => {
+        console.log(getDuelID, senderID, receiver, senderPseudo);
+        const joinDuelID = getDuelID;
+        mongodb.collection('users').find({ id: `${receiver}` }).toArray((err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(data);
+                socket.to(data[0].socketID).emit('request-join-duel', ({ joinDuelID, senderID, senderPseudo }));
+            }
+        });
+    });
+    socket.on('true-duelID', ({ duelLevel, duelCreator, senderID }) => {
+        console.log(duelLevel, duelCreator,senderID);
+        mongodb.collection('users').find({ id: `${senderID}` }).toArray((err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(data);
+                socket.to(data[0].socketID).emit('joined-duel', ({ duelLevel, senderID, duelCreator }));
+            }
+        });
+    });
+    socket.on('false-duelID', (senderID) => {
+        mongodb.collection('users').find({ id: `${senderID}` }).toArray((err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(data);
+                socket.to(data[0].socketID).emit('join-duel-fail', ('verify the duel ID'));
+            }
+        });
+    });
+    socket.on('joiner', ({ joinerPseudo, duelCreator }) => {
+        mongodb.collection('users').find({ id: `${duelCreator}` }).toArray((err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(data);
+                socket.to(data[0].socketID).emit('duel-joiner', (joinerPseudo));
+            }
+        });
     });
 });
 
