@@ -76,14 +76,14 @@ io.on('connect', (socket) => {
             }
         });
     });
-    socket.on('true-duelID', ({ duelLevel, duelCreator, senderID }) => {
-        console.log(duelLevel, duelCreator,senderID);
+    socket.on('true-duelID', ({ duelLevel, duelCreator, senderID,duelTheme }) => {
+        console.log(duelLevel, duelCreator, senderID, duelTheme);
         mongodb.collection('users').find({ id: `${senderID}` }).toArray((err, data) => {
             if (err) {
                 console.log(err);
             } else {
                 console.log(data);
-                socket.to(data[0].socketID).emit('joined-duel', ({ duelLevel, senderID, duelCreator }));
+                socket.to(data[0].socketID).emit('joined-duel', ({ duelLevel, senderID, duelCreator,duelTheme }));
             }
         });
     });

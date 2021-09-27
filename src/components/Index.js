@@ -14,14 +14,14 @@ import DiscussionWindow from "./chat/DiscussionWindow";
 import DuelDetails from "./duelComponent/DuelDetails";
 import InputDuelID from "./duelComponent/InputDuelID";
 import DuelPanel from "./duelComponent/DuelPanel";
+import e from "cors";
 
 const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
 const getCryptedMessages = localStorage.getItem('messages');
-const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+const initialGetMessages =  CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
 const formatedInitalsMessages = JSON.parse(initialGetMessages);
-
 
 toast.configure();
 const CustomNotification = (props) => {
@@ -34,6 +34,8 @@ const CustomNotification = (props) => {
 }
 
 const Index = () => {
+    // var duelLevel;
+    // var duelTheme;
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
     const [openDiscution, setOpendiscution] = useState(false);
     const [message, setMessage] = useState(null);
@@ -48,12 +50,14 @@ const Index = () => {
     const [allMessages, setAllMessages] = useState(formatedInitalsMessages);
     const [showDuelDetails, setShowDuelDetails] = useState(true);
     const [duelID, setDuelID] = useState();
-    const [duelLevel, setDuelLevel] = useState('Medium');
+    const [NewduelLevel, setNewDuelLevel] = useState();
+    const [NewduelTheme, setNewDuelTheme] = useState();
     const [showDuelInputID, setShowDuelInputID] = useState(true);
     const [getDuelID, setGetDuelID] = useState();
     const [duelCreator, setDuelCreator] = useState();
     const [duelJoiner, setDuelJoiner] = useState();
-
+    const [duelSettingReady, setDuelSettingReady] = useState(false);
+// **************************SOCKET IO CONNECTION ***********************************//
     useEffect(() => {
         socket.on('connect', () => {
             console.log(socket.id);
@@ -62,9 +66,10 @@ const Index = () => {
              const userData = JSON.parse(localStorage.getItem('user'));
             userData.data.socketID = socketID;
             localStorage.setItem('user', JSON.stringify(userData));
+            console.log(NewduelTheme,NewduelLevel);
         });
     }, []);
-
+// ********************* LISTEN EACH SOCKET FROM SERVER ****************************//
     useEffect(() => {
         socket.on('receive-message', ({ message, senderID, receiver,senderPseudo }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
@@ -89,20 +94,26 @@ const Index = () => {
             console.log(joinDuelID, senderID, senderPseudo);
             const duelCreator = userID;
             if (joinDuelID === localStorage.getItem('duelID')) {
-                console.log(joinDuelID, 'and', localStorage.getItem('duelID'));
-                socket.emit('true-duelID', ({ duelLevel, duelCreator, senderID }));
+                const duelTheme = localStorage.getItem('duelTheme');
+                const duelLevel = localStorage.getItem('duelLevel');
+                socket.emit('true-duelID', ({ duelLevel, duelCreator, senderID, duelTheme}));
+                console.log(duelTheme, duelLevel);
             }
             else {
                 console.log(joinDuelID, 'and', duelID);
                 socket.emit('false-duelID', (senderID));
             }          
         });
-        socket.on('joined-duel', ({ duelLevel, senderID, duelCreator }) => {
+        socket.on('joined-duel', ({ duelLevel, senderID, duelCreator,duelTheme  }) => {
             console.log('level:', duelLevel, 'joiner:', senderID, 'duel creator', duelCreator);
             setShowDuelInputID(false);
-            setDuelLevel(duelLevel);
             const creatorPseudo = JSON.parse(localStorage.getItem('allUsers')).find(({ id }) => id == duelCreator).pseudo;
             setDuelCreator(creatorPseudo);
+            setNewDuelLevel(duelLevel);
+            localStorage.setItem('joined-duel-level', duelLevel);
+            localStorage.setItem('joined-duel-theme', duelTheme);
+            setDuelSettingReady(true);
+            console.log(duelTheme);
             setDuelJoiner(JSON.parse(localStorage.getItem('user')).data.pseudo);
             toast.success( 'You join the duel', {
                 position: toast.POSITION.TOP_CENTER
@@ -117,6 +128,7 @@ const Index = () => {
         });
         socket.on('duel-joiner', (joinerPseudo) => {
             setDuelJoiner(joinerPseudo);
+            setDuelSettingReady(true);
             setShowDuelDetails(false);
             console.log('my joiner', joinerPseudo);
             toast.success( `${joinerPseudo} joined your duel`, {
@@ -163,7 +175,7 @@ const Index = () => {
         localStorage.setItem('messages', encryptedMessages);
         const newDecription = localStorage.getItem('messages'); 
         setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-        console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+        // console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
         textarea.value = '';
     }
     const openDuel = (e) => {
@@ -204,7 +216,7 @@ const Index = () => {
             />
             {isDuel && showDuelDetails && <DuelDetails
                 duelID={duelID}
-                duelLevel={duelLevel}
+                duelLevel={localStorage.getItem('duelLevel')}
                 showDuelDetails={showDuelDetailsHandler}
                 copyDuelID={() => {
                     navigator.clipboard.writeText(duelID);
@@ -213,11 +225,18 @@ const Index = () => {
             />}
             {
                 isDuel && <DuelPanel
-                duelLevel={duelLevel}
+                duelLevel={NewduelLevel}
                     duelCreatorPseudo={duelCreator}
                     duelJoinerPseudo={duelJoiner}
                     duelCreatorScore={0}
                     duelJoinerScore={0}
+                    showDuelDetails={() => {
+                        if (duelID) {
+                            setShowDuelDetails(true);
+                        } else {
+                            setShowDuelInputID(true);
+                        }
+                    }}
                 />
             }
             {
@@ -227,15 +246,17 @@ const Index = () => {
                     }}
                     joinTheDuel={joinTheDuel}
                     showDuelInputID={() => {
-                        setShowDuelInputID(false);
+                            setShowDuelInputID(false);   
                     }}
                 />
             }
             <Gamespace
                 isGameDuel={isDuel}
+                duelSettingReady={duelSettingReady}
                 NewLeftPosition={newLeftDuelPosition}
                 NewRightPosition={newRightDuelPostion}
-                setDuelLevel={setDuelLevel}
+                // challengeTheme={localStorage.getItem('joined-duel-theme')}
+                // level={localStorage.getItem('joined-duel-level')}
             />
             <DiscutionIcon
                 openChatWindow={openChatWindow}

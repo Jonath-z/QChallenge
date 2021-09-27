@@ -17,9 +17,6 @@ const Gamewindow = (props) => {
             {props.showQuestion && <div className='AnswerOptionContainer'>
                 <div className='option-subContainer'>
                     {props.answerOption.map((option, i) => {
-                        // if (option === null) {
-                        //     option[i] = 'no capital available';
-                        // }
                         return <p className='Answeroption' key={i} onClick={props.getAnswer}>{option}</p>
                     }
                     )}

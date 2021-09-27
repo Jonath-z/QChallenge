@@ -3,8 +3,8 @@ const DuelPanel = (props) => {
     return (
         <div className='duelPanel'>
             <div className='duelPannel-button-controler'>
-                <button className='stop-duel'>Stop the duel</button>
-                <button className='show-duel-details'>Details</button>
+                <button className='stop-duel' onClick={props.stopDuel}>Stop the duel</button>
+                <button className='show-duel-details' onClick={props.showDuelDetails}>Details</button>
             </div>
             <p className='duelLevel-container'>{props.duelLevel}</p>
             <div className='duelCreator-panel'>

@@ -39,6 +39,8 @@ const Gamespace = (props) => {
     const [contry, setContry] = useState('');
     const [success, setSuccess] = useState(false);
     const [level, setLevel] = useState('Medium');
+    const [duelLevel, setDuelLevel] = useState();
+    const [duelTheme, setDuelTheme] = useState();
     const [saveState, setSaveState] = useState('Save');
     const [pauseState, setPauseState] = useState('Pause')
     let scoreIncrement = useRef(1);
@@ -76,19 +78,18 @@ useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('user'));
         userData.duelLevel = level;
         localStorage.setItem('user', JSON.stringify(userData));
-    },[])
-    
-// *********************************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************/
+    }, []);
+// ********************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************//
     useEffect(() => {
         setShowStart(true);
-        if (challengeTheme && questions.current !== null) {
-            const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
-            const currentQuestionsWithCity = currentQuestions.filter(question => question.city !== null);
-            questionsInCurrentTheme.current = currentQuestionsWithCity;
-            // console.log('current questions', questionsInCurrentTheme);
-        }
+            if (challengeTheme && questions.current !== null) {
+                const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
+                const currentQuestionsWithCity = currentQuestions.filter(question => question.city !== null);
+                questionsInCurrentTheme.current = currentQuestionsWithCity;
+                // console.log('current questions', questionsInCurrentTheme);
+            }
     }, [challengeTheme]);
-//  ******************* START CHALLENGE EVENT HANDLER**********************************/
+//  ******************* START CHALLENGE EVENT HANDLER**********************************//
     const startChallenge = () => {
         generateTheCurrentQuestion();
         setShowStart(false);
@@ -114,7 +115,7 @@ useEffect(() => {
         interval.current = setInterval(setChronoGame, 1000);
     }
 
-    //**************************************GENERATE THE CURRENTE QUESTION********************************/
+    //**************************************GENERATE THE CURRENT QUESTION********************************/
     
     const generateTheCurrentQuestion = () => {
         if (questionsInCurrentTheme !== 'undefined') {
@@ -124,24 +125,47 @@ useEffect(() => {
             setTimeout(() => setContry(myQuestions.question), 1000);
             // console.log(randomMaxValue);
             questionIndex.current++;
-            if (challengeTheme === 'Contry and Capital') {
-                const answeroptions = generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current,contry);
-                questionAswersOptions.current = answeroptions;
-                // console.log(answeroptions);
-                // console.log(display);
-            } else {
-                const options = questionsInCurrentTheme.current.map(question => question.options);
-                // console.log(options)
-                const currentQuestion = generateQuestionOtherThanCountryAndCapital(questionsInCurrentTheme.current, questionIndex.current);
-                setOtherQuestion(currentQuestion);
-                // console.log(currentQuestion);
-                const currentOptions = generateOptionsOtherThanCountryAndCapital(options, questionIndex.current);
-                questionAswersOptions.current = currentOptions;
+            if (!props.isGameDuel && !props.duelSettingReady) {
+                if (challengeTheme === 'Contry and Capital') {
+                    const answeroptions = generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current, contry);
+                    questionAswersOptions.current = answeroptions;
+                    // console.log(answeroptions);
+                    // console.log(display);
+                } else {
+                    const options = questionsInCurrentTheme.current.map(question => question.options);
+                    // console.log(options)
+                    const currentQuestion = generateQuestionOtherThanCountryAndCapital(questionsInCurrentTheme.current, questionIndex.current);
+                    setOtherQuestion(currentQuestion);
+                    // console.log(currentQuestion);
+                    const currentOptions = generateOptionsOtherThanCountryAndCapital(options, questionIndex.current);
+                    questionAswersOptions.current = currentOptions;
                 
+                }
+                if (questionIndex.current === randomMaxValue) {
+                    return reset();
+                }
             }
-            if (questionIndex.current === randomMaxValue) {
-                return reset();
+            if (props.isGameDuel && props.duelSettingReady) {
+                if (localStorage.getItem('joined-duel-theme') === 'Contry and Capital') {
+                    const answeroptions = generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current, contry);
+                    questionAswersOptions.current = answeroptions;
+                    console.log('duel-answers',answeroptions);
+                    // console.log(display);
+                } else {
+                    const options = questionsInCurrentTheme.current.map(question => question.options);
+                    // console.log(options)
+                    const currentQuestion = generateQuestionOtherThanCountryAndCapital(questionsInCurrentTheme.current, questionIndex.current);
+                    setOtherQuestion(currentQuestion);
+                    console.log('duel-questions',currentQuestion);
+                    const currentOptions = generateOptionsOtherThanCountryAndCapital(options, questionIndex.current);
+                    questionAswersOptions.current = currentOptions;
+                
+                }
+                if (questionIndex.current === randomMaxValue) {
+                    return reset();
+                }
             }
+
         }
     }
 // ********************************* CHECK ANSWERS *********************************************/
@@ -197,7 +221,6 @@ useEffect(() => {
                 setChallengeTheme(e.target.innerHTML)
                 setContry(questionsInCurrentTheme.current[0]);
                 setOtherQuestion('');
-                // e.target.innerHTML === 'Contry and Capital' && setQuestionFormula('what is the Capital of');
                return reset();
             }
             else {
@@ -211,7 +234,8 @@ useEffect(() => {
         // console.log(userScoreState);
         score.current = userData.data.score.find(({ theme }) => theme === e.target.innerHTML).score;
         questionIndex.current = userData.data.score.find(({ theme }) => theme === e.target.innerHTML).level;
-            // questionIndex.current = 0;
+        ////////////////////////////////////// set theme for duel usage /////////////////////////////////////
+            localStorage.setItem('duelTheme', e.target.innerHTML);
            return setChallengeTheme(e.target.innerHTML);
         }
     }
@@ -219,7 +243,7 @@ useEffect(() => {
     return (
         <div className='gamespaceDiv'>
             
-            { !props.isGameDuel && <div className='ThemeContainer'>
+            {!props.isGameDuel && <div className='ThemeContainer'>
                 <h3>Challenges</h3>
                 
                 {
@@ -235,7 +259,7 @@ useEffect(() => {
                 left: props.NewLeftPosition,
                 right: props.NewRightPostion
             }}>
-                <ScoreBar
+                {!props.isGameDuel && !props.duelSettingReady &&<ScoreBar
                     progress={progressBar.current}
                     score={score.current}
                     chrono={chrono}
@@ -265,7 +289,43 @@ useEffect(() => {
                     success={success}
                     showDropLevelList={showDropLevelList}
                     level={level}
-                />
+                />}
+                    {props.isGameDuel && props.duelSettingReady &&<ScoreBar
+                    progress={progressBar.current}
+                    score={score.current}
+                    chrono={chrono}
+                    setLevel={() => {
+                        // const DuelLevel = localStorage.getItem('joined-duel-level')
+                        setChallengeTheme(localStorage.getItem('joined-duel-theme'));
+                        if (localStorage.getItem('joined-duel-level') === 'Low') {
+                            maxTimmer.current = 20;
+                            timmer.current = maxTimmer.current;
+                            setChrono(timmer.current)
+                            setDuelLevel('Low');
+                            scoreIncrement.current = 1;
+                            console.log('duel-level:', level);
+                        }
+                        if (localStorage.getItem('joined-duel-level') === 'Medium') {
+                            maxTimmer.current = 10;
+                            timmer.current = maxTimmer.current;
+                            setChrono(timmer.current)
+                            setDuelLevel('Medium');
+                            console.log('duel-level', level);
+                            scoreIncrement.current = 5;
+                        }
+                        if (localStorage.getItem('joined-duel-level') === 'Hight') {
+                            maxTimmer.current = 5;
+                            timmer.current = maxTimmer.current;
+                            setChrono(timmer.current)
+                            setDuelLevel('Hight');
+                            scoreIncrement.current = 10;
+                            console.log('duel-level', level);
+                        }
+                    }}
+                    success={success}
+                    showDropDuelLevelList={true}
+                    level={duelLevel}
+                />}
                 <ControlTools
                     save={saveState}
                     pause={pauseState}
@@ -290,7 +350,7 @@ useEffect(() => {
                         }
                     }}
                 />
-                <Gamewindow
+                {!props.isGameDuel && !props.duelSettingReady &&<Gamewindow
                     startChallenge={startChallenge}
                     showButton={showStart}
                     challengeTheme={challengeTheme}
@@ -299,11 +359,18 @@ useEffect(() => {
                     answerOption={questionAswersOptions.current}
                     question={otherQuestion}
                     getAnswer={getAnswer}
-                />
+                />}
+                {props.isGameDuel && props.duelSettingReady && <Gamewindow
+                    startChallenge={startChallenge}
+                    showButton={showStart}
+                    challengeTheme={localStorage.getItem('joined-duel-theme')}
+                    showQuestion={showQuestion}
+                    contry={contry}
+                    answerOption={questionAswersOptions.current}
+                    question={otherQuestion}
+                    getAnswer={getAnswer}
+                />}
             </div>
-            {
-                props.setDuelLevel(level)
-            }
         </div>
     );
 }

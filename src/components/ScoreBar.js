@@ -17,6 +17,13 @@ const ScoreBar = (props) => {
                         <li className='level-list-li' onClick={props.setLevel}>Hight</li>
                     </ul>
                 </div>}
+                {props.showDropDuelLevelList &&
+                    <div className="level-list">
+                        <ul className='level-list-ul'>
+                        <li className='level-list-li' onClick={props.setLevel}>Set Duel level</li>
+                        </ul>
+                        </div>
+                }
             </div>
             <div className='progress-bar'>
                 <progress className='progress-bar-dynamic' value={props.progress} max="100"></progress>
