@@ -97,15 +97,25 @@ io.on('connect', (socket) => {
             }
         });
     });
-    socket.on('joiner', ({ joinerPseudo, duelCreator }) => {
+    socket.on('joiner', ({ joinerPseudo, duelCreator,duelLevel,duelTheme }) => {
         mongodb.collection('users').find({ id: `${duelCreator}` }).toArray((err, data) => {
             if (err) {
                 console.log(err);
             } else {
                 console.log(data);
-                socket.to(data[0].socketID).emit('duel-joiner', (joinerPseudo));
+                socket.to(data[0].socketID).emit('duel-joiner', ({ joinerPseudo,duelLevel,duelTheme }));
             }
         });
+    });
+    socket.on('stop-duel', (duelJoinerID) => {
+        console.log(duelJoinerID);
+        mongodb.collection('users').find({ pseudo: `${duelJoinerID}` }).toArray((err, data) => {
+            if (err) console.log(err)
+            else {
+                socket.to(data[0].socketID).emit('duel-stoped', ('Duel stoped'));
+                console.log(data);
+            }
+        })
     });
 });
 

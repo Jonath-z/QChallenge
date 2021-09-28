@@ -14,6 +14,7 @@ import gameLevel from "../modules/gameLevel";
 import userChallengeProgress from "../modules/userChallengeProgress";
 import updateUserStat from "../modules/updateUserStat";
 import DuelDetails from "./duelComponent/DuelDetails";
+import { Socket } from "socket.io-client";
 
 // custome hook
 function usePrevious(data){
@@ -32,7 +33,7 @@ const Gamespace = (props) => {
     let timmer = useRef(maxTimmer.current);
     let interval = useRef();
     const questions = useRef();
-    const [showStart, setShowStart] = useState(false);
+    const [showStart, setShowStart] = useState(props.showStartButton);
     const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
     const [showDropLevelList, setShowDropLevelList] = useState(true);
@@ -40,7 +41,6 @@ const Gamespace = (props) => {
     const [success, setSuccess] = useState(false);
     const [level, setLevel] = useState('Medium');
     const [duelLevel, setDuelLevel] = useState();
-    const [duelTheme, setDuelTheme] = useState();
     const [saveState, setSaveState] = useState('Save');
     const [pauseState, setPauseState] = useState('Pause')
     let scoreIncrement = useRef(1);
@@ -67,11 +67,12 @@ useEffect(() => {
         }
     allQuestions();
     const userData = JSON.parse(localStorage.getItem('user'));
+    localStorage.setItem('duelLevel', level);
+    localStorage.setItem('duelTheme', challengeTheme);
     // console.log(userScoreState);
     score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
     questionIndex.current = userData.data.score.find(({ theme }) => theme === challengeTheme).level;
     // console.log(questionIndex.current);
-    // progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
 }, []);
 // *********************************** UPDATE USER GLOBAL DUEL LEVEL ***********************************//
     useEffect(() => {
@@ -81,13 +82,13 @@ useEffect(() => {
     }, []);
 // ********************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************//
     useEffect(() => {
-        setShowStart(true);
-            if (challengeTheme && questions.current !== null) {
-                const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
-                const currentQuestionsWithCity = currentQuestions.filter(question => question.city !== null);
-                questionsInCurrentTheme.current = currentQuestionsWithCity;
-                // console.log('current questions', questionsInCurrentTheme);
-            }
+        // setShowStart(true);
+        if (challengeTheme && questions.current !== null) {
+            const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
+            const currentQuestionsWithCity = currentQuestions.filter(question => question.city !== null);
+            questionsInCurrentTheme.current = currentQuestionsWithCity;
+            // console.log('current questions', questionsInCurrentTheme);
+        }
     }, [challengeTheme]);
 //  ******************* START CHALLENGE EVENT HANDLER**********************************//
     const startChallenge = () => {
@@ -98,7 +99,6 @@ useEffect(() => {
         setShowDropLevelList(false);
         const userData = JSON.parse(localStorage.getItem('user'));
         score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
-        // reset();
     }
 
 // **************************** SET GAME TIMER ************************************************************// 
@@ -173,22 +173,42 @@ useEffect(() => {
         e.preventDefault();
         const answer = e.target.innerHTML;
         const answerState = checkAnwers(answer, contry, questionsInCurrentTheme.current);
-        if (answerState === true) {
-            clearInterval(interval.current);
-            score.current += scoreIncrement.current;
-           progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
-            // console.log(currentProgressBar, '%');
-            setSuccess(true)
-            answerChecked();
-            generateTheCurrentQuestion();
-        } else {
-            clearInterval(interval.current);
-            navigator.vibrate(200);
-            setSuccess(false);
-            answerChecked();
-            generateTheCurrentQuestion();
+        if (!props.isGameDuel && !props.duelSettingReady) {
+            if (answerState === true) {
+                clearInterval(interval.current);
+                score.current += scoreIncrement.current;
+                progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
+                // console.log(currentProgressBar, '%');
+                setSuccess(true)
+                answerChecked();
+                generateTheCurrentQuestion();
+            } else {
+                clearInterval(interval.current);
+                navigator.vibrate(200);
+                setSuccess(false);
+                answerChecked();
+                generateTheCurrentQuestion();
+            }
         }
-        // console.log(answer, answerState);
+        if (props.isGameDuel && props.duelSettingReady) {
+            if (answerState === true) {
+                clearInterval(interval.current);
+                const duelUserData = JSON.parse(localStorage.getItem('duelScore'));
+                duelUserData.score += scoreIncrement.current;
+                localStorage.setItem('duelScore', duelUserData);
+                progressBar.current = userChallengeProgress(questionIndex.current, questionsInCurrentTheme.current);
+                // console.log(currentProgressBar, '%');
+                setSuccess(true)
+                answerChecked();
+                generateTheCurrentQuestion();
+            } else {
+                clearInterval(interval.current);
+                navigator.vibrate(200);
+                setSuccess(false);
+                answerChecked();
+                generateTheCurrentQuestion();
+            }
+        }
     }
 
 // *************************** ANSWER CHECKED ******************************************//
@@ -239,7 +259,7 @@ useEffect(() => {
            return setChallengeTheme(e.target.innerHTML);
         }
     }
-
+ 
     return (
         <div className='gamespaceDiv'>
             
@@ -290,18 +310,18 @@ useEffect(() => {
                     showDropLevelList={showDropLevelList}
                     level={level}
                 />}
-                    {props.isGameDuel && props.duelSettingReady &&<ScoreBar
+                {props.isGameDuel && props.duelSettingReady && <ScoreBar
                     progress={progressBar.current}
                     score={score.current}
                     chrono={chrono}
                     setLevel={() => {
-                        // const DuelLevel = localStorage.getItem('joined-duel-level')
                         setChallengeTheme(localStorage.getItem('joined-duel-theme'));
                         if (localStorage.getItem('joined-duel-level') === 'Low') {
                             maxTimmer.current = 20;
                             timmer.current = maxTimmer.current;
                             setChrono(timmer.current)
                             setDuelLevel('Low');
+                            props.setShowStartButton(true);
                             scoreIncrement.current = 1;
                             console.log('duel-level:', level);
                         }
@@ -310,6 +330,7 @@ useEffect(() => {
                             timmer.current = maxTimmer.current;
                             setChrono(timmer.current)
                             setDuelLevel('Medium');
+                            props.setShowStartButton(true);
                             console.log('duel-level', level);
                             scoreIncrement.current = 5;
                         }
@@ -318,12 +339,13 @@ useEffect(() => {
                             timmer.current = maxTimmer.current;
                             setChrono(timmer.current)
                             setDuelLevel('Hight');
+                            props.setShowStartButton(true);
                             scoreIncrement.current = 10;
                             console.log('duel-level', level);
                         }
                     }}
                     success={success}
-                    showDropDuelLevelList={true}
+                    showDropDuelLevelList={showDropLevelList}
                     level={duelLevel}
                 />}
                 <ControlTools
@@ -352,7 +374,7 @@ useEffect(() => {
                 />
                 {!props.isGameDuel && !props.duelSettingReady &&<Gamewindow
                     startChallenge={startChallenge}
-                    showButton={showStart}
+                    showButton={props.showStartButton}
                     challengeTheme={challengeTheme}
                     showQuestion={showQuestion}
                     contry={contry}
@@ -362,7 +384,7 @@ useEffect(() => {
                 />}
                 {props.isGameDuel && props.duelSettingReady && <Gamewindow
                     startChallenge={startChallenge}
-                    showButton={showStart}
+                    showButton={props.showStartButton}
                     challengeTheme={localStorage.getItem('joined-duel-theme')}
                     showQuestion={showQuestion}
                     contry={contry}

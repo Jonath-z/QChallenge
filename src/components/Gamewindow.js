@@ -3,7 +3,7 @@ import './Gamewindow.css';
 
 const Gamewindow = (props) => {
     return (
-        <div>
+        <div >
             <h4 className='challenge-title'>{props.challengeTheme}</h4>
             <div >
                 {/* <div className='chronoContainer'>
@@ -13,7 +13,7 @@ const Gamewindow = (props) => {
                     <p className='country'> What's the Capital of <span>{props.contry}</span></p>
                 </div> : <p className='question'>{props.question}</p>}
             </div>
-            {props.showButton && <button className="startButton" onClick={props.startChallenge}>Start the Challenge</button>}
+            {props.showButton &&  <button className="startButton" onClick={props.startChallenge} >Start the Challenge</button>}
             {props.showQuestion && <div className='AnswerOptionContainer'>
                 <div className='option-subContainer'>
                     {props.answerOption.map((option, i) => {
