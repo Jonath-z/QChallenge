@@ -59,7 +59,7 @@ io.on('connect', (socket) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(data);
+                // console.log(data);
                 socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver, senderPseudo }));
             }
         });
@@ -71,7 +71,7 @@ io.on('connect', (socket) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(data);
+                // console.log(data);
                 socket.to(data[0].socketID).emit('request-join-duel', ({ joinDuelID, senderID, senderPseudo }));
             }
         });
@@ -108,14 +108,32 @@ io.on('connect', (socket) => {
         });
     });
     socket.on('stop-duel', (duelJoinerID) => {
-        console.log(duelJoinerID);
+        // console.log(duelJoinerID);
         mongodb.collection('users').find({ pseudo: `${duelJoinerID}` }).toArray((err, data) => {
             if (err) console.log(err)
             else {
                 socket.to(data[0].socketID).emit('duel-stoped', ('Duel stoped'));
                 console.log(data);
             }
-        })
+        });
+    });
+    socket.on('score-to-joiner', ({ duelJoiner, duelScore }) => {
+        mongodb.collection('users').find({ id: `${duelJoiner}` }).toArray((err, data) => {
+            if (err) console.log(err)
+            else {
+                socket.to(data[0].socketID).emit('duel-score-joiner', (duelScore));
+                console.log(duelJoiner , duelScore);
+            }
+        });
+    });
+    socket.on('score-to-creator', ({ duelCreator, duelScore }) => {
+        mongodb.collection('users').find({ id: `${duelCreator}` }).toArray((err, data) => {
+            if (err) console.log(err)
+            else {
+                socket.to(data[0].socketID).emit('duel-score-creator', (duelScore));
+                console.log(duelCreator, duelScore);
+            }
+        });
     });
 });
 
