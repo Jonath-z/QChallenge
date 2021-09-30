@@ -13,14 +13,25 @@
     width: 7em;
     margin-left: 10px;
     float: right;
-    background-color:  hsl(190, 47%, 86%);
+    /* background-color:  hsl(190, 47%, 86%); */
     cursor: pointer;
 }
 .pause-button{
     width:7em;
     margin-left: 10px;
     float: right;
-    background-color:  hsl(190, 47%, 86%);
+    /* background-color:  hsl(190, 47%, 86%); */
     cursor: pointer;
-
 }
+.end-button{
+    width:7em;
+    margin-left: 10px;
+    float: right;
+    background-color: rgb(255, 38, 0);
+    cursor: pointer; 
+    color: white;
+}
+.end-button:hover{
+    background-color: rgba(255, 0, 0, 0.801);
+}
+

@@ -103,21 +103,21 @@ const Login = () => {
 
     return (
         <>
-            {waitForLogin ? <div className='loginContainer'>
-                {showLogin ? <h1 className="logPageTitle">Log In</h1> : <h1>Sign Up</h1>}
+          {showLogin &&  <div className='loginContainer'>
+                 <h1 className="logPageTitle">Log In</h1>
                 {showLogin && <div className='login'>
                     <input type='email' name='email' placeholder='Email' value={email} onChange={e => { setEmail(e.target.value) }}></input>
                     <input type='password' name='password' placeholder='Password' value={password} onChange={e => { setPassword(e.target.value) }}></input>
                     {err && <p className='loginErr'>{loginErr}</p>}
-                    <button onClick={login} disabled={isDisable} className='loginBtn'>Submit</button>
+                    <button onClick={login} disabled={isDisable} className='loginBtn'>Log in</button>
                     <p style={{
                         textAlign: 'center',
                     }}>or</p>
                     <LoginWithGoogle />
-                    <button onClick={goToSignup} className='signupBtn'>Signup</button>
+                    <p onClick={goToSignup} className='singup-para'>Create an account</p>
                 </div>}
-                {showSignup && <Signup />}
-            </div>:<p><FaSpinner className='spaniner' /></p>}
+            </div>}
+            {showSignup && <Signup />}
         </>
     );
 }

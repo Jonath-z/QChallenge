@@ -19,8 +19,8 @@ const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
 const getCryptedMessages = localStorage.getItem('messages');
-const initialGetMessages =  CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
-const formatedInitalsMessages = JSON.parse(initialGetMessages);
+var initialGetMessages;
+var formatedInitalsMessages;
 
 toast.configure();
 const CustomNotification = (props) => {
@@ -44,7 +44,7 @@ const Index = () => {
     const receiverID = useRef();
     const reciverPseudo = useRef();
     const receiverAvatar = useRef();
-    const [allMessages, setAllMessages] = useState(formatedInitalsMessages);
+    const [allMessages, setAllMessages] = useState();
     const [showDuelDetails, setShowDuelDetails] = useState(true);
     const [duelID, setDuelID] = useState();
     const [NewduelLevel, setNewDuelLevel] = useState();
@@ -59,6 +59,11 @@ const Index = () => {
     let [creatorScore, setCreatorScore] = useState(0);
     let [joinerScore, setJoinerScore] = useState(0);
 // **************************SOCKET IO CONNECTION ***********************************//
+    useEffect(() => {
+        initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+        setAllMessages(JSON.parse(initialGetMessages));
+    
+    },[])
     useEffect(() => {
         socket.on('connect', () => {
             console.log(socket.id);
@@ -153,6 +158,8 @@ const Index = () => {
             setShowDuelDetails(false);
             setShowDuelInputID(false);
             setDuelSettingReady(false);
+            localStorage.removeItem('duel-gamer');
+            localStorage.removeItem('duelID');
             // window.location.reload();
         });
         socket.on('duel-score-joiner', (duelScore) => {
@@ -207,10 +214,12 @@ const Index = () => {
     const openDuel = (e) => {
         if (e.target.innerHTML == 'Create the duel') {
             setIsDuel(true);
+            setShowDuelDetails(true);
             setShowDuelInputID(false);
             setNewLeftDuelPosition('100px');
             setNewRightDuelPosition('unset');
             setShowStartButton(false);
+            setDuelJoiner('');
             const uniqueDuelID = uuid();
             setDuelID(uniqueDuelID);
             localStorage.setItem('duelID', uniqueDuelID);
@@ -219,9 +228,11 @@ const Index = () => {
         if (e.target.innerHTML === 'Join the duel') {
             setIsDuel(true);
             setShowDuelDetails(false);
+            setShowDuelInputID(true);
             setNewLeftDuelPosition('100px');
             setNewRightDuelPosition('unset');
             setShowStartButton(false);
+            setDuelCreator('');
         }
     }
     const showDuelDetailsHandler = () => {
@@ -240,23 +251,25 @@ const Index = () => {
         console.log('creator', duelCreator, 'joiner', duelJoiner);
     }
     const stopDuel = () => {
-        if (duelJoiner!==undefined) {
+        localStorage.removeItem('duel-gamer');
+        localStorage.removeItem('duelID');
+        setShowStartButton(true);
+        setIsDuel(false);
+        if (duelJoiner !== undefined) {
             const duelStoperObj = JSON.parse(localStorage.getItem('allUsers')).find(({ pseudo }) => pseudo === duelJoiner);
             if (duelStoperObj !== undefined) { const duelStoper = duelStoperObj.pseudo; socket.emit('stop-duel', (duelStoper)) };
             setNewLeftDuelPosition('unset');
             setNewRightDuelPosition('50px');
-            setIsDuel(false);
             setShowDuelDetails(false);
             setShowDuelInputID(false);
             setDuelSettingReady(false);
             console.log(duelStoperObj);
         }
-        if (duelCreator!==undefined) {
+        if (duelCreator !== undefined) {
             const duelStoperObj = JSON.parse(localStorage.getItem('allUsers')).find(({ pseudo }) => pseudo === duelCreator);
             if (duelStoperObj !== undefined) { const duelStoper = duelStoperObj.pseudo; socket.emit('stop-duel', (duelStoper)) };
             setNewLeftDuelPosition('unset');
             setNewRightDuelPosition('50px');
-            setIsDuel(false);
             setShowDuelDetails(false);
             setShowDuelInputID(false);
             setDuelSettingReady(false);
@@ -297,7 +310,7 @@ const Index = () => {
             />}
             {
                 isDuel && <DuelPanel
-                duelLevel={NewduelLevel}
+                    duelLevel={NewduelLevel}
                     duelCreatorPseudo={duelCreator}
                     duelJoinerPseudo={duelJoiner}
                     duelCreatorScore={creatorScore}
@@ -319,7 +332,7 @@ const Index = () => {
                     }}
                     joinTheDuel={joinTheDuel}
                     showDuelInputID={() => {
-                            setShowDuelInputID(false);   
+                        setShowDuelInputID(false);
                     }}
                 />
             }

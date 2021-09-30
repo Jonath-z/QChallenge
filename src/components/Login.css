@@ -1,28 +1,23 @@
 .loginContainer{
-display: grid;
-grid-template-columns: 1fr 2fr;
+ display: flex;
+ flex-direction: column;
 justify-content: center;
 align-content: center;
 align-items: center;
-}
-
-.appName{
-    font-family: sans-serif;
-    margin-top: 5em;
-    margin-left:21em;
-    width: 300px;
+margin-top: 10em;
 }
 
 .login{
-    margin-top: 1em;
-    padding-left: 50px;
     display: flex;
     flex-direction: column;
     width: 20em;
     text-align: center;
 }
+.signup-div{
+    margin-top:150px
+}
 .logPageTitle{
-    text-align: center;
+    margin-left: -200px !important;
 }
 input{
     margin-top: 30px;
@@ -32,7 +27,7 @@ input{
     border: 1px solid black;
     height: 25px;
     padding-left: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 input::placeholder{
     background: transparent;
@@ -65,14 +60,12 @@ button{
     text-align: center;
     margin-top: 10em;
 }
-.signupBtn{
-    background: rgb(77, 45, 62);
-    color: rgb(251, 251, 219);
+.singup-para{
+    color: blue;
+    cursor: pointer;
+    font-size: 12px;
 }
-.signupBtn:hover{
-    background: rgb(44, 0, 24);
-    color: rgb(251, 251, 219); 
-}
+
 .loginBtn{
     background: rgba(11, 7, 65, 0.657);
     color: beige;
@@ -86,12 +79,10 @@ button{
 }
 .loginErr{
     font-family: sans-serif;
-    color: rgb(0, 0, 0);
+    color: red;
     font-size: 10px;
-    border: 1px solid red;
     height: 2em;
     padding-top: 8px;
-    background: rgba(255, 0, 0, 0.424);
 }
 .spaniner{
     animation: spine infinite 1s linear;

@@ -7,6 +7,7 @@
     border-radius: 10px;
     /* background: rgb(3, 4, 56); */
     margin: 0px 20px 0px 20px ;
+    box-shadow: 1px 1px 10px hsl(199, 41%, 27%);
 }
 
  li{
@@ -59,5 +60,8 @@
     float: right;
 }
 .searchBar{
-    width: 20em;
+    width: 30em;
+    box-shadow: 1px 1px 5px hsl(199, 41%, 27%);
+    height: 2.5em;
+    border: 1px solid hsl(199, 41%, 27%)
 }

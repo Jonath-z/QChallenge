@@ -76,19 +76,24 @@ const Signup = () => {
     }
 
     return (
-        <div className='loginContainer'>
-            {showSignup && <div className='login'>
-                <h1>Sign Up</h1>
-                {/* <form> */}
-                <input type='email' name='email' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)}></input>
-                <input type='text' name='pseudo' placeholder='Pseudo' value={pseudo} onChange={e => setPseudo(e.target.value)}></input>
-                <input type='password' name='password' placeholder='Password' value={password} onChange={e => setPassword(e.target.value)}></input>
-                <p className="loginErr">{loginErr}</p>
-                <button onClick={registerUser} className='loginBtn'>Login</button>
-                {/* </form> */}
+        <>
+            {showSignup && <div className='loginContainer signup-div'>
+                <div className='login'>
+                    <h1 className='logPageTitle'>Sign Up</h1>
+                    <input type='email' name='email' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)}></input>
+                    <input type='text' name='pseudo' placeholder='Pseudo' value={pseudo} onChange={e => setPseudo(e.target.value)}></input>
+                    <input type='password' name='password' placeholder='Password' value={password} onChange={e => setPassword(e.target.value)}></input>
+                    <p className="loginErr">{loginErr}</p>
+                    <button onClick={registerUser} className='loginBtn'>Submit</button>
+                    <p className='singup-para' onClick={() => {
+                        setShowLogin(true);
+                        setShowSignup(false);
+                    }}>Return to log in </p>
+                </div>
+                {showLogin && <Login />}
             </div>}
             {showLogin && <Login />}
-        </div>
+        </>
     );
 }
 

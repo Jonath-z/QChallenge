@@ -61,8 +61,7 @@ const DiscussionWindow = (props) => {
                     </div>
                 </p>
             </div>
-            <ScrollableFeed className='message-container' ref={props.scrollDown}>
-
+            <ScrollableFeed className='message-container'>
                 {
                     props.allMessages.map((message,i) => {
                         if (message.sender === userID) {

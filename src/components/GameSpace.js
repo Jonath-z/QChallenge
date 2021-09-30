@@ -32,7 +32,7 @@ const Gamespace = (props) => {
     let maxTimmer = useRef(10);
     let timmer = useRef(maxTimmer.current);
     let interval = useRef();
-    const questions = useRef();
+    const questions = useRef(null);
     const [showStart, setShowStart] = useState(props.showStartButton);
     const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
@@ -52,30 +52,40 @@ const Gamespace = (props) => {
     const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
 // *************************** FETCH INITAL DATA (THEME AND QUESTIONS) ****************************************/  
-useEffect(() => {
-    async function data() {
-        const data = await fetch('../theme');
-        const themes = await data.json();
-        window.localStorage.setItem('theme', JSON.stringify(themes));
-        const myThemes = JSON.parse(localStorage.getItem('theme'));
-        setMyThemes(myThemes);
-    }
-    data();
-    const allQuestions = () => {
-        const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
-        console.log(allQuestions);
-        allQuestions !== null ? questions.current = allQuestions : console.log('loading...');
+    useEffect(() => {
+        async function data() {
+            const data = await fetch('../theme');
+            const themes = await data.json();
+            window.localStorage.setItem('theme', JSON.stringify(themes));
+            const myThemes = JSON.parse(localStorage.getItem('theme'));
+            setMyThemes(myThemes);
         }
-    allQuestions();
-    const userData = JSON.parse(localStorage.getItem('user'));
-    localStorage.setItem('duelLevel', level);
-    localStorage.setItem('duelTheme', challengeTheme);
-    // console.log(userScoreState);
-    score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
-    scoreIncrement.current = 5;
-    questionIndex.current = userData.data.score.find(({ theme }) => theme === challengeTheme).level;
-    // console.log(questionIndex.current);
-}, []);
+        data();
+        const allQuestions = () => {
+            const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
+            console.log(allQuestions);
+            allQuestions !== null ? questions.current = allQuestions : console.log('loading...');
+        }
+        allQuestions();
+    }, []);
+    useEffect(() => {
+        if (!props.isGameDuel) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            localStorage.setItem('duelLevel', level);
+            localStorage.setItem('duelTheme', challengeTheme);
+            // console.log(userScoreState);
+            score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
+            scoreIncrement.current = 5;
+            questionIndex.current = userData.data.score.find(({ theme }) => theme === challengeTheme).level;
+            // console.log(questionIndex.current);
+            clearInterval(interval.current);
+            timmer.current = maxTimmer.current;
+            setChrono(timmer.current);
+            setShowQuestion(false);
+            setShowDropLevelList(true);
+            props.setShowStartButton(true);
+        }
+    }, [props.isGameDuel]);
 // *********************************** UPDATE USER GLOBAL DUEL LEVEL ***********************************//
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('user'));
@@ -84,8 +94,7 @@ useEffect(() => {
     }, []);
 // ********************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************//
     useEffect(() => {
-        // setShowStart(true);
-        if (challengeTheme && questions.current !== null) {
+        if (challengeTheme !== null && questions.current !== null) {
             const currentQuestions = questions.current.filter(question => question.theme === `${challengeTheme}`);
             const currentQuestionsWithCity = currentQuestions.filter(question => question.city !== null);
             questionsInCurrentTheme.current = currentQuestionsWithCity;
@@ -190,7 +199,7 @@ useEffect(() => {
         timmer.current = maxTimmer.current;
         setChrono(timmer.current);
         setShowQuestion(false);
-        setShowStart(true);
+        props.setShowStartButton(true);
         setShowDropLevelList(true);
         console.log('reset');
     }
@@ -317,19 +326,21 @@ useEffect(() => {
                     showDropDuelLevelList={showDropLevelList}
                     level={duelLevel}
                 />}
-                <ControlTools
+                {!props.isGameDuel && !props.duelSettingReady && <ControlTools
                     save={saveState}
                     pause={pauseState}
                     saveHandler={() => {
-                        if (!showStart) {
+                        if (!props.showStartButton) {
                             updateUserStat(score.current, prevTheme, questionIndex.current);
                             setSaveState('Saved');
                             const setToSave = () => { setSaveState('Save') }
                             setTimeout(setToSave, 2000);
+                            props.setShowStartButton(true);
+                            reset();
                         }
                     }}
                     pauseHandler={() => {
-                        if (!showStart) {
+                        if (!props.showStartButton) {
                             if (pauseState === 'Pause') {
                                 clearInterval(interval.current);
                                 setPauseState('Resume');
@@ -340,7 +351,7 @@ useEffect(() => {
                             }
                         }
                     }}
-                />
+                />}
                 {!props.isGameDuel && !props.duelSettingReady &&<Gamewindow
                     startChallenge={startChallenge}
                     showButton={props.showStartButton}
