@@ -20,7 +20,6 @@ const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
 const getCryptedMessages = localStorage.getItem('messages');
 var initialGetMessages;
-var formatedInitalsMessages;
 
 toast.configure();
 const CustomNotification = (props) => {
@@ -32,23 +31,40 @@ const CustomNotification = (props) => {
     );
 }
 
+const getUsers = async () => {
+    const allUsers = await fetch('../all-users')
+    const AllusersFormated = await allUsers.json();
+    const allUsersCrypted = CryptoJS.AES.encrypt(JSON.stringify(AllusersFormated), 'QChallenge001');
+    window.localStorage.setItem('allUsers', allUsersCrypted);
+    // const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
+    // const usersFormated = JSON.parse(usersDecrypted);
+}
+getUsers();
+
+// const allUsersContex = React.createContext(null);
+
 const Index = () => {
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
     const [openDiscution, setOpendiscution] = useState(false);
+    const [status, setStatus] = useState();
+    const [isOnline, setIsOnline] = useState(false);
     const [message, setMessage] = useState(null);
     const [isDuel, setIsDuel] = useState(false);
     const [newLeftDuelPosition, setNewLeftDuelPosition] = useState('unset');
     const [newRightDuelPostion, setNewRightDuelPosition] = useState('0');
     const newMessage= useRef(null);
-    const allUsers = useRef(JSON.parse(localStorage.getItem('allUsers')));
     const receiverID = useRef();
     const reciverPseudo = useRef();
     const receiverAvatar = useRef();
     const [allMessages, setAllMessages] = useState();
+    const [users] = useState(() => {
+        const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
+        return JSON.parse(usersDecrypted);
+    });
     const [showDuelDetails, setShowDuelDetails] = useState(true);
     const [duelID, setDuelID] = useState();
     const [NewduelLevel, setNewDuelLevel] = useState();
-    const [NewduelTheme, setNewDuelTheme] = useState();
+    // const [NewduelTheme, setNewDuelTheme] = useState();
     const [showDuelInputID, setShowDuelInputID] = useState(true);
     const [getDuelID, setGetDuelID] = useState();
     const [duelCreator, setDuelCreator] = useState();
@@ -58,12 +74,11 @@ const Index = () => {
     const [showStartButton, setShowStartButton] = useState(true);
     let [creatorScore, setCreatorScore] = useState(0);
     let [joinerScore, setJoinerScore] = useState(0);
-// **************************SOCKET IO CONNECTION ***********************************//
     useEffect(() => {
         initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
         setAllMessages(JSON.parse(initialGetMessages));
-    
-    },[])
+    }, []);
+// **************************SOCKET IO CONNECTION ***********************************//
     useEffect(() => {
         socket.on('connect', () => {
             console.log(socket.id);
@@ -72,12 +87,26 @@ const Index = () => {
              const userData = JSON.parse(localStorage.getItem('user'));
             userData.data.socketID = socketID;
             localStorage.setItem('user', JSON.stringify(userData));
-            console.log(NewduelTheme,NewduelLevel);
         });
     }, []);
+    useEffect(() => {
+        if (navigator.online) {
+            socket.emit('online', (userID));
+            console.log('onliner user ', userID);
+        };
+    }, []);
+
+
 // ********************* LISTEN EACH SOCKET FROM SERVER ****************************//
     useEffect(() => {
-        socket.on('receive-message', ({ message, senderID, receiver,senderPseudo }) => {
+            const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
+            const usersFormated = JSON.parse(usersDecrypted);
+        socket.on('online-user', (userID) => {
+                const getOnlineUser = usersFormated.find(({ id }) => id !== userID);
+                setStatus(getOnlineUser.id);
+                console.log('online-user', getOnlineUser);
+        });
+        socket.on('receive-message', ({ message, senderID, receiver, senderPseudo }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
             const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArrayOfMessage, 'QChallenge001').toString(CryptoJS.enc.Utf8));
             decryptMessage.push({
@@ -91,7 +120,7 @@ const Index = () => {
             localStorage.setItem('messages', encryptedMessages);
             const newDecription = localStorage.getItem('messages');
             setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-            console.log('from local storage',JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+            console.log('from local storage', JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
             console.log('decrypt message', decryptMessage);
             notify(message, senderPseudo);
             navigator.vibrate([200, 200]);
@@ -109,12 +138,12 @@ const Index = () => {
             else {
                 console.log(joinDuelID, 'and', duelID);
                 socket.emit('false-duelID', (senderID));
-            }          
+            }
         });
-        socket.on('joined-duel', ({ duelLevel, senderID, duelCreator,duelTheme  }) => {
+        socket.on('joined-duel', ({ duelLevel, senderID, duelCreator, duelTheme }) => {
             console.log('level:', duelLevel, 'joiner:', senderID, 'duel creator', duelCreator);
             setShowDuelInputID(false);
-            const creatorPseudo = JSON.parse(localStorage.getItem('allUsers')).find(({ id }) => id == duelCreator).pseudo;
+            const creatorPseudo = users.find(({ id }) => id === duelCreator).pseudo;
             setDuelCreator(creatorPseudo);
             setNewDuelLevel(duelLevel);
             localStorage.setItem('joined-duel-level', duelLevel);
@@ -136,7 +165,7 @@ const Index = () => {
             });
             navigator.vibrate([200, 200]);
         });
-        socket.on('duel-joiner', ({joinerPseudo,duelLevel,duelTheme }) => {
+        socket.on('duel-joiner', ({ joinerPseudo, duelLevel, duelTheme }) => {
             setDuelJoiner(joinerPseudo);
             setDuelSettingReady(true);
             setShowDuelDetails(false);
@@ -168,7 +197,7 @@ const Index = () => {
         socket.on('duel-score-creator', (duelScore) => {
             setCreatorScore(duelScore);
         });
-    }, []);
+    });
 
     const openChatWindow = ()=>{
         setOpendiscution(true);
@@ -212,7 +241,7 @@ const Index = () => {
         textarea.value = '';
     }
     const openDuel = (e) => {
-        if (e.target.innerHTML == 'Create the duel') {
+        if (e.target.innerHTML === 'Create the duel') {
             setIsDuel(true);
             setShowDuelDetails(true);
             setShowDuelInputID(false);
@@ -256,7 +285,7 @@ const Index = () => {
         setShowStartButton(true);
         setIsDuel(false);
         if (duelJoiner !== undefined) {
-            const duelStoperObj = JSON.parse(localStorage.getItem('allUsers')).find(({ pseudo }) => pseudo === duelJoiner);
+            const duelStoperObj = users.find(({ pseudo }) => pseudo === duelJoiner);
             if (duelStoperObj !== undefined) { const duelStoper = duelStoperObj.pseudo; socket.emit('stop-duel', (duelStoper)) };
             setNewLeftDuelPosition('unset');
             setNewRightDuelPosition('50px');
@@ -266,7 +295,7 @@ const Index = () => {
             console.log(duelStoperObj);
         }
         if (duelCreator !== undefined) {
-            const duelStoperObj = JSON.parse(localStorage.getItem('allUsers')).find(({ pseudo }) => pseudo === duelCreator);
+            const duelStoperObj = users.find(({ pseudo }) => pseudo === duelCreator);
             if (duelStoperObj !== undefined) { const duelStoper = duelStoperObj.pseudo; socket.emit('stop-duel', (duelStoper)) };
             setNewLeftDuelPosition('unset');
             setNewRightDuelPosition('50px');
@@ -296,6 +325,7 @@ const Index = () => {
     }
     return (
         <>
+            {/* <allUsersContex.Provider value={getUsers()}> */}
             <Header
                 openDuel={openDuel}
             />
@@ -354,12 +384,13 @@ const Index = () => {
                 closeChatWindow={closeChatWindow}
                 openChat={(e) => {
                     reciverPseudo.current = e.target.innerText;
-                    const receiver = JSON.parse(localStorage.getItem('allUsers')).find(data => data.pseudo === reciverPseudo.current);
+                    const receiver = users.find(data => data.pseudo === reciverPseudo.current);
                     // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
                     receiverID.current = receiver.id;
                     receiverAvatar.current = receiver.avatar;
                     setCloseDiscussionWindow(true);
                 }}
+                status={status}
             />}
             {closeDiscussionWindow && <DiscussionWindow
                 receiverAvatar={receiverAvatar.current}
@@ -373,6 +404,7 @@ const Index = () => {
                 sendMessage={sendMessage}
                 allMessages={allMessages}
             />}
+            {/* </allUsersContex.Provider> */}
         </>
     );
 }

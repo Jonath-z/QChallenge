@@ -14,6 +14,7 @@ const getAllUser = require('./routes/getAllUsers.js');
 const getAllMessages = require('./routes/getAllMessages.js');
 const updateFontColor = require('./routes/updateFontColor.js');
 const Grids = require('gridfs-stream');
+const { SSL_OP_PKCS1_CHECK_1 } = require('constants');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;
@@ -64,6 +65,13 @@ io.on('connect', (socket) => {
             }
         });
     });
+    socket.on('online', (userID) => {
+        socket.emit('online-user', (userID));
+        console.log(userID);
+    });
+    // socket.on('offline', ({ userID }) => {
+    //     socket.emit('offline-user', userID);
+    // })
     socket.on('join-duel', ({ getDuelID, senderID, receiver, senderPseudo }) => {
         console.log(getDuelID, senderID, receiver, senderPseudo);
         const joinDuelID = getDuelID;

@@ -13,8 +13,6 @@ import checkAnwers from "../modules/checkAnswer";
 import gameLevel from "../modules/gameLevel";
 import userChallengeProgress from "../modules/userChallengeProgress";
 import updateUserStat from "../modules/updateUserStat";
-import DuelDetails from "./duelComponent/DuelDetails";
-import { Socket } from "socket.io-client";
 
 // custome hook
 function usePrevious(data){
@@ -33,7 +31,7 @@ const Gamespace = (props) => {
     let timmer = useRef(maxTimmer.current);
     let interval = useRef();
     const questions = useRef(null);
-    const [showStart, setShowStart] = useState(props.showStartButton);
+    const [showStart] = useState(props.showStartButton);
     const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
     const [showDropLevelList, setShowDropLevelList] = useState(true);
@@ -47,7 +45,7 @@ const Gamespace = (props) => {
     const questionAswersOptions = useRef();
     let questionIndex = useRef(0);
     let score = useRef(0);
-    let [duelScore, setDuelScore] = useState();
+    let [setDuelScore] = useState();
     let progressBar = useRef(0);
     const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
@@ -91,7 +89,7 @@ const Gamespace = (props) => {
         const userData = JSON.parse(localStorage.getItem('user'));
         userData.duelLevel = level;
         localStorage.setItem('user', JSON.stringify(userData));
-    }, []);
+    });
 // ********************** SET CURRENT QUESTION DEPENDING TO THE THEME CHOSEN ***********************//
     useEffect(() => {
         if (challengeTheme !== null && questions.current !== null) {
@@ -100,7 +98,7 @@ const Gamespace = (props) => {
             questionsInCurrentTheme.current = currentQuestionsWithCity;
             // console.log('current questions', questionsInCurrentTheme);
         }
-    }, [challengeTheme]);
+    }, [challengeTheme,level]);
 //  ******************* START CHALLENGE EVENT HANDLER**********************************//
     const startChallenge = () => {
         generateTheCurrentQuestion();

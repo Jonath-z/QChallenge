@@ -2,9 +2,10 @@ import { FiMenu } from "react-icons/fi"
 import { IoMdSend } from 'react-icons/io';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import TextareaAutosize from "react-textarea-autosize";
-import { useState, useRef, useEffect } from "react";
+import { useState} from "react";
 import ScrollableFeed from 'react-scrollable-feed'
 import './DiscussionWindow.css';
+
 // import CryptoJS from "crypto-js";
 
 const localSearch = window.location.search;
@@ -13,9 +14,10 @@ const user = JSON.parse(localStorage.getItem('user'));
 
 const DiscussionWindow = (props) => {
     const [DiscussionBacgroungColor, setDiscussionBacgroungColor] = useState(() => {
-        if (user.fontColor) {
+        if (user.fontColor !== undefined) {
             return user.fontColor
-        } else {
+        }
+        if(user.fontColor === undefined){
             return 'white'
         }
     }

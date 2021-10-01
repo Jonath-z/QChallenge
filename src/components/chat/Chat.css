@@ -76,3 +76,9 @@
     margin-left: 10px;
     cursor: pointer;
 }
+.online-status{
+    margin-left: 10px;
+    margin-top: -10px;
+    font-size: 10px;
+    color: grey;
+}

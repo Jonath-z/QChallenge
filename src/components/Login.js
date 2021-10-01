@@ -4,7 +4,7 @@ import { useState,useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import CryptoJS from 'crypto-js';
 import storage from "../modules/firbaseConfig";
-import { FaSpinner } from 'react-icons/fa';
+// import { FaSpinner } from 'react-icons/fa';
 import LoginWithGoogle from "./LoginWithGoole";
 
 const getMessages = async () => {
@@ -30,17 +30,13 @@ const Login = () => {
     const [loginErr, setLoginErr] = useState('');
     const [showSignup, setShowSignup] = useState(false);
     const [showLogin, setShowLogin] = useState(true);
-    // const [avatar, setAvatar] = useState(null);
     const [isDisable, setIsDisable] = useState(false);
     const [err, setErr] = useState(false);
-    const [waitForLogin, setWaitForLogin] = useState(true);
     
     useEffect(() => {
         const getdefaultAvatar = async () => {
             await storage.ref('NicePng_avatar-png_3012856.png').getDownloadURL()
                 .then(url => {
-                    // setAvatar(url);
-                    // console.log(url);
                     return url;
                 });
         }
@@ -54,7 +50,7 @@ const Login = () => {
     const login = () => {
         setIsDisable(true);
         const postLogins = async () => {
-            const response = await fetch('../login', {
+            await fetch('../login', {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',
@@ -64,33 +60,31 @@ const Login = () => {
                     email: email,
                     password: password
                 })
-            });
-            const data = await response.json();
-            if (data.status === '200') {
+            })
+                .then((res) => { return res.json() })
+                .then((data) => {
+                    if (data.status === '200') {
 
-                window.localStorage.setItem('user', JSON.stringify(data));
-                const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
-                console.log('all questions :', allQuestions);
-                if (allQuestions !== null) {
-                    history.push(`/QChallenge/?id=${data.data.id}`);
-                    console.log('question is null');
-                    setWaitForLogin(true);
-                } else {
-                    setWaitForLogin(false);
-                }
-                // window.location.reload();
-                setIsDisable(true);
-            }
-            else if (data.status === '404') {
-                setLoginErr('Incorrect password');
-                setIsDisable(true);
-                setErr(true);
-            }
-            else if (data.status === '404 email') {
-                setLoginErr('Incorrect password or email');
-                setIsDisable(true);
-                setErr(true);
-            }
+                        window.localStorage.setItem('user', JSON.stringify(data));
+                        const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
+                        console.log('all questions :', allQuestions);
+                        // if (allQuestions !== null) {
+                            history.push(`/QChallenge/?id=${data.data.id}`);
+                            console.log('question is null');
+                        // }
+                        setIsDisable(true);
+                    }
+                    else if (data.status === '404') {
+                        setLoginErr('Incorrect password');
+                        setIsDisable(true);
+                        setErr(true);
+                    }
+                    else if (data.status === '404 email') {
+                        setLoginErr('Incorrect password or email');
+                        setIsDisable(true);
+                        setErr(true);
+                    }
+                });
 
             return () => {
                 setEmail('');
