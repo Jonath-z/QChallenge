@@ -19,7 +19,7 @@ const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
 const getCryptedMessages = localStorage.getItem('messages');
-var initialGetMessages;
+// var initialGetMessages;
 
 toast.configure();
 const CustomNotification = (props) => {
@@ -46,7 +46,7 @@ getUsers();
 const Index = () => {
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
     const [openDiscution, setOpendiscution] = useState(false);
-    const [status, setStatus] = useState();
+    const [status, setStatus] = useState({});
     const [isOnline, setIsOnline] = useState(false);
     const [message, setMessage] = useState(null);
     const [isDuel, setIsDuel] = useState(false);
@@ -75,7 +75,7 @@ const Index = () => {
     let [creatorScore, setCreatorScore] = useState(0);
     let [joinerScore, setJoinerScore] = useState(0);
     useEffect(() => {
-        initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+        const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
         setAllMessages(JSON.parse(initialGetMessages));
     }, []);
 // **************************SOCKET IO CONNECTION ***********************************//
@@ -90,21 +90,15 @@ const Index = () => {
         });
     }, []);
     useEffect(() => {
-        if (navigator.online) {
-            socket.emit('online', (userID));
-            console.log('onliner user ', userID);
-        };
-    }, []);
-
-
+        if (navigator.onLine === true) {
+            socket.emit('online', ({ userID }));
+        }
+    },[]);
 // ********************* LISTEN EACH SOCKET FROM SERVER ****************************//
-    useEffect(() => {
-            const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
-            const usersFormated = JSON.parse(usersDecrypted);
-        socket.on('online-user', (userID) => {
-                const getOnlineUser = usersFormated.find(({ id }) => id !== userID);
-                setStatus(getOnlineUser.id);
-                console.log('online-user', getOnlineUser);
+useEffect(() => { 
+        socket.on('online-user', ({ userID, status }) => {
+            setStatus({ userID, status });
+            console.log('online-user', userID);
         });
         socket.on('receive-message', ({ message, senderID, receiver, senderPseudo }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
@@ -383,6 +377,9 @@ const Index = () => {
             {openDiscution && <Chat
                 closeChatWindow={closeChatWindow}
                 openChat={(e) => {
+                    const  getMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+                    setAllMessages(JSON.parse(getMessages));
+                    console.log(JSON.parse(getMessages).length);
                     reciverPseudo.current = e.target.innerText;
                     const receiver = users.find(data => data.pseudo === reciverPseudo.current);
                     // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
@@ -402,7 +399,8 @@ const Index = () => {
                     // console.log('allMessage', allMessages);
                 }}
                 sendMessage={sendMessage}
-                allMessages={allMessages}
+                allMessages={JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8))}
+                setNewMessages={setAllMessages}
             />}
             {/* </allUsersContex.Provider> */}
         </>

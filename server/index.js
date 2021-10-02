@@ -13,8 +13,8 @@ const googleLogin = require('./routes/googleLogin.js');
 const getAllUser = require('./routes/getAllUsers.js');
 const getAllMessages = require('./routes/getAllMessages.js');
 const updateFontColor = require('./routes/updateFontColor.js');
+const deleteMessages = require('./routes/deleteMessage.js');
 const Grids = require('gridfs-stream');
-const { SSL_OP_PKCS1_CHECK_1 } = require('constants');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;
@@ -32,6 +32,7 @@ app.use('/login-With-Google', googleLogin);
 app.use('/all-users', getAllUser);
 app.use('/all-messages', getAllMessages);
 app.use('/update-font-color', updateFontColor);
+app.use('/delete-messages', deleteMessages);
 
 io.on('connect', (socket) => {
     console.log(socket.id);
@@ -46,6 +47,9 @@ io.on('connect', (socket) => {
             }
         )
     });
+    socket.on('online', ({ userID }) => {
+        socket.broadcast.emit('online-user', ({ userID, status: true }));
+    })
     socket.on('send-message', ({ message, senderID, receiverID, senderPseudo }) => {
         const Newmessage = `${message}`;
         const sender = `${senderID}`;
@@ -65,13 +69,6 @@ io.on('connect', (socket) => {
             }
         });
     });
-    socket.on('online', (userID) => {
-        socket.emit('online-user', (userID));
-        console.log(userID);
-    });
-    // socket.on('offline', ({ userID }) => {
-    //     socket.emit('offline-user', userID);
-    // })
     socket.on('join-duel', ({ getDuelID, senderID, receiver, senderPseudo }) => {
         console.log(getDuelID, senderID, receiver, senderPseudo);
         const joinDuelID = getDuelID;

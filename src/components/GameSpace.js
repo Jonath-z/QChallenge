@@ -13,6 +13,7 @@ import checkAnwers from "../modules/checkAnswer";
 import gameLevel from "../modules/gameLevel";
 import userChallengeProgress from "../modules/userChallengeProgress";
 import updateUserStat from "../modules/updateUserStat";
+import uuid  from "react-uuid";
 
 // custome hook
 function usePrevious(data){
@@ -205,7 +206,7 @@ const Gamespace = (props) => {
 //**************************** OPEN CHALLENGE EVENT (CLICK ON THEME)********************************************/
     const openChallenge = (e) => {
         console.log('timmer current', timmer.current);
-        if (prevTheme !== e.target.innerHTML && !showStart) {
+        if (prevTheme !== e.target.innerHTML && !props.showStartButton) {
             clearInterval(interval.current);
             prevTheme && setChallengeTheme(prevTheme);
             const confirmResponse = window.confirm('Do want to leave the challenge ?');
@@ -239,9 +240,9 @@ const Gamespace = (props) => {
                 <h3>Challenges</h3>
                 
                 {
-                    myThemes ? myThemes.map((theme, i) => (
+                    myThemes ? myThemes.map((theme) => (
                         <div className='themeContainer'>
-                            <p key={theme.index} className='theme' onClick={openChallenge}>{theme.theme}</p>
+                            <p key={uuid()} className='theme' onClick={openChallenge}>{theme.theme}</p>
                         </div>
                     )) : <p>loading Challenges <FaSpinner className='spaniner' /></p>
                 }

@@ -33,7 +33,7 @@ const Chat = (props) => {
                                     <p>{<img src={user.avatar} className='userAvatar' alt='profile' /> || <Skeleton />}</p>
                                     <div className='pseudo-Container' onClick={props.openChat}>
                                         <p className="pseudo">{user.pseudo}</p>
-                                        {props.status === user.id && <p className='online-status'>online</p>}
+                                        {props.status.userID === user.id && props.status.status === true &&<p className='online-status'>online</p>}
                                     </div>
                                 </div>
                             )

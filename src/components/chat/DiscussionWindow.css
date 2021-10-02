@@ -97,17 +97,42 @@ border-top-right-radius: 10px;
     top:20px;
     font-size: 30px;
 }
+.trash{
+    animation: trashspine 1s ease;
+}
+@keyframes trashspine{
+    from {
+        transform: rotate(360deg)
+    }
+    to{
+        transform: rotate(0deg);
+    }
+}
+.menue{
+    animation: menuspine 1s ease;
+}
+@keyframes menuspine{
+    from {
+        transform: rotate(360deg)
+    }
+    to{
+        transform: rotate(0deg);
+    }
+}
 .backgroung-color-menu{
     display:none ;
-    background: rgb(3,4,56);
+    background: rgb(3, 4, 56);
     color: white;
     z-index: 4;
     margin-top: 50px;
     position: absolute;
     right: 0px;
     padding-right: 40px;
+    padding-left: 40px;
+    padding-bottom: 20px;
     box-shadow: 0px 0px 10px 0px rgb(3,4,56);
     margin-top: -10px;
+    border-radius: 10px;
 }
 
 .receiver-details-icon:hover{
@@ -119,8 +144,11 @@ border-top-right-radius: 10px;
     list-style: none;
     cursor: pointer;
 }
+.color-option{
+    margin-left: 10px;
+}
 .color-option:hover{
-    font-size: 19px;
+    font-size: 15px;
     transition: 100ms;
 }
 .receiver-details-profile{

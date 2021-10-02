@@ -36,6 +36,9 @@
    box-shadow: 1px 1px 10px rgb(3, 4, 56);
    position: absolute;
    width: 10em;
+   padding-bottom: 30px;
+   border-bottom-left-radius: 30px;
+   border-bottom-right-radius: 30px;
 }
 .option:hover .Options-dropList{
     display: block;
@@ -44,10 +47,12 @@
 .duel-option{
     text-align: left;
     margin-left: 20px;
+    margin-right: 20px;
+    
 }
 .duel-option:hover{
     cursor: pointer;
-    font-size: larger;
+    font-size: 15px;
 }
 .headerComponent{
     display: grid;

@@ -16,12 +16,13 @@ const getMessages = async () => {
 getMessages();
 
 const getQuestions = async () => {
-    const questionChallenge = await fetch('../challenges');
-    const myQuestions = await questionChallenge.json();
-    // console.log(myQuestions);
-    window.localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
+    await fetch('../challenges')
+        .then((res) => { return res.json() })
+        .then((myQuestions) => {
+            localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
+        });
 }
-getQuestions()
+getQuestions();
 
 const Login = () => {
     let history = useHistory();

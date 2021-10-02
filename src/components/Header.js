@@ -21,8 +21,8 @@ const Header = (props) => {
                 <li><input type='search' className="searchBar" placeholder={placeholder} onFocus={setFucus} onBlur={setFucusOut}></input></li>
                 <li className='optionHeader option'>Options
                     <div className='Options-dropList'>
-                        <li className='duel-option' onClick={props.openDuel}>Create the duel</li>
-                        <li className='duel-option' onClick={props.openDuel}>Join the duel</li>
+                        <span className='duel-option' onClick={props.openDuel}>Create the duel</span><br/><br/>
+                        <span className='duel-option' onClick={props.openDuel}>Join the duel</span>
                     </div>
                 </li>
                 <li className='documentationHeader option'>Documentation</li>

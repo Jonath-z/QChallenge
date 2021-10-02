@@ -5,8 +5,9 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useState} from "react";
 import ScrollableFeed from 'react-scrollable-feed'
 import './DiscussionWindow.css';
-
-// import CryptoJS from "crypto-js";
+import { useLongPress } from 'use-long-press';
+import { FaTrash } from 'react-icons/fa';
+import CryptoJS from "crypto-js";
 
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
@@ -22,7 +23,11 @@ const DiscussionWindow = (props) => {
         }
     }
     );
-
+    const [showTrash, setShowTrash] = useState('none');
+    const [showMenu, setShowMenue] = useState('block');
+    const [isMenue, setIsMenue] = useState(true);
+    const [messagesForTrash, setMessageForTrash] = useState(null);
+    const [deleteComponent, setDeleteComponent] = useState(null);
     const setBackgroungColor = (e) => {
         // console.log(e.target.innerHTML);
         setDiscussionBacgroungColor(e.target.innerHTML);
@@ -43,7 +48,52 @@ const DiscussionWindow = (props) => {
         }
         updateFontColor();
     }
+    const deleteMessage = useLongPress(() => {
+        setShowMenue('none');
+        setShowTrash('block');
+        setIsMenue(false);
+    }, {
+        onFinish: event => {
+            setMessageForTrash(event.target.innerHTML);
+            setDeleteComponent(event);
+        },
+        captureEvent:true,
+        threshold: 500,
+        detect: "both"
+    });
+    const moveToTrash = () => {
+        if (messagesForTrash !== null) {
+            const allmessages = localStorage.getItem('messages');
+            const decryptMessages = JSON.parse(CryptoJS.AES.decrypt(allmessages, 'QChallenge001').toString(CryptoJS.enc.Utf8));
+            console.log('initial lengeth',decryptMessages.length);
+            let newMessages = decryptMessages.filter(({ message,receiver,sender }) => message !== messagesForTrash && receiver === userID || sender === user);
+            CryptoJS.AES.encrypt(JSON.stringify(decryptMessages), 'QChallenge001');
+            console.log('length after deletion', newMessages.length);
+            localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), 'QChallenge001'));
+            const chekNewLength = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8)).length;
+            console.log('ckek new lenght:', chekNewLength);
 
+            fetch('../delete-messages', {
+                method: 'POST',
+                headers: {
+                    'accept': '*/*',
+                    'content-type':'application/json'
+                },
+                body: JSON.stringify({
+                    message: messagesForTrash,
+                    user:userID
+                })
+            })
+            props.setNewMessages(newMessages);
+        }
+        if (deleteComponent !== null) {
+            // deleteComponent.target.remove();
+            console.log('delete node', deleteComponent);
+        }
+        setShowMenue('block');
+        setShowTrash('none');
+        setIsMenue(true);
+    }
     return (
         <div className='discussion-window' style={{ background: DiscussionBacgroungColor }} >
             <div className='receiver-details'>
@@ -53,30 +103,33 @@ const DiscussionWindow = (props) => {
                     <p className='receiver-details-profile-pseudo'>{props.receiverPseudo}</p>
                 </div>
                 <p className='drop-down-option'>
-                    < FiMenu className='receiver-details-icon' />
-                    <div className='backgroung-color-menu'>
-                        <ul>
+                    < FiMenu className='menue receiver-details-icon' style={{ display: showMenu }} />
+                    <FaTrash className='trash receiver-details-icon' style={{ display: showTrash }} onClick={moveToTrash} />
+                    {isMenue && <span className='backgroung-color-menu'>
+                        <span>
                             <li className='color-option' onClick={setBackgroungColor}>White</li>
                             <li className='color-option' onClick={setBackgroungColor}>Turquoise</li>
                             <li className='color-option' onClick={setBackgroungColor}>Thistle</li>
-                        </ul>
-                    </div>
+                        </span>
+                    </span>}
                 </p>
             </div>
             <ScrollableFeed className='message-container'>
                 {
-                    props.allMessages.map((message,i) => {
+                    props.allMessages.map((message, i) => {
                         if (message.sender === userID) {
-                            return <p className="outcome-message" key={i} style={{
-                                float: 'background: rgb(3,4,56) ',
-                                background: 'red'
-                            }}>{message.message}</p>
+                            return <p className="outcome-message" key={i}
+                                style={{
+                                    float: 'background: rgb(3,4,56) ',
+                                    background: 'red'
+                                }} {...deleteMessage}>{message.message}</p>
                         }
                         else {
-                            return <p className='income-message'key={i} style={{
-                                float: 'left',
-                                background: 'green'
-                            }}>{message.message}</p>
+                            return <p className='income-message' key={i}
+                                style={{
+                                    float: 'left',
+                                    background: 'green'
+                                }}{...deleteMessage}>{message.message}</p>
                         }
                     })
                 }
