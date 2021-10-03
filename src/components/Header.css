@@ -10,7 +10,7 @@
     box-shadow: 1px 1px 10px hsl(199, 41%, 27%);
 }
 
- li{
+.header-li{
  text-decoration: none;
     list-style: none;
     text-align: center;
