@@ -45,13 +45,14 @@ const LoginWithGoogle = () => {
                     .then(data => {
                         window.localStorage.setItem('user', JSON.stringify(data));
                         console.log('all questions :', allQuestions);
+                        if(allQuestions === null){
+                            setWaitForLogin(false)
+                        }
                         if (allQuestions !== null) {
                             history.push(`/QChallenge/?id=${data.data.id}`);
                             console.log('question is null');
                             setWaitForLogin(true);
-                        } else {
-                            setWaitForLogin(false)
-                        }
+                        } 
                         // console.log('[Login sucess] current user:', res.profileObj.email);
                     })
             }

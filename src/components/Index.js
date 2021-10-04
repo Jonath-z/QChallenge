@@ -47,12 +47,12 @@ const Index = () => {
     const [closeDiscussionWindow, setCloseDiscussionWindow] = useState(false);
     const [openDiscution, setOpendiscution] = useState(false);
     const [status, setStatus] = useState({});
-    const [isOnline, setIsOnline] = useState(false);
     const [message, setMessage] = useState(null);
+    const [isSearch, setIsSearch] = useState();
     const [isDuel, setIsDuel] = useState(false);
     const [newLeftDuelPosition, setNewLeftDuelPosition] = useState('unset');
     const [newRightDuelPostion, setNewRightDuelPosition] = useState('0');
-    const newMessage= useRef(null);
+    const newMessage = useRef(null);
     const receiverID = useRef();
     const reciverPseudo = useRef();
     const receiverAvatar = useRef();
@@ -64,6 +64,7 @@ const Index = () => {
     const [showDuelDetails, setShowDuelDetails] = useState(true);
     const [duelID, setDuelID] = useState();
     const [NewduelLevel, setNewDuelLevel] = useState();
+    const [newOnlineUser, setNewOnlineUser] = useState();
     // const [NewduelTheme, setNewDuelTheme] = useState();
     const [showDuelInputID, setShowDuelInputID] = useState(true);
     const [getDuelID, setGetDuelID] = useState();
@@ -78,13 +79,13 @@ const Index = () => {
         const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
         setAllMessages(JSON.parse(initialGetMessages));
     }, []);
-// **************************SOCKET IO CONNECTION ***********************************//
+    // **************************SOCKET IO CONNECTION ***********************************//
     useEffect(() => {
         socket.on('connect', () => {
             console.log(socket.id);
             const socketID = socket.id;
             socket.emit('user-socket-id', ({ userID, socketID }));
-             const userData = JSON.parse(localStorage.getItem('user'));
+            const userData = JSON.parse(localStorage.getItem('user'));
             userData.data.socketID = socketID;
             localStorage.setItem('user', JSON.stringify(userData));
         });
@@ -93,12 +94,13 @@ const Index = () => {
         if (navigator.onLine === true) {
             socket.emit('online', ({ userID }));
         }
-    },[]);
-// ********************* LISTEN EACH SOCKET FROM SERVER ****************************//
-useEffect(() => { 
+    }, [newOnlineUser]);
+    // ********************* LISTEN EACH SOCKET FROM SERVER ****************************//
+    useEffect(() => {
         socket.on('online-user', ({ userID, status }) => {
             setStatus({ userID, status });
             console.log('online-user', userID);
+            setNewOnlineUser(userID);
         });
         socket.on('receive-message', ({ message, senderID, receiver, senderPseudo }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
@@ -193,7 +195,7 @@ useEffect(() => {
         });
     });
 
-    const openChatWindow = ()=>{
+    const openChatWindow = () => {
         setOpendiscution(true);
     }
     const closeChatWindow = () => {
@@ -204,7 +206,7 @@ useEffect(() => {
         setCloseDiscussionWindow(false);
     }
 
-    const notify = (message,sender) => {
+    const notify = (message, sender) => {
         toast(<CustomNotification message={message} sender={sender} />, {
             autoClose: true
         });
@@ -216,7 +218,7 @@ useEffect(() => {
         const receiver = receiverID.current;
         console.log(senderID, receiver);
         const senderPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo;
-        socket.emit('send-message', ({ message, senderID, receiverID,senderPseudo }));
+        socket.emit('send-message', ({ message, senderID, receiverID, senderPseudo }));
         newMessage.current = message;
         const getNewArray = localStorage.getItem('messages');
         const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArray, 'QChallenge001').toString(CryptoJS.enc.Utf8));
@@ -227,9 +229,9 @@ useEffect(() => {
             receiver: receiverID.current
         })
         
-       const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
+        const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
         localStorage.setItem('messages', encryptedMessages);
-        const newDecription = localStorage.getItem('messages'); 
+        const newDecription = localStorage.getItem('messages');
         setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
         // console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
         textarea.value = '';
@@ -246,7 +248,7 @@ useEffect(() => {
             const uniqueDuelID = uuid();
             setDuelID(uniqueDuelID);
             localStorage.setItem('duelID', uniqueDuelID);
-            setDuelCreator( JSON.parse(localStorage.getItem('user')).data.pseudo);
+            setDuelCreator(JSON.parse(localStorage.getItem('user')).data.pseudo);
         }
         if (e.target.innerHTML === 'Join the duel') {
             setIsDuel(true);
@@ -322,8 +324,9 @@ useEffect(() => {
             {/* <allUsersContex.Provider value={getUsers()}> */}
             <Header
                 openDuel={openDuel}
+                setIsResearch={setIsSearch}
             />
-            {isDuel && showDuelDetails && <DuelDetails
+           {isDuel && showDuelDetails && !isSearch &&<DuelDetails
                 duelID={duelID}
                 duelLevel={localStorage.getItem('duelLevel')}
                 showDuelDetails={showDuelDetailsHandler}
@@ -333,7 +336,7 @@ useEffect(() => {
                 }}
             />}
             {
-                isDuel && <DuelPanel
+                isDuel && !isSearch && <DuelPanel
                     duelLevel={NewduelLevel}
                     duelCreatorPseudo={duelCreator}
                     duelJoinerPseudo={duelJoiner}
@@ -350,7 +353,7 @@ useEffect(() => {
                 />
             }
             {
-                isDuel && showDuelInputID && <InputDuelID
+                isDuel && showDuelInputID && !isSearch && <InputDuelID
                     getDuelIDFromJoiner={(e) => {
                         setGetDuelID(e.target.value);
                     }}
@@ -360,27 +363,28 @@ useEffect(() => {
                     }}
                 />
             }
-            <Gamespace
-                isGameDuel={isDuel}
-                duelSettingReady={duelSettingReady}
-                NewLeftPosition={newLeftDuelPosition}
-                NewRightPosition={newRightDuelPostion}
-                startTheDuel={startTheDuel}
-                showStartButton={showStartButton}
-                setShowStartButton={setShowStartButton}
-                duelScoreForSending={setDuelScore}
-                sendScore={sendDuelScore}
-            />
-            <DiscutionIcon
+            { !isSearch && <Gamespace
+                    isGameDuel={isDuel}
+                    duelSettingReady={duelSettingReady}
+                    NewLeftPosition={newLeftDuelPosition}
+                    NewRightPosition={newRightDuelPostion}
+                    startTheDuel={startTheDuel}
+                    showStartButton={showStartButton}
+                    setShowStartButton={setShowStartButton}
+                    duelScoreForSending={setDuelScore}
+                    sendScore={sendDuelScore}
+                />}
+            { !isSearch && <DiscutionIcon
                 openChatWindow={openChatWindow}
-            />
-            {openDiscution && <Chat
+            />}
+
+            {openDiscution && !isSearch && <Chat
                 closeChatWindow={closeChatWindow}
                 openChat={(e) => {
-                    const  getMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+                    const getMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
                     setAllMessages(JSON.parse(getMessages));
                     console.log(JSON.parse(getMessages).length);
-                    reciverPseudo.current = e.target.innerText;
+                      reciverPseudo.current = e.target.innerText;
                     const receiver = users.find(data => data.pseudo === reciverPseudo.current);
                     // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
                     receiverID.current = receiver.id;
@@ -389,7 +393,7 @@ useEffect(() => {
                 }}
                 status={status}
             />}
-            {closeDiscussionWindow && <DiscussionWindow
+            {closeDiscussionWindow && !isSearch && <DiscussionWindow
                 receiverAvatar={receiverAvatar.current}
                 receiverPseudo={reciverPseudo.current}
                 closeDiscussionWindow={close}

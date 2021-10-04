@@ -5,6 +5,7 @@ import './Theme.css';
 import './Gamewindow.css';
 import Gamewindow from "./Gamewindow";
 import ScoreBar from "./ScoreBar";
+import Skeleton from 'react-loading-skeleton';
 import ControlTools from "./ControlTools";
 import generateOptionForContryAndCapital from '../modules/option';
 import generateOptionsOtherThanCountryAndCapital from "../modules/generateOption";
@@ -244,7 +245,11 @@ const Gamespace = (props) => {
                         <div className='themeContainer'>
                             <p key={uuid()} className='theme' onClick={openChallenge}>{theme.theme}</p>
                         </div>
-                    )) : <p>loading Challenges <FaSpinner className='spaniner' /></p>
+                    )) : <div className='themeConatainer '>
+                            <Skeleton className='skeleton'/>
+                         </div>
+            
+                        // <p>loading Challenges <FaSpinner className='spaniner' /></p>
                 }
 
             </div>}

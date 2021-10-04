@@ -1,6 +1,11 @@
 .spaniner{
     animation: spine infinite 1s linear;
 }
+.skeleton{
+    height: 3em;
+    background: rgb(3, 4, 56);
+    color: grey;
+}
 @keyframes spine {
     from{
         transform: rotate(0deg);

@@ -15,7 +15,8 @@ const getAllMessages = require('./routes/getAllMessages.js');
 const updateFontColor = require('./routes/updateFontColor.js');
 const deleteMessages = require('./routes/deleteMessage.js');
 const getUserData = require('./routes/getUserData.js');
-const updateProfileImage = require('./routes/update/userProfileImage.js')
+const updateProfileImage = require('./routes/update/userProfileImage.js');
+const updateProfileDetails = require('./routes/update/updateProfileDetails');
 const Grids = require('gridfs-stream');
 
 mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -37,6 +38,7 @@ app.use('/update-font-color', updateFontColor);
 app.use('/delete-messages', deleteMessages);
 app.use('/get-user-data', getUserData);
 app.use('/upgate-profile/image', updateProfileImage);
+app.use('/update-user-datails', updateProfileDetails);
 
 io.on('connect', (socket) => {
     console.log(socket.id);

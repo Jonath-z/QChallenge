@@ -27,7 +27,6 @@ const DiscussionWindow = (props) => {
     const [showMenu, setShowMenue] = useState('block');
     const [isMenue, setIsMenue] = useState(true);
     const [messagesForTrash, setMessageForTrash] = useState(null);
-    const [deleteComponent, setDeleteComponent] = useState(null);
     const setBackgroungColor = (e) => {
         // console.log(e.target.innerHTML);
         setDiscussionBacgroungColor(e.target.innerHTML);
@@ -55,7 +54,6 @@ const DiscussionWindow = (props) => {
     }, {
         onFinish: event => {
             setMessageForTrash(event.target.innerHTML);
-            setDeleteComponent(event);
         },
         captureEvent:true,
         threshold: 500,
@@ -65,13 +63,12 @@ const DiscussionWindow = (props) => {
         if (messagesForTrash !== null) {
             const allmessages = localStorage.getItem('messages');
             const decryptMessages = JSON.parse(CryptoJS.AES.decrypt(allmessages, 'QChallenge001').toString(CryptoJS.enc.Utf8));
-            console.log('initial lengeth',decryptMessages.length);
-            let newMessages = decryptMessages.filter(({ message,receiver,sender }) => message !== messagesForTrash && receiver === userID || sender === user);
-            CryptoJS.AES.encrypt(JSON.stringify(decryptMessages), 'QChallenge001');
-            console.log('length after deletion', newMessages.length);
-            localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), 'QChallenge001'));
-            const chekNewLength = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8)).length;
-            console.log('ckek new lenght:', chekNewLength);
+            console.log('initial lengeth', decryptMessages.length);
+            let newMessages = decryptMessages.filter(({ message}) => message !== messagesForTrash);
+
+            // localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), 'QChallenge001'));
+            // const chekNewLength = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8)).length;
+            // console.log('ckek new lenght:', chekNewLength);
 
             fetch('../delete-messages', {
                 method: 'POST',
@@ -86,14 +83,11 @@ const DiscussionWindow = (props) => {
             })
             props.setNewMessages(newMessages);
         }
-        if (deleteComponent !== null) {
-            // deleteComponent.target.remove();
-            console.log('delete node', deleteComponent);
-        }
-        setShowMenue('block');
+        // setShowMenue('block');
         setShowTrash('none');
-        setIsMenue(true);
+        // setIsMenue(true);
     }
+
     return (
         <div className='discussion-window' style={{ background: DiscussionBacgroungColor }} >
             <div className='receiver-details'>

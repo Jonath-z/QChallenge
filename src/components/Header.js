@@ -1,30 +1,73 @@
 // import { FaSearch } from 'react-icons/fa';
-import { useState,useRef,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useHistory } from 'react-router';
+import CryptoJS from 'crypto-js';
 import './Header.css';
 
 
 const Header = (props) => {
     const [placeholder, setPlaceholder] = useState('Search');
-    let history = useHistory();
+    const [allUsers, setAllUser] = useState();
+    const [searchPseudo, setSearchPseudo] = useState(null);
 
+    useEffect(() => {
+        setAllUser(
+            () => {
+                const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
+                return JSON.parse(usersDecrypted);
+            }
+        )
+    }, []);
+
+    let history = useHistory();
     const setFucus = () => {
         setPlaceholder('');
+        props.setIsResearch(true)
         return () => {
             setPlaceholder('Search');
         }
     }
     const setFucusOut = () => {
         setPlaceholder('Search');
+        props.setIsResearch(false)
     }
     const openAccount = () => {
         history.push(`/Account/?id=${JSON.parse(localStorage.getItem('user')).data.id}`);
     }
+
+    const research = (e) => {
+        allUsers.map(({ pseudo }) => {
+            if (typeof pseudo === 'string') {
+                if (pseudo.includes(e.target.value.trim())) {
+                    console.log(pseudo);
+                    setSearchPseudo(pseudo);
+                    // getSearchResult(pseudo);
+                }
+            }
+        });
+    }
+    const getSearchResult = (searchResult) => {
+        if (searchResult !== null && searchResult !== '') {
+            const usersDecrypted = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001')
+                .toString(CryptoJS.enc.Utf8));
+            const result = usersDecrypted.filter(({ pseudo }) => searchResult === pseudo)
+            console.log(result);
+        }
+    }
+    getSearchResult(searchPseudo);
+
     return (
         <div className="headerContainer">
             <ul className='headerComponent'>
                 <li className='header-li'><h1 className='appNameNav'>QChallenge</h1></li>
-                <li className='header-li'><input type='search' className="searchBar" placeholder={placeholder} onFocus={setFucus} onBlur={setFucusOut}></input></li>
+                <li className='header-li'><input
+                    type='search'
+                    className="searchBar"
+                    placeholder={placeholder}
+                    onFocus={setFucus}
+                    onBlur={setFucusOut}
+                    onChange={research}>
+                </input></li>
                 <li className='optionHeader option header-li'>Options
                     <div className='Options-dropList'>
                         <span className='duel-option' onClick={props.openDuel}>Create the duel</span><br/><br/>

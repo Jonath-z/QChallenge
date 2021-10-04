@@ -33,7 +33,7 @@ const Account = () => {
         getUser();
         setUserProfile(JSON.parse(localStorage.getItem('user')));
     }, []);
-    // ************************** DISPLAY UPDATE INPUT ***************************//
+    // ************************** DISPLAY UPDATE INPUTS ***************************//
     const openInputPseudo = () => {
         if (showInputPseudo === 'block') {
             setShowInputPseudo('none');
@@ -65,6 +65,7 @@ const Account = () => {
         const uploadTask = ref.put(file[0]);
         uploadTask.on('state_changed', (snapshot) => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            document.createElement('progress').value = progress;
         },
             (err) => {
                 console.log(err);
@@ -87,7 +88,7 @@ const Account = () => {
                 })
             });
     }
-    // ***************************** UPDATE USER EMAIL && PASSWORD *********************************//
+// *************************** CHEK INPUT USER NEWPASSWORD && NEW EMAIL VALUES ***************************//
     const getNewEmail = (e) => {
         setNewEmail(e.target.value);
         if (e.target.value.length > 0) {
@@ -117,21 +118,42 @@ const Account = () => {
         }
 
     }, [newEmail, newPseudo]);
-    const updateProfileDetails = async () => {
-        await fetch('../update-user-datails', {
-            method: 'POST',
-            headers: {
-                'accept': '*/*',
-                'content-type':'application/json'
-            },
-            body: JSON.stringify({
-                newEmail: newEmail,
-                newPseudo: newPseudo,
-                userID: JSON.parse(localStorage.getItem('user')).data.id
+// ***************************** UPDATE USER EMAIL && PASSWORD *********************************//
+    const updateProfileDetails = () => {
+        const update = async () => {
+            await fetch('../update-user-datails', {
+                method: 'POST',
+                headers: {
+                    'accept': '*/*',
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newEmail: newEmail,
+                    newPseudo: newPseudo,
+                    userID: JSON.parse(localStorage.getItem('user')).data.id
+                })
             })
-        })
-    
+        }
+        update();
+        if (newPseudo !== '') {
+            const user = JSON.parse(localStorage.getItem('user'));
+            user.data.pseudo = newPseudo;
+            localStorage.setItem('user', JSON.stringify(user));
+            console.log('newPSeudo', user.data.pseudo);
+            document.querySelector('.inputNewPseudo').value = '';
+            setNewPseudo('');
+        }
+        if (newEmail !== '') {
+            setUserProfileEmail(newEmail);
+            console.log('newEmail', newEmail);
+            setNewEmail('');
+            document.querySelector('.inputNewEmail').value = '';
+        }
+        setShowInputEmail('none');
+        setShowInputPseudo('none');
+        
     }
+
     return (
         <div className='account'>
             {userProfile !== undefined && <div className='user-profile-container'>
@@ -140,7 +162,7 @@ const Account = () => {
                     <div className='plus-icon-container'><BsPlusCircleFill className='plus-icon' onClick={openFolder} /></div>
                 </div>
                 <div className='profile-details-container'>
-                    <p className='pseudo' onClick={openInputPseudo}>Pseudo: {userProfile.data.pseudo}</p>
+                    <p className='pseudo' onClick={openInputPseudo}>Pseudo: {JSON.parse(localStorage.getItem('user')).data.pseudo}</p>
                     <input type='text' placeholder='New pseudo' className='inputNewPseudo' onChange={getNewPseudo} style={{
                         display: showInputPseudo
                     }} />
