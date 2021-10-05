@@ -236,8 +236,7 @@ const Gamespace = (props) => {
  
     return (
         <div className='gamespaceDiv'>
-            
-            {!props.isGameDuel && <div className='ThemeContainer'>
+            {!props.isGameDuel && !props.research && <div className='ThemeContainer'>
                 <h3>Challenges</h3>
                 
                 {

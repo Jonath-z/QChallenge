@@ -14,6 +14,7 @@ import DiscussionWindow from "./chat/DiscussionWindow";
 import DuelDetails from "./duelComponent/DuelDetails";
 import InputDuelID from "./duelComponent/InputDuelID";
 import DuelPanel from "./duelComponent/DuelPanel";
+import Research from "./Research";
 
 const socket = io('http://localhost:5050');
 const localSearch = window.location.search;
@@ -48,10 +49,7 @@ const Index = () => {
     const [openDiscution, setOpendiscution] = useState(false);
     const [status, setStatus] = useState({});
     const [message, setMessage] = useState(null);
-    const [isSearch, setIsSearch] = useState();
-    const [isDuel, setIsDuel] = useState(false);
-    const [newLeftDuelPosition, setNewLeftDuelPosition] = useState('unset');
-    const [newRightDuelPostion, setNewRightDuelPosition] = useState('0');
+
     const newMessage = useRef(null);
     const receiverID = useRef();
     const reciverPseudo = useRef();
@@ -61,6 +59,9 @@ const Index = () => {
         const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
         return JSON.parse(usersDecrypted);
     });
+    const [newLeftDuelPosition, setNewLeftDuelPosition] = useState('unset');
+    const [newRightDuelPostion, setNewRightDuelPosition] = useState('0');
+    const [isDuel, setIsDuel] = useState(false);
     const [showDuelDetails, setShowDuelDetails] = useState(true);
     const [duelID, setDuelID] = useState();
     const [NewduelLevel, setNewDuelLevel] = useState();
@@ -75,6 +76,11 @@ const Index = () => {
     const [showStartButton, setShowStartButton] = useState(true);
     let [creatorScore, setCreatorScore] = useState(0);
     let [joinerScore, setJoinerScore] = useState(0);
+
+    const [isSearch, setIsSearch] = useState();
+    const [searchResult, setSearchResults] = useState();
+    const [searchResultPseudo, setSearchResultPseudo] = useState();
+    const [searchResultProfile, setSearchResultProfile] = useState();
     useEffect(() => {
         const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
         setAllMessages(JSON.parse(initialGetMessages));
@@ -325,6 +331,8 @@ const Index = () => {
             <Header
                 openDuel={openDuel}
                 setIsResearch={setIsSearch}
+                setSearchResult={setSearchResults}
+                searchClosed={isSearch}
             />
            {isDuel && showDuelDetails && !isSearch &&<DuelDetails
                 duelID={duelID}
@@ -363,7 +371,7 @@ const Index = () => {
                     }}
                 />
             }
-            { !isSearch && <Gamespace
+            <Gamespace
                     isGameDuel={isDuel}
                     duelSettingReady={duelSettingReady}
                     NewLeftPosition={newLeftDuelPosition}
@@ -372,28 +380,33 @@ const Index = () => {
                     showStartButton={showStartButton}
                     setShowStartButton={setShowStartButton}
                     duelScoreForSending={setDuelScore}
-                    sendScore={sendDuelScore}
-                />}
+                sendScore={sendDuelScore}
+                research={isSearch}
+                />
             { !isSearch && <DiscutionIcon
                 openChatWindow={openChatWindow}
             />}
 
-            {openDiscution && !isSearch && <Chat
+            {openDiscution && isSearch && <Chat
                 closeChatWindow={closeChatWindow}
                 openChat={(e) => {
                     const getMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
                     setAllMessages(JSON.parse(getMessages));
                     console.log(JSON.parse(getMessages).length);
-                      reciverPseudo.current = e.target.innerText;
+                    reciverPseudo.current = e.target.innerText;
                     const receiver = users.find(data => data.pseudo === reciverPseudo.current);
                     // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
+                    console.log(receiver, reciverPseudo.current);
                     receiverID.current = receiver.id;
                     receiverAvatar.current = receiver.avatar;
                     setCloseDiscussionWindow(true);
                 }}
                 status={status}
+                searchResult={isSearch}
+                searchResultProfile={searchResultProfile}
+                searchResultPseudo={searchResultPseudo}
             />}
-            {closeDiscussionWindow && !isSearch && <DiscussionWindow
+            {closeDiscussionWindow &&  <DiscussionWindow
                 receiverAvatar={receiverAvatar.current}
                 receiverPseudo={reciverPseudo.current}
                 closeDiscussionWindow={close}
@@ -407,6 +420,15 @@ const Index = () => {
                 setNewMessages={setAllMessages}
             />}
             {/* </allUsersContex.Provider> */}
+            {
+                isSearch && <Research
+                    result={searchResult}
+                    closeResearch={setIsSearch}
+                    goToChatUserPseudo={setSearchResultPseudo}
+                    goToChatUserProfile={setSearchResultProfile}
+                    openNewChat={openChatWindow}
+                />
+            }
         </>
     );
 }

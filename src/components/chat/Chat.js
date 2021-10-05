@@ -23,7 +23,7 @@ const Chat = (props) => {
         <>
             <div className='chat-div-container'>
                 <FaArrowCircleRight className='arrowRight' onClick={props.closeChatWindow} />
-                <div className='chat-user-div-container'>
+                {!props.searchResult && <div className='chat-user-div-container'>
                     {
                         users === null ? <div className='chat-user-div-container' >
                             <Skeleton />
@@ -33,7 +33,7 @@ const Chat = (props) => {
                                     <p>{<img src={user.avatar} className='userAvatar' alt='profile' /> || <Skeleton />}</p>
                                     <div className='pseudo-Container' onClick={props.openChat}>
                                         <p className="pseudo">{user.pseudo}</p>
-                                        {props.status.userID === user.id && props.status.status === true &&<p className='online-status'>online</p>}
+                                        {props.status.userID === user.id && props.status.status === true && <p className='online-status'>online</p>}
                                     </div>
                                 </div>
                             )
@@ -41,7 +41,17 @@ const Chat = (props) => {
                         })
                     }
 
-                </div>
+                </div>}
+                {
+                    props.searchResult && <div className='chat-user-div-container'>
+                        <div className='chat-user-div'>
+                            <p>{<img src={props.searchResultProfile} className='userAvatar' alt='profile' /> || <Skeleton />}</p>
+                            <div className='pseudo-Container' onClick={props.openChat}>
+                                <p className="pseudo">{props.searchResultPseudo}</p>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div >
         </>
     );

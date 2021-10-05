@@ -9,7 +9,6 @@ const Header = (props) => {
     const [placeholder, setPlaceholder] = useState('Search');
     const [allUsers, setAllUser] = useState();
     const [searchPseudo, setSearchPseudo] = useState(null);
-
     useEffect(() => {
         setAllUser(
             () => {
@@ -18,6 +17,16 @@ const Header = (props) => {
             }
         )
     }, []);
+    useEffect(() => {
+        if (!props.searchClosed) {
+            setFucusOut();
+            const inputSearch = document.querySelector('.searchBar');
+            inputSearch.value = ''
+            setPlaceholder('Search');
+            setSearchPseudo(null);
+            // console.log(inputSearch);
+        }
+    },[props.searchClosed])
 
     let history = useHistory();
     const setFucus = () => {
@@ -29,7 +38,6 @@ const Header = (props) => {
     }
     const setFucusOut = () => {
         setPlaceholder('Search');
-        props.setIsResearch(false)
     }
     const openAccount = () => {
         history.push(`/Account/?id=${JSON.parse(localStorage.getItem('user')).data.id}`);
@@ -46,16 +54,18 @@ const Header = (props) => {
             }
         });
     }
-    const getSearchResult = (searchResult) => {
-        if (searchResult !== null && searchResult !== '') {
-            const usersDecrypted = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001')
-                .toString(CryptoJS.enc.Utf8));
-            const result = usersDecrypted.filter(({ pseudo }) => searchResult === pseudo)
-            console.log(result);
+    useEffect(() => {
+        const getSearchResult = (searchResult) => {
+            if (searchResult !== null && searchResult !== '') {
+                const usersDecrypted = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001')
+                    .toString(CryptoJS.enc.Utf8));
+                const result = usersDecrypted.filter(({ pseudo }) => searchResult === pseudo)
+                console.log(result);
+                props.setSearchResult(result);
+            }
         }
-    }
-    getSearchResult(searchPseudo);
-
+        getSearchResult(searchPseudo);
+    }, [searchPseudo]);
     return (
         <div className="headerContainer">
             <ul className='headerComponent'>
