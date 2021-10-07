@@ -42,6 +42,9 @@
   background: rgb(3,4,56) !important;
   color: white;
 }
+.time-outCome{
+    font-size: 8px;
+}
 
 ::-webkit-scrollbar {
     width: 5px;
@@ -146,6 +149,7 @@ border-top-right-radius: 10px;
 }
 .color-option{
     margin-left: 10px;
+    margin-top: 10px;
 }
 .color-option:hover{
     font-size: 15px;

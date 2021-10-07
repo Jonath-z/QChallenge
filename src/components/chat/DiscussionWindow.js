@@ -54,6 +54,7 @@ const DiscussionWindow = (props) => {
     }, {
         onFinish: event => {
             setMessageForTrash(event.target.innerHTML);
+            console.log(event.target.firstChild.data);
         },
         captureEvent:true,
         threshold: 500,
@@ -66,7 +67,7 @@ const DiscussionWindow = (props) => {
             console.log('initial lengeth', decryptMessages.length);
             let newMessages = decryptMessages.filter(({ message}) => message !== messagesForTrash);
 
-            // localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), 'QChallenge001'));
+            localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), 'QChallenge001'));
             // const chekNewLength = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8)).length;
             // console.log('ckek new lenght:', chekNewLength);
 
@@ -83,9 +84,9 @@ const DiscussionWindow = (props) => {
             })
             props.setNewMessages(newMessages);
         }
-        // setShowMenue('block');
+        setShowMenue('block');
         setShowTrash('none');
-        // setIsMenue(true);
+        setIsMenue(true);
     }
 
     return (
@@ -109,22 +110,26 @@ const DiscussionWindow = (props) => {
                 </p>
             </div>
             <ScrollableFeed className='message-container'>
-                {
+                {   
                     props.allMessages.map((message, i) => {
-                        if (message.sender === userID) {
-                            return <p className="outcome-message" key={i}
+                        if (message.sender === props.senderID && message.receiver === props.receiverID) {
+                            return(
+                            <p className="outcome-message" key={i}
                                 style={{
                                     float: 'background: rgb(3,4,56) ',
                                     background: 'red'
-                                }} {...deleteMessage}>{message.message}</p>
+                                }} {...deleteMessage}>{message.message} <span className='time-outCome'>{message.time}</span></p>
+                                
+                            ) 
                         }
-                        else {
+                        else if (message.receiver === props.senderID && message.sender === props.receiverID) {
                             return <p className='income-message' key={i}
                                 style={{
                                     float: 'left',
                                     background: 'green'
-                                }}{...deleteMessage}>{message.message}</p>
+                                }}{...deleteMessage}>{message.message}<span className='time-outIncome'>{message.time}</span></p>
                         }
+                        return '';
                     })
                 }
 
