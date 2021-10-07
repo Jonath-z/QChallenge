@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 const clientID = '688414082981-656lplq2khvpkpucff94dv5080u79h9f.apps.googleusercontent.com'
 // const clientSecret = 'QFVMBStjdCTy8DmpzdALow7D';
-const allQuestions = JSON.parse(localStorage.getItem('userQuestions')); 
 
 const LoginWithGoogle = () => {
     let history = useHistory();
@@ -43,14 +42,15 @@ const LoginWithGoogle = () => {
                 })
                     .then(res => { return res.json() })
                     .then(data => {
+                        const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
                         window.localStorage.setItem('user', JSON.stringify(data));
                         console.log('all questions :', allQuestions);
-                            if (allQuestions !== null) {
-                                history.push(`/QChallenge/?id=${data.data.id}`);
-                                console.log('question is null');
-                                setWaitForLogin(true);
-                            } 
-                    })
+                        if (allQuestions !== null) {
+                            history.push(`/QChallenge/?id=${data.data.id}`);
+                            console.log('question is null');
+                            setWaitForLogin(true);
+                        }
+                    });
             }
             registerUSer();
         }

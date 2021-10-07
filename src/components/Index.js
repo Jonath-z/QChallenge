@@ -54,7 +54,7 @@ const Index = () => {
     const receiverID = useRef();
     const reciverPseudo = useRef();
     const receiverAvatar = useRef();
-    const [allMessages, setAllMessages] = useState();
+    const [allMessages,setAllMessages] = useState();
     const [users] = useState(() => {
         const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
         return JSON.parse(usersDecrypted);
@@ -72,19 +72,19 @@ const Index = () => {
     const [duelCreator, setDuelCreator] = useState();
     const [duelJoiner, setDuelJoiner] = useState();
     const [duelSettingReady, setDuelSettingReady] = useState(false);
-    const [duelScore, setDuelScore] = useState(0);
+    const [setDuelScore] = useState(0);
     const [showStartButton, setShowStartButton] = useState(true);
     let [creatorScore, setCreatorScore] = useState(0);
     let [joinerScore, setJoinerScore] = useState(0);
 
     const [isSearch, setIsSearch] = useState();
-    const [searchResult, setSearchResults] = useState();
+    const [searchResult, setSearchResults] = useState('');
     const [searchResultPseudo, setSearchResultPseudo] = useState();
     const [searchResultProfile, setSearchResultProfile] = useState();
     useEffect(() => {
         const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
         setAllMessages(JSON.parse(initialGetMessages));
-    }, []);
+    },[]);
     // **************************SOCKET IO CONNECTION ***********************************//
     useEffect(() => {
         socket.on('connect', () => {
@@ -108,15 +108,16 @@ const Index = () => {
             console.log('online-user', userID);
             setNewOnlineUser(userID);
         });
-        socket.on('receive-message', ({ message, senderID, receiver, senderPseudo }) => {
+        socket.on('receive-message', ({ message, senderID, receiver, senderPseudo,time }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
             const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArrayOfMessage, 'QChallenge001').toString(CryptoJS.enc.Utf8));
             decryptMessage.push({
                 id: `${Math.random(Math.floor() * 10)}`,
                 message: message,
                 sender: senderID,
-                receiver: receiver
-            })
+                receiver: receiver,
+                time: time
+            });
             
             const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
             localStorage.setItem('messages', encryptedMessages);
@@ -219,12 +220,14 @@ const Index = () => {
     }
     const sendMessage = (e) => {
         e.preventDefault();
-        const textarea = document.querySelector('.input-container-textarea')
+        const today = new Date();
+        const time = `${today.getHours()}:${today.getMinutes()}`;
+        const textarea = document.querySelector('.input-container-textarea');
         const senderID = userID;
         const receiver = receiverID.current;
         console.log(senderID, receiver);
         const senderPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo;
-        socket.emit('send-message', ({ message, senderID, receiverID, senderPseudo }));
+        socket.emit('send-message', ({ message, senderID, receiverID, senderPseudo, time }));
         newMessage.current = message;
         const getNewArray = localStorage.getItem('messages');
         const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArray, 'QChallenge001').toString(CryptoJS.enc.Utf8));
@@ -232,7 +235,8 @@ const Index = () => {
             id: Math.random(Math.floor() * 10),
             message: message,
             sender: senderID,
-            receiver: receiverID.current
+            receiver: receiverID.current,
+            time:time
         })
         
         const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
@@ -331,7 +335,7 @@ const Index = () => {
             <Header
                 openDuel={openDuel}
                 setIsResearch={setIsSearch}
-                setSearchResult={setSearchResults}
+                setSearchInputValue={setSearchResults}
                 searchClosed={isSearch}
             />
            {isDuel && showDuelDetails && !isSearch &&<DuelDetails
@@ -383,11 +387,11 @@ const Index = () => {
                 sendScore={sendDuelScore}
                 research={isSearch}
                 />
-            { !isSearch && <DiscutionIcon
+            {  <DiscutionIcon
                 openChatWindow={openChatWindow}
             />}
 
-            {openDiscution && isSearch && <Chat
+            {openDiscution && <Chat
                 closeChatWindow={closeChatWindow}
                 openChat={(e) => {
                     const getMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
@@ -409,6 +413,8 @@ const Index = () => {
             {closeDiscussionWindow &&  <DiscussionWindow
                 receiverAvatar={receiverAvatar.current}
                 receiverPseudo={reciverPseudo.current}
+                receiverID={receiverID.current}
+                senderID = {userID}
                 closeDiscussionWindow={close}
                 getMessage={(e) => {
                     const messageForSending = e.target.value;
@@ -416,7 +422,8 @@ const Index = () => {
                     // console.log('allMessage', allMessages);
                 }}
                 sendMessage={sendMessage}
-                allMessages={JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8))}
+                // allMessages={JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8))}
+                allMessages={allMessages}
                 setNewMessages={setAllMessages}
             />}
             {/* </allUsersContex.Provider> */}

@@ -92,6 +92,7 @@ progress::-moz-progress-bar {
     z-index: 2;
     margin-right: 20px;
     margin-top: 10px;
+    list-style: none;
 }
 .level-list-li:hover{
     font-size: 18px;
