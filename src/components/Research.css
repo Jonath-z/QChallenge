@@ -36,7 +36,9 @@
     border-radius: 10px;
     transform: translateY(20px);
     transition: transform 1s;
+    margin-top: 5px;
 }
+
 .user-pseudo{
     margin-left: 20px;
 }
@@ -46,13 +48,10 @@
     cursor: pointer;
     margin-top: 5px;
 }
-.icons-container{
-    /* margin-left: 200px; */
+.message-icon{
     position: absolute;
     right: 80px;
     margin-top: 10px;
-}
-.message-icon,.user-icon{
     font-size: 35px;
     margin-left: 20px;
     cursor: pointer;
