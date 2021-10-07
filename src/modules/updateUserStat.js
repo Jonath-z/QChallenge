@@ -1,10 +1,10 @@
 
-const updateUserStat = async (Newscore, theme, level) => {
+const updateUserStat = async (Newscore, challengeTheme, level) => {
     const param = window.location.search;
     const userID = param.replace('?id=', '');
     const userData = JSON.parse(localStorage.getItem('user'));
-    userData.data.score.find(({ theme }) => theme === theme).score = Newscore;
-    userData.data.score.find(({ theme }) => theme === theme).level = level
+    userData.data.score.find(({ theme }) => theme === challengeTheme).score = Newscore;
+    userData.data.score.find(({ theme }) => theme === challengeTheme).level = level
     userData.duelLevel = level;
     localStorage.setItem('user', JSON.stringify(userData));
     try {
@@ -16,7 +16,7 @@ const updateUserStat = async (Newscore, theme, level) => {
             },
             body: JSON.stringify({
                 id: userID,
-                theme: theme,
+                theme: challengeTheme,
                 score: Newscore,
                 level: level,
                 duelLevel: level
