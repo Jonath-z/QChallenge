@@ -45,7 +45,7 @@ const Chat = (props) => {
                 {
                     props.searchResult && <div className='chat-user-div-container'>
                         <div className='chat-user-div'>
-                            <p>{<img src={props.searchResultProfile} className='userAvatar' alt='profile' /> || <Skeleton />}</p>
+                            <p>{<img src={props.searchResultProfile} className='userAvatar' alt='' /> || <Skeleton />}</p>
                             <div className='pseudo-Container' onClick={props.openChat}>
                                 <p className="pseudo">{props.searchResultPseudo}</p>
                             </div>
