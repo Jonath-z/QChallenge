@@ -1,6 +1,6 @@
 
-import { useState, useEffect, useRef } from "react";
-import { FaSpinner } from 'react-icons/fa';
+import { useState, useEffect, useRef} from "react";
+// import { FaSpinner } from 'react-icons/fa';
 import './Theme.css';
 import './Gamewindow.css';
 import Gamewindow from "./Gamewindow";
@@ -33,7 +33,6 @@ const Gamespace = (props) => {
     let timmer = useRef(maxTimmer.current);
     let interval = useRef();
     const questions = useRef(null);
-    const [showStart] = useState(props.showStartButton);
     const [chrono,setChrono] = useState(timmer.current);
     const [showQuestion, setShowQuestion] = useState(false);
     const [showDropLevelList, setShowDropLevelList] = useState(true);
@@ -68,6 +67,8 @@ const Gamespace = (props) => {
         }
         allQuestions();
     }, []);
+
+
     useEffect(() => {
         if (!props.isGameDuel) {
             const userData = JSON.parse(localStorage.getItem('user'));
@@ -83,9 +84,9 @@ const Gamespace = (props) => {
             setChrono(timmer.current);
             setShowQuestion(false);
             setShowDropLevelList(true);
-            props.setShowStartButton(true);
+
         }
-    }, [props.isGameDuel]);
+    }, [props.isGameDuel,challengeTheme,level]);
 // *********************************** UPDATE USER GLOBAL DUEL LEVEL ***********************************//
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('user'));
@@ -172,9 +173,11 @@ const Gamespace = (props) => {
                 setSuccess(true)
                 answerChecked();
                 generateTheCurrentQuestion();
-                setDuelScore(currentScore);
-                props.duelScoreForSending(currentScore);
-                props.sendScore(currentScore);
+                if (props.isGameDuel) {
+                    setDuelScore(currentScore);
+                    props.duelScoreForSending(currentScore);
+                    props.sendScore(currentScore);
+                }
             } else {
                 clearInterval(interval.current);
                 navigator.vibrate(200);
@@ -199,6 +202,7 @@ const Gamespace = (props) => {
         timmer.current = maxTimmer.current;
         setChrono(timmer.current);
         setShowQuestion(false);
+        setOtherQuestion('');
         props.setShowStartButton(true);
         setShowDropLevelList(true);
         console.log('reset');
@@ -338,7 +342,7 @@ const Gamespace = (props) => {
                             setSaveState('Saved');
                             const setToSave = () => { setSaveState('Save') }
                             setTimeout(setToSave, 2000);
-                            props.setShowStartButton(true);
+                            setPauseState('Pause');
                             reset();
                         }
                     }}
