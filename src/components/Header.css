@@ -70,3 +70,132 @@
     height: 2.5em;
     border: 1px solid hsl(199, 41%, 27%)
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .headerContainer{
+        width: 100%;
+        position: sticky;
+        margin: -20px 0px 0px 0px;
+        background: rgb(3, 4, 56);
+        color: white;
+        padding-top: 20px;
+    }
+    .searchBar{
+        width: 20em;
+        box-shadow: 1px 1px 5px hsl(199, 41%, 27%);
+        height: 2em;
+        border: 1px solid hsl(199, 41%, 27%);
+        margin-bottom: 10px;
+    }
+    .headerComponent{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr ;
+        justify-content: center;
+        align-items: center;
+    }
+    .appNameNav{
+        font-size: 20px;
+        padding-top: 0;
+        margin-top: 0;
+    }
+    .header-li{
+        text-decoration: none;
+        list-style: none;
+        padding-top: 0px;
+       }
+    .fiMenu{
+        font-size: 30px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+    .header-slide-menue{
+        position:relative;
+        width: 80%;
+        background: rgb(3, 4, 56);
+        color: white;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        text-align: center;
+        animation: slide 300ms ease;
+    }
+    @keyframes slide{
+        0%{
+            width: 10%;
+            height: 20vh;
+        }
+        25%{
+            width: 25%;
+            height: 35vh;
+        }
+        50%{
+            width: 40%;
+            height: 50vh;
+        }
+        75%{
+            width: 60%;
+            height: 75vh;
+        }
+        100%{
+            width:80% ;
+            height: 100vh;
+        }
+    }
+    .ul-responsive{
+        margin-left: 50px;
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        text-align: center;
+        justify-content: center;
+    }
+    .option{
+        border-radius: 30px;
+        margin-bottom: 20px;
+        height: 3em;
+        padding-top: 20px;
+        /* width: 10em; */
+        cursor: pointer;
+    }
+    .option:hover{
+        background: hsl(200, 20%, 70%);
+    }
+    .option:hover .Options-dropList{
+        display: block;
+        /* z-index:6; */
+    }
+    .optionHeader,.documentationHeader,.AccountHeader{
+        margin-top: 2em;
+        float: right;
+    }
+    .Options-dropList{
+        display: none;
+        background: rgb(3, 4, 56);
+        color: white; 
+        padding:50px 0px 20px 0px;
+        width: 10em;
+        margin-top: 30px;
+        font-size: 18px;
+        text-align: center;
+        margin-left: -15px;
+     }
+     .duel-option{
+        text-align: center;
+        margin-left: 20px;
+        margin-right: 20px;
+        
+    }
+    .duel-option:hover{
+        cursor: pointer;
+        font-size: 15px;
+        background: hsl(199, 41%, 27%);
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    .cancel-icon{
+        font-size: 30px;
+        margin: 20px 0px 0px 20px;
+        cursor: pointer;
+    }
+}

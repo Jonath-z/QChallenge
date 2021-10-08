@@ -120,3 +120,28 @@ hr{
         height: 60px;
     }
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .ScoreBar{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        background: rgb(3, 4, 56);
+        color: white;
+        padding: 10px 0px 0px 0px;
+        margin-left: 0px;
+        margin-right:  0px;
+        border-radius: 10px;
+        /* border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px; */
+        box-shadow: 1px 1px 5px  rgb(3,4,56); 
+    }
+    .level-para{
+        margin-top: 0 !important;
+        margin-right: 20px;
+        font-size: 14px;
+    }
+    .score-div,.chronoContainer{
+        font-size: 14px;
+    }
+}
