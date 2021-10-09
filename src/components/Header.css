@@ -86,11 +86,14 @@
         box-shadow: 1px 1px 5px hsl(199, 41%, 27%);
         height: 2em;
         border: 1px solid hsl(199, 41%, 27%);
-        margin-bottom: 10px;
+        margin-bottom: 30px;
+        margin-top: 10px;
+        margin-right: 40px;
+        color: white;
     }
     .headerComponent{
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr ;
+        grid-template-columns: 1fr 1fr 1fr 1fr ;
         justify-content: center;
         align-items: center;
     }
@@ -98,16 +101,31 @@
         font-size: 20px;
         padding-top: 0;
         margin-top: 0;
+        cursor: pointer;
+       margin-left: 20px;
     }
     .header-li{
         text-decoration: none;
         list-style: none;
         padding-top: 0px;
        }
+    .search-icon{
+        font-size: 25px;
+        margin-left: -40px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+    .cancel-icon{
+        font-size: 25px;
+        margin-left: -40px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
     .fiMenu{
         font-size: 30px;
         margin-bottom: 10px;
         cursor: pointer;
+        /* margin-right: 20px; */
     }
     .header-slide-menue{
         position:relative;
@@ -192,10 +210,5 @@
         color: white;
         padding: 10px;
         border-radius: 10px;
-    }
-    .cancel-icon{
-        font-size: 30px;
-        margin: 20px 0px 0px 20px;
-        cursor: pointer;
     }
 }

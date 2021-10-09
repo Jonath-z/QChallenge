@@ -42,3 +42,42 @@
     margin-left: 10px;
     cursor: pointer;
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .DuelDetails{
+        background: rgb(3,4,56);
+        color: white;
+        position: absolute;
+        right: 0px;
+        width: 100%;
+        margin-top: -10px;
+        height: 50px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 10px rgb(3,4,56);
+        animation: openDuel 200ms ease;
+        font-size: 12px;
+    }
+    @keyframes openDuel {
+        0%{
+            width: 0%;
+        }
+        25%{
+            width: 25%;
+        }
+        50%{
+            width: 50%;
+        }
+        75%{
+            width: 75%;
+        }
+        100%{
+            width: 100%;
+        }
+    }
+    .duelID,.duelLevel{
+        line-height: 3px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+}

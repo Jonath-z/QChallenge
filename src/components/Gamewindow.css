@@ -94,7 +94,10 @@
        }
        .challenge-title{
         font-size: 15px;
-        text-align: center;
+        /* text-align: center; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
         
     }
     .startButton{
@@ -106,5 +109,51 @@
         font-size: 14px;
         position: relative;
 
+    }
+    .country{
+        display: block;
+        transition: 200ms;
+        justify-content: center !important;
+        align-items: center !important;
+        margin: 0px 30px 0px 30px;
+    }
+    .Answeroption{
+        font-size: 13px;
+    }
+    .AnswerOptionContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:unset;
+        color: white; 
+    }
+    .Answeroption{
+        text-align:center;
+        margin: 20px 0px 0px 0px ;
+        background:  rgb(3,4,56);
+        height: 2em;
+        width: 10em;
+        padding-top: 10px;
+        padding-left: unset;
+        padding-bottom: 10px ;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: 200ms;
+        animation: transit ease 500ms;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .option-subContainer{
+        margin: auto;
+    }
+    .question{
+        font-size: 12px;
+        /* /* text-align: left; */
+        margin-left: 20px;
+        margin-right: 60px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

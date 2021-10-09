@@ -15,3 +15,16 @@
     cursor: pointer;
     /* box-shadow: 1px 1px 20px 10px  rgb(3,4,56); */
 }
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .discution-icon{
+        right: 0;
+        position: absolute;
+        bottom: 50px;
+        margin-right: 30px;
+        font-size: 60px;
+        color: rgb(3,4,56);
+        cursor: pointer;
+        /* box-shadow: 1px 1px 20px 10px  rgb(3,4,56); */
+    }
+}

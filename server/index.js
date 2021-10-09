@@ -57,8 +57,6 @@ io.on('connect', (socket) => {
         socket.broadcast.emit('online-user', ({ userID, status: true }));
     })
     socket.on('send-message', ({ message, senderID, receiverID, senderPseudo,time }) => {
-        const Newmessage = `${message}`;
-        const sender = `${senderID}`;
         const receiver = `${receiverID.current}`;
         console.log('my message', message, 'from', senderID, 'to', receiverID.current)
         mongodb.collection('messages').insertOne({
@@ -72,7 +70,7 @@ io.on('connect', (socket) => {
                 console.log(err);
             } else {
                 // console.log(data);
-                socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver, senderPseudo,time }));
+                socket.to(data[0].socketID).emit('receive-message', ({ message, senderID, receiver, senderPseudo, time }));
             }
         });
     });

@@ -84,3 +84,48 @@
     font-size: 10px;
     color: grey;
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .chat-div-container{
+        position: absolute;
+        right: 0px;
+        width: 100%;
+        top: 0px;
+        bottom: 0px;
+        background: white;
+        z-index: 3;
+        border-radius: 0px;
+        box-shadow: 1px 1px 20px grey;
+        animation: open-chat 300ms ease;
+        overflow-y: scroll;
+    }
+    @keyframes open-chat{
+        0%{
+            width: 10%;
+        }
+        25%{
+            width: 25%;
+        }
+        50%{
+            width: 50%;
+        }
+        75%{
+            width: 75%;
+        }
+        100%{
+            width: 100%;
+        }
+    }
+    .arrowRight{
+        float : left;
+        margin: 10px 00px 0px 20px;
+        font-size: 25px;
+        cursor: pointer;
+        color: rgb(3,4,56);
+    }
+    .chat-user-div:hover{
+        box-shadow: 0px 0px 1px rgb(3,4,56);
+        transition: 200ms;
+    }
+}

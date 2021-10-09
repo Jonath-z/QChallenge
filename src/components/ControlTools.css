@@ -23,15 +23,53 @@
     /* background-color:  hsl(190, 47%, 86%); */
     cursor: pointer;
 }
-.end-button{
-    width:7em;
-    margin-left: 10px;
-    float: right;
-    background-color: rgb(255, 38, 0);
-    cursor: pointer; 
-    color: white;
-}
-.end-button:hover{
-    background-color: rgba(255, 0, 0, 0.801);
+
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .controlsTolls{
+        display: flex;
+        flex-direction: column;
+        float: right;
+        background: rgb(3,4,56);
+        margin-top: 20px;
+        margin-right: 5px;
+        padding: 0px 10px 20px 0px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 5px  rgb(3,4,56); 
+    }
+    .save-button{
+        width: 30px;
+        padding-top: 5px;
+        height: 30px;
+        margin-left: 10px;
+        float: right;
+        /* background: rgb(3,4,56) !important; */
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+    .pause-button{
+        width :30px;
+        height: 30px;
+        padding-top: 5px;
+        margin-left: 10px;
+        float: right;
+        /* background: rgb(3,4,56) !important; */
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+    .stop-button{
+        width :30px;
+        height: 30px;
+        padding-top: 5px;
+        margin-left: 10px;
+        float: right;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 20px;
+        background: red !important;
+    }
 }
 

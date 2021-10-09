@@ -3,7 +3,9 @@ import { useState,useEffect } from 'react';
 import { useHistory } from 'react-router';
 import './Header.css';
 import { FiMenu } from 'react-icons/fi';
-import { MdCancel } from 'react-icons/md';
+import { BiSearch } from 'react-icons/bi'
+import { VscSearchStop} from 'react-icons/vsc'
+
 
 
 
@@ -44,10 +46,24 @@ const Header = (props) => {
    
     return (
         <div className="headerContainer">
+            {/************************************** MEDIA QUERY (PHONE INTERFACE)**********************************  */}
             <MediaQuery minWidth={300} maxWidth={414}>
                 <div className='header-responsive'>
                     <ul className='headerComponent'>
-                        <li className='header-li'><h1 className='appNameNav'>QChallenge</h1></li>
+                        <li className='header-li'><p hidden={showMenuSlide}  onClick={() => {
+                            if (searchBarIsHiden) {
+                                setSearchBarIsHidden(false);
+                            } else {
+                                setSearchBarIsHidden(true);
+                            }
+                        }}>
+                            {searchBarIsHiden ? <BiSearch className='search-icon' /> :<VscSearchStop className='cancel-icon'/> }
+                        </p></li>
+                        <li className='header-li '>
+                            <h1 className='appNameNav' hidden={!searchBarIsHiden} onClick={() => {
+                                window.location.reload();
+                            }}>QChallenge</h1>
+                        </li>
                         <li className='header-li'><input
                             hidden={searchBarIsHiden}
                             type='search'
@@ -57,7 +73,7 @@ const Header = (props) => {
                             onBlur={setFucusOut}
                             onChange={research}
                         /></li>
-                        <li className='header-li fiMenu'><FiMenu onClick={() => {
+                        <li className='header-li fiMenu' hidden={!searchBarIsHiden} ><FiMenu onClick={() => {
                             if (showMenuSlide === false) {
                                 setShowMenuSlide(true);
                             } else {
@@ -69,8 +85,14 @@ const Header = (props) => {
                         <ul className='ul-responsive'>
                             <li className='optionHeader option header-li'>Options
                                 <div className='Options-dropList'>
-                                    <p className='duel-option' onClick={props.openDuel}>Create the duel</p><br /><br />
-                                    <p className='duel-option' onClick={props.openDuel}>Join the duel</p>
+                                    <p className='duel-option' onClick={(e) => {
+                                        props.openDuel(e);
+                                        setShowMenuSlide(false);
+                                    }}>Create the duel</p><br /><br />
+                                    <p className='duel-option' onClick={(e) => {
+                                        props.openDuel(e);
+                                        setShowMenuSlide(false);
+                                    }}>Join the duel</p>
                                 </div>
                             </li>
                             <li className='documentationHeader option header-li'>Documentation</li>
@@ -79,9 +101,13 @@ const Header = (props) => {
                     </div>}
                 </div>
             </MediaQuery>
+
+ {/************************************** MEDIA QUERY (LAPTOP INTERFACE)**********************************  */}
             <MediaQuery minWidth={416} maxWidth={2000}>
                 <ul className='headerComponent'>
-                    <li className='header-li'><h1 className='appNameNav'>QChallenge</h1></li>
+                    <li className='header-li'><h1 className='appNameNav' onClick={() => {
+                                window.location.reload();
+                            }}>QChallenge</h1></li>
                     <li className='header-li'><input
                         type='search'
                         className="searchBar"

@@ -56,3 +56,29 @@
     margin-left: 20px;
     cursor: pointer;
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .research{
+        position: absolute;
+        /* margin-top: 100px; */
+        left: 5px;
+        right: 5px;
+        width: 95%;
+        border-radius: 10px;
+        height:85%;
+        overflow-y: scroll;
+        padding: 0px 5px 0px 5px;
+        box-shadow: none;
+        animation: research 300ms ease;
+        background: white;
+    }
+    .message-icon{
+        position: absolute;
+        right: 10px;
+        margin-top: 10px;
+        font-size: 35px;
+        margin-left: 20px;
+        cursor: pointer;
+    }
+}

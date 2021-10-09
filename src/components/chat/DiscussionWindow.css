@@ -191,3 +191,26 @@ border-top-right-radius: 10px;
     cursor: pointer;
     color: rgb(3,4,56);
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .discussion-window{
+        position: absolute;
+        right: 0px;
+        width: 100%;
+        top: 0px;
+        bottom: 0px;
+        z-index: 3;
+        /* border-top-left-radius: 10px; */
+        /* border-top-right-radius: 10px; */
+}
+.receiver-details{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    width: 100%;
+    background: rgb(3,4,56);
+    color: white;
+    padding-bottom: 10px;
+    border-radius: 0px;
+    }
+}
