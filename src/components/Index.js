@@ -65,7 +65,7 @@ const Index = () => {
     const [showDuelDetails, setShowDuelDetails] = useState(true);
     const [duelID, setDuelID] = useState();
     const [NewduelLevel, setNewDuelLevel] = useState();
-    const [newOnlineUser, setNewOnlineUser] = useState();
+    // const [newOnlineUser, setNewOnlineUser] = useState();
     // const [NewduelTheme, setNewDuelTheme] = useState();
     const [showDuelInputID, setShowDuelInputID] = useState(true);
     const [getDuelID, setGetDuelID] = useState();
@@ -100,13 +100,13 @@ const Index = () => {
         if (navigator.onLine === true) {
             socket.emit('online', ({ userID }));
         }
-    }, [newOnlineUser]);
+    }, []);
     // ********************* LISTEN EACH SOCKET FROM SERVER ****************************//
     useEffect(() => {
         socket.on('online-user', ({ userID, status }) => {
             setStatus({ userID, status });
             console.log('online-user', userID);
-            setNewOnlineUser(userID);
+            // setNewOnlineUser(userID);
         });
         socket.on('receive-message', ({ message, senderID, receiver, senderPseudo,time }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
@@ -227,6 +227,7 @@ const Index = () => {
         const receiver = receiverID.current;
         console.log(senderID, receiver);
         const senderPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo;
+        console.log(message);
         socket.emit('send-message', ({ message, senderID, receiverID, senderPseudo, time }));
         newMessage.current = message;
         const getNewArray = localStorage.getItem('messages');
