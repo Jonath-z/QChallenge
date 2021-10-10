@@ -45,7 +45,9 @@
 .time-outCome{
     font-size: 8px;
 }
-
+.time-outIncome{
+    font-size: 8px;
+}
 ::-webkit-scrollbar {
     width: 5px;
   }
@@ -162,7 +164,7 @@ border-top-right-radius: 10px;
 }
 .input-container{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     position: absolute;
     bottom: 5px;
 }
@@ -187,10 +189,11 @@ border-top-right-radius: 10px;
     font-size: 30px;
     position: absolute;
     right: 10px;
-    margin-top: 8px;
+    margin-top: 5px;
     cursor: pointer;
     color: rgb(3,4,56);
 }
+
 
 /* ***************************** MEDIA QUERIES ********************* */
 @media(max-width: 414px){
@@ -204,6 +207,35 @@ border-top-right-radius: 10px;
         /* border-top-left-radius: 10px; */
         /* border-top-right-radius: 10px; */
 }
+
+    /* div{top:0;}  */
+    .input-container-textarea{
+        width: 20em;
+       margin-left:5px;
+       height: 3em;
+       outline: none;
+       border-radius: 2px;
+       text-decoration: none;
+       padding-left: 10px;
+       padding-top: 10px;
+       padding-bottom: 10px;
+       background:rgb(3,4,56);
+       color: white;
+       border: none;
+       cursor: pointer;
+       resize: none;
+       max-height: 60px;
+   }
+   .input-container-send-incon{
+    font-size: 30px;
+    position: absolute;
+    right: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    color: rgb(3,4,56);
+    margin-right: 20px;
+}
+
 .receiver-details{
     display:grid;
     grid-template-columns:2fr 1fr;

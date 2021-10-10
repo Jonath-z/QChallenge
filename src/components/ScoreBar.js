@@ -20,9 +20,9 @@ const ScoreBar = (props) => {
                     </ul>
                 </div>}
                 {props.showDropDuelLevelList &&
-                    <div className="level-list">
-                        <ul className='level-list-ul'>
-                        <li className='level-list-li' onClick={props.setLevel}>Set Duel level</li>
+                    <div className="level-list duel-level-list">
+                        <ul className='level-list-ul duel-ul'>
+                        <li className='level-list-li duel-level-option' onClick={props.setLevel}>Set Duel level</li>
                         </ul>
                         </div>
                 }

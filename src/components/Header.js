@@ -4,7 +4,8 @@ import { useHistory } from 'react-router';
 import './Header.css';
 import { FiMenu } from 'react-icons/fi';
 import { BiSearch } from 'react-icons/bi'
-import { VscSearchStop} from 'react-icons/vsc'
+import { VscSearchStop } from 'react-icons/vsc';
+import { AiOutlineArrowUp } from 'react-icons/ai';
 
 
 
@@ -50,15 +51,19 @@ const Header = (props) => {
             <MediaQuery minWidth={300} maxWidth={414}>
                 <div className='header-responsive'>
                     <ul className='headerComponent'>
-                        <li className='header-li'><p hidden={showMenuSlide}  onClick={() => {
-                            if (searchBarIsHiden) {
-                                setSearchBarIsHidden(false);
-                            } else {
-                                setSearchBarIsHidden(true);
+                        <li className='header-li'>
+                            {!props.isGameDuel &&
+                                <p hidden={showMenuSlide} onClick={() => {
+                                    if (searchBarIsHiden) {
+                                        setSearchBarIsHidden(false);
+                                    } else {
+                                        setSearchBarIsHidden(true);
+                                    }
+                                }}>
+                                    {searchBarIsHiden ? <BiSearch className='search-icon' /> : <VscSearchStop className='cancel-icon' />}
+                                </p>
                             }
-                        }}>
-                            {searchBarIsHiden ? <BiSearch className='search-icon' /> :<VscSearchStop className='cancel-icon'/> }
-                        </p></li>
+                        </li>
                         <li className='header-li '>
                             <h1 className='appNameNav' hidden={!searchBarIsHiden} onClick={() => {
                                 window.location.reload();
@@ -73,13 +78,27 @@ const Header = (props) => {
                             onBlur={setFucusOut}
                             onChange={research}
                         /></li>
-                        <li className='header-li fiMenu' hidden={!searchBarIsHiden} ><FiMenu onClick={() => {
-                            if (showMenuSlide === false) {
-                                setShowMenuSlide(true);
-                            } else {
-                                setShowMenuSlide(false);
+                        <li className='header-li fiMenu' hidden={!searchBarIsHiden ||showMenuSlide } >
+                            {!props.isGameDuel &&
+                                <FiMenu  onClick={() => {
+                                    if (showMenuSlide === false) {
+                                        setShowMenuSlide(true);
+                                    } else {
+                                        setShowMenuSlide(false);
+                                    }
+                                }} />
+                                
                             }
-                        } }/></li>
+                        </li>
+                        <li className='header-li fiMenu' hidden={!searchBarIsHiden || !showMenuSlide} >
+                        {!props.isGameDuel && <AiOutlineArrowUp onClick={() => {
+                                    if (showMenuSlide === false) {
+                                        setShowMenuSlide(true);
+                                    } else {
+                                        setShowMenuSlide(false);
+                                    }
+                                }}/>}
+                        </li>
                     </ul>
                     {showMenuSlide && <div className='header-slide-menue'>
                         <ul className='ul-responsive'>
@@ -102,12 +121,12 @@ const Header = (props) => {
                 </div>
             </MediaQuery>
 
- {/************************************** MEDIA QUERY (LAPTOP INTERFACE)**********************************  */}
+            {/************************************** MEDIA QUERY (LAPTOP INTERFACE)**********************************  */}
             <MediaQuery minWidth={416} maxWidth={2000}>
                 <ul className='headerComponent'>
                     <li className='header-li'><h1 className='appNameNav' onClick={() => {
-                                window.location.reload();
-                            }}>QChallenge</h1></li>
+                        window.location.reload();
+                    }}>QChallenge</h1></li>
                     <li className='header-li'><input
                         type='search'
                         className="searchBar"

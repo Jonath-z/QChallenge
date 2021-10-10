@@ -1,7 +1,9 @@
-
+import { useState } from 'react';
 import './Gamewindow.css';
 
+
 const Gamewindow = (props) => {
+    const [background, setBackground] = useState('rgb(3,4,56)');
     return (
         <div >
             <h4 className='challenge-title'>{props.challengeTheme}</h4>
@@ -17,7 +19,14 @@ const Gamewindow = (props) => {
             {props.showQuestion && <div className='AnswerOptionContainer'>
                 <div className='option-subContainer'>
                     {props.answerOption.map((option, i) => {
-                        return <p className='Answeroption' key={i} onClick={props.getAnswer}>{option}</p>
+                        return <p className='Answeroption' key={i} onClick={(e) => {
+                            props.getAnswer(e);
+                            setTimeout(setBackground('rgb(3,4,56)'), 100);
+                        }
+                        } style={{
+                            background: background,
+                            color:'white'
+                        }}>{option}</p>
                     }
                     )}
                 </div>

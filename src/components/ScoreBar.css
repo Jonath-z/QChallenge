@@ -142,6 +142,18 @@ hr{
         margin-right: 20px;
         font-size: 14px;
     }
+    .duel-level-list{
+        width: 130px;
+    }
+    .duel-level-option{
+        font-size: 12px;
+        margin-left: -20px;
+    }
+    .duel-level-option:hover{
+        font-size: 12px;
+        background: cadetblue;
+        border-radius: 2px;
+    }
     .score-div,.chronoContainer{
         font-size: 14px;
     }

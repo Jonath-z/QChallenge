@@ -127,14 +127,16 @@ const DiscussionWindow = (props) => {
                                 style={{
                                     float: 'left',
                                     background: 'green'
-                                }}{...deleteMessage}>{message.message}<span className='time-outIncome'>{message.time}</span></p>
+                                }}{...deleteMessage}>{message.message}  <span className='time-outIncome'>{message.time}</span></p>
                         }
                         return '';
                     })
                 }
 
             </ScrollableFeed>
-            <div className='input-container'>
+            <div className='input-container' style={{
+                 background: DiscussionBacgroungColor
+            }}>
                 
                 <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage} />
                 <IoMdSend className='input-container-send-incon' onClick={props.sendMessage} />

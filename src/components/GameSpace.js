@@ -49,7 +49,7 @@ const Gamespace = (props) => {
     const questionAswersOptions = useRef();
     let questionIndex = useRef(0);
     let score = useRef(0);
-    let [setDuelScore] = useState();
+    let [duelScore,setDuelScore] = useState();
     let progressBar = useRef(0);
     const [otherQuestion, setOtherQuestion] = useState('');
     const prevTheme = usePrevious(challengeTheme);
@@ -267,7 +267,7 @@ const Gamespace = (props) => {
                 </div>}
             </MediaQuery>}
             {/* *************************** MEDIA QUERY (PHONE INTERFACE 2)*************************************** */}
-            {phoneMediaShowGamewindowDiv && <MediaQuery minWidth={300} maxWidth={414}>
+            {(phoneMediaShowGamewindowDiv  ||  props.isGameDuel) && <MediaQuery minWidth={300} maxWidth={414}>
                 <div className='gameWindowDiv' style={{
                     left: props.NewLeftPosition,
                     right: props.NewRightPostion
@@ -344,6 +344,7 @@ const Gamespace = (props) => {
                         success={success}
                         showDropDuelLevelList={showDropLevelList}
                         level={duelLevel}
+                        scoreK={duelScore} //variable not used(just to remove the warning)
                     />}
                     {!props.isGameDuel && !props.duelSettingReady && <ControlTools
                         save={saveState}

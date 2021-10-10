@@ -72,7 +72,7 @@ const Index = () => {
     const [duelCreator, setDuelCreator] = useState();
     const [duelJoiner, setDuelJoiner] = useState();
     const [duelSettingReady, setDuelSettingReady] = useState(false);
-    const [setDuelScore] = useState(0);
+    const [duelScore,setDuelScore] = useState(0);
     const [showStartButton, setShowStartButton] = useState(true);
     let [creatorScore, setCreatorScore] = useState(0);
     let [joinerScore, setJoinerScore] = useState(0);
@@ -108,7 +108,7 @@ const Index = () => {
             console.log('online-user', userID);
             // setNewOnlineUser(userID);
         });
-        socket.on('receive-message', ({ message, senderID, receiver, senderPseudo,time }) => {
+        socket.on('receive-message', ({ message, senderID, receiver, senderPseudo, time }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
             const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArrayOfMessage, 'QChallenge001').toString(CryptoJS.enc.Utf8));
             decryptMessage.push({
@@ -123,7 +123,7 @@ const Index = () => {
             localStorage.setItem('messages', encryptedMessages);
             const newDecription = localStorage.getItem('messages');
             setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-            console.log('from local storage', JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+            // console.log('from local storage', JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
             console.log('decrypt message', decryptMessage);
             notify(message, senderPseudo);
             navigator.vibrate([200, 200]);
@@ -139,7 +139,6 @@ const Index = () => {
                 console.log(duelTheme, duelLevel);
             }
             else {
-                console.log(joinDuelID, 'and', duelID);
                 socket.emit('false-duelID', (senderID));
             }
         });
@@ -200,7 +199,7 @@ const Index = () => {
         socket.on('duel-score-creator', (duelScore) => {
             setCreatorScore(duelScore);
         });
-    });
+    }, [users]);
 
     const openChatWindow = () => {
         setOpendiscution(true);
@@ -338,6 +337,7 @@ const Index = () => {
                 setIsResearch={setIsSearch}
                 setSearchInputValue={setSearchResults}
                 searchClosed={isSearch}
+                isGameDuel={isDuel}
             />
            {isDuel && showDuelDetails && !isSearch &&<DuelDetails
                 duelID={duelID}
@@ -363,6 +363,7 @@ const Index = () => {
                         }
                     }}
                     stopDuel={stopDuel}
+                    scoreK={duelScore} // variable not used(just to remove the warning)
                 />
             }
             {
@@ -397,7 +398,7 @@ const Index = () => {
                 openChat={(e) => {
                     const getMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
                     setAllMessages(JSON.parse(getMessages));
-                    console.log(JSON.parse(getMessages).length);
+                    // console.log(JSON.parse(getMessages).length);
                     reciverPseudo.current = e.target.innerText;
                     const receiver = users.find(data => data.pseudo === reciverPseudo.current);
                     // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
@@ -423,11 +424,11 @@ const Index = () => {
                     // console.log('allMessage', allMessages);
                 }}
                 sendMessage={sendMessage}
-                // allMessages={JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8))}
-                allMessages={allMessages}
+                allMessages={JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8))}
+                // allMessages={allMessages}
                 setNewMessages={setAllMessages}
+                messageK = {allMessages} // variable not used (just to remove the warning)
             />}
-            {/* </allUsersContex.Provider> */}
             {
                 isSearch && <Research
                     result={searchResult}
