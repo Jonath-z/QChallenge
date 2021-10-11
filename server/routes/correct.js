@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 require('../../server/index');
 
+
 const router = express.Router();
 router.use(bodyparser.urlencoded({ extended: false }));
 
@@ -11,18 +12,17 @@ mongoose.connect(`${process.env.REACT_APP_MONGODB_URL}`, { useNewUrlParser: true
 const mongodb = mongoose.connection;
 
 router.get('/', (req, res) => {
-    mongodb.collection('users').find({}).toArray((err, data) => {
-        if (err) {
-            console.log(err);
-
-        }
-        else {
-            data.forEach(user => {
-                if (user.password) { delete user.password; }
-                delete user.email;
-            });
-            res.send(data);
-        }
-    })
+    // mongodb.collection('challenges').updateMany(
+    //     {
+    //         theme: 'Contry and Capital'
+    //     },
+    //     {
+    //     $set: {
+    //             theme: 'Country and Capital',
+    //     }
+    //     });
+    console.log(process.env.REACT_APP_MONGODB_URL);
+    res.send('....');
 });
+
 module.exports = router;

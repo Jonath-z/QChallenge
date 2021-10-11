@@ -11,7 +11,7 @@ const Chat = (props) => {
     userID.current = currentUser.replace('?id=', '');
     useEffect(() => {
         const decryptUsers = async () => {
-            const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
+            const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8);
             const usersFormated = JSON.parse(usersDecrypted);
             const usersFormatedFiltered = usersFormated.filter(({ id }) => id !== userID.current);
             setUsers(usersFormatedFiltered);

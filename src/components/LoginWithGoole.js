@@ -4,8 +4,8 @@ import { FaSpinner } from 'react-icons/fa';
 import { useState } from 'react';
 
 
-const clientID = '688414082981-656lplq2khvpkpucff94dv5080u79h9f.apps.googleusercontent.com'
-// const clientSecret = 'QFVMBStjdCTy8DmpzdALow7D';
+const clientID = `${process.env.REACT_APP_GOOGLE_LOGIN_KEY}`
+
 
 const LoginWithGoogle = () => {
     let history = useHistory();

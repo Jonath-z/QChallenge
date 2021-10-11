@@ -53,8 +53,8 @@ const DiscussionWindow = (props) => {
         setIsMenue(false);
     }, {
         onFinish: event => {
-            setMessageForTrash(event.target.innerHTML);
-            console.log(event.target.firstChild.data);
+            setMessageForTrash(event.target.firstChild.data);
+            // console.log(event.target);
         },
         captureEvent:true,
         threshold: 500,
@@ -63,12 +63,12 @@ const DiscussionWindow = (props) => {
     const moveToTrash = () => {
         if (messagesForTrash !== null) {
             const allmessages = localStorage.getItem('messages');
-            const decryptMessages = JSON.parse(CryptoJS.AES.decrypt(allmessages, 'QChallenge001').toString(CryptoJS.enc.Utf8));
+            const decryptMessages = JSON.parse(CryptoJS.AES.decrypt(allmessages, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8));
             console.log('initial lengeth', decryptMessages.length);
             let newMessages = decryptMessages.filter(({ message}) => message !== messagesForTrash);
 
-            localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), 'QChallenge001'));
-            // const chekNewLength = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8)).length;
+            localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), `${process.env.REACT_APP_CRYPTO_KEY}`));
+            // const chekNewLength = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)).length;
             // console.log('ckek new lenght:', chekNewLength);
 
             fetch('../delete-messages', {
@@ -90,6 +90,7 @@ const DiscussionWindow = (props) => {
     }
 
     return (
+        <>
         <div className='discussion-window' style={{ background: DiscussionBacgroungColor }} >
             <div className='receiver-details'>
                 <div className='receiver-details-profile'>
@@ -108,8 +109,9 @@ const DiscussionWindow = (props) => {
                         </span>
                     </span>}
                 </p>
-            </div>
-            <ScrollableFeed className='message-container'>
+                </div>
+            <div className='message-container'>  
+            <ScrollableFeed className='message-scollableFeed'>
                 {   
                     props.allMessages.map((message, i) => {
                         if (message.sender === props.senderID && message.receiver === props.receiverID) {
@@ -133,8 +135,9 @@ const DiscussionWindow = (props) => {
                     })
                 }
 
-            </ScrollableFeed>
-            <div className='input-container' style={{
+                    </ScrollableFeed>
+                    </div>  
+                <div className='input-container' style={{
                  background: DiscussionBacgroungColor
             }}>
                 
@@ -142,7 +145,8 @@ const DiscussionWindow = (props) => {
                 <IoMdSend className='input-container-send-incon' onClick={props.sendMessage} />
                 
             </div>
-        </div>
+            </div>
+            </>
     );
 }
 

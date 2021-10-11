@@ -27,3 +27,24 @@
 .user-profile-details-li{
     margin-left: 10px;
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+    .profile-container{
+        display:flex ;
+        justify-content: center;
+        /* align-items: center; */
+    }
+    .profile{
+        position: absolute;
+        z-index: 2;
+        background: whitesmoke;
+        color: rgb(3,4,56);
+        width: fit-content;
+        margin-left:unset;
+        border-radius: 25px;
+        margin-top: 100px;
+
+
+    }
+}

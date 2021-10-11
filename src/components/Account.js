@@ -172,6 +172,9 @@ const Account = () => {
                     }} />
                 </div>
             </div>}
+            { showUpdateButton && <div>
+                <button className='update-button' onClick={updateProfileDetails}>Update</button>
+            </div>}
             {userProfile !== undefined && <div className='user-game-details'>
                 <div className='challenge-container'>
                     <h2 className='h2'>challenges</h2>
@@ -191,9 +194,14 @@ const Account = () => {
                 </div>
 
             </div>}
-            { showUpdateButton && <div>
-                <button className='update-button' onClick={updateProfileDetails}>Update</button>
-            </div>}
+            <div>
+                <button className='update-button logout-button' onClick={() => {
+                    const isLogin = window.confirm('You are going to log out');
+                    if (isLogin) {
+                        window.location.replace('../');
+                    }
+                }}>Log out</button>
+            </div>
         </div>
     );
 }

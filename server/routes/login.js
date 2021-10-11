@@ -3,11 +3,13 @@ const bodyparser = require('body-parser');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const { body, validationResult } = require('express-validator');
+require('dotenv/config');
+require('../../server/index');
 
 const router = express.Router();
 router.use(bodyparser.urlencoded({ extended: false }));
 
-mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(`${process.env.REACT_APP_MONGODB_URL}`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;
 
 router.post('/',

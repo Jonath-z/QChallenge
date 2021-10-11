@@ -78,9 +78,9 @@ const Header = (props) => {
                             onBlur={setFucusOut}
                             onChange={research}
                         /></li>
-                        <li className='header-li fiMenu' hidden={!searchBarIsHiden ||showMenuSlide } >
+                        <li className='header-li fiMenu' hidden={!searchBarIsHiden || showMenuSlide} >
                             {!props.isGameDuel &&
-                                <FiMenu  onClick={() => {
+                                <FiMenu onClick={() => {
                                     if (showMenuSlide === false) {
                                         setShowMenuSlide(true);
                                     } else {
@@ -91,13 +91,13 @@ const Header = (props) => {
                             }
                         </li>
                         <li className='header-li fiMenu' hidden={!searchBarIsHiden || !showMenuSlide} >
-                        {!props.isGameDuel && <AiOutlineArrowUp onClick={() => {
-                                    if (showMenuSlide === false) {
-                                        setShowMenuSlide(true);
-                                    } else {
-                                        setShowMenuSlide(false);
-                                    }
-                                }}/>}
+                            {!props.isGameDuel && <AiOutlineArrowUp onClick={() => {
+                                if (showMenuSlide === false) {
+                                    setShowMenuSlide(true);
+                                } else {
+                                    setShowMenuSlide(false);
+                                }
+                            }} />}
                         </li>
                     </ul>
                     {showMenuSlide && <div className='header-slide-menue'>
@@ -114,7 +114,12 @@ const Header = (props) => {
                                     }}>Join the duel</p>
                                 </div>
                             </li>
-                            <li className='documentationHeader option header-li'>Documentation</li>
+                            <li className='documentationHeader option header-li'
+                                onClick={() => {
+                                    console.log('click to push');
+                                    history.push(`/Help/?id=${JSON.parse(localStorage.getItem('user')).data.id}`);
+                                }}
+                            >Help</li>
                             <li className='AccountHeader option header-li' onClick={openAccount}>Account</li>
                         </ul>
                     </div>}
@@ -142,7 +147,12 @@ const Header = (props) => {
                         </div>
                     </li>
                 
-                    <li className='documentationHeader option header-li'>Documentation</li>
+                    <li className='documentationHeader option header-li'
+                        onClick={() => {
+                            console.log('click to push');
+                            history.push(`/Help/?id=${JSON.parse(localStorage.getItem('user')).data.id}`);
+                        }}
+                    >Help</li>
                     <li className='AccountHeader option header-li' onClick={openAccount}>Account</li>
                 </ul>
             </MediaQuery>

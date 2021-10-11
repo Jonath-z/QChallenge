@@ -17,9 +17,11 @@ const deleteMessages = require('./routes/deleteMessage.js');
 const getUserData = require('./routes/getUserData.js');
 const updateProfileImage = require('./routes/update/userProfileImage.js');
 const updateProfileDetails = require('./routes/update/updateProfileDetails');
-const Grids = require('gridfs-stream');
+const correct = require('./routes/correct.js');
+require('dotenv/config');
+require('../server/index');
 
-mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(`${process.env.REACT_APP_MONGODB_URL}`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;
 
 
@@ -39,6 +41,7 @@ app.use('/delete-messages', deleteMessages);
 app.use('/get-user-data', getUserData);
 app.use('/upgate-profile/image', updateProfileImage);
 app.use('/update-user-datails', updateProfileDetails);
+app.use('/correct', correct);
 
 io.on('connect', (socket) => {
     console.log(socket.id);

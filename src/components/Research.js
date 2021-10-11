@@ -22,7 +22,7 @@ const Research = (props) => {
         const userPseudo = e.target.nextSibling.innerHTML;
         const allUsers = JSON.parse(
             CryptoJS.AES.decrypt(
-                localStorage.getItem('allUsers'), 'QChallenge001')
+                localStorage.getItem('allUsers'), `${process.env.REACT_APP_CRYPTO_KEY}`)
                 .toString(CryptoJS.enc.Utf8)
         );
         const user = allUsers.filter(({ pseudo, avatar }) => pseudo === userPseudo && avatar === userProfileUrl);
@@ -46,7 +46,7 @@ const Research = (props) => {
     const getAllUsers = () => {
         const allUsers = JSON.parse(
             CryptoJS.AES.decrypt(
-                localStorage.getItem('allUsers'), 'QChallenge001')
+                localStorage.getItem('allUsers'), `${process.env.REACT_APP_CRYPTO_KEY}`)
                 .toString(CryptoJS.enc.Utf8)
         ).filter(({ id }) => id !== userID);
 

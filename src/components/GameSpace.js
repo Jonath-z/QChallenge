@@ -29,7 +29,7 @@ function usePrevious(data){
 
 const Gamespace = (props) => {
     let questionsInCurrentTheme = useRef(null);
-    const [challengeTheme, setChallengeTheme] = useState('Contry and Capital');
+    const [challengeTheme, setChallengeTheme] = useState('Country and Capital');
     const [myThemes, setMyThemes] = useState(null);
     let maxTimmer = useRef(10);
     let timmer = useRef(maxTimmer.current);
@@ -144,7 +144,7 @@ const Gamespace = (props) => {
             setTimeout(() => setContry(myQuestions.question), 1000);
             // console.log(randomMaxValue);
             questionIndex.current++;
-                if (challengeTheme === 'Contry and Capital') {
+                if (challengeTheme === 'Country and Capital') {
                     const answeroptions = generateOptionForContryAndCapital(myQuestions.city, questionsInCurrentTheme.current, contry);
                     questionAswersOptions.current = answeroptions;
                     // console.log(answeroptions);
@@ -184,7 +184,7 @@ const Gamespace = (props) => {
                 }
             } else {
                 clearInterval(interval.current);
-                navigator.vibrate(200);
+                navigator.vibrate(500);
                 setSuccess(false);
                 answerChecked();
                 generateTheCurrentQuestion();
@@ -250,9 +250,9 @@ const Gamespace = (props) => {
                     <h3>Challenges</h3>
                 
                     {
-                        myThemes ? myThemes.map((theme) => (
-                            <div className='themeContainer'>
-                                <p key={uuid()} className='theme' onClick={(e) => {
+                        myThemes ? myThemes.map((theme,index) => (
+                            <div className='themeContainer' key={index}>
+                                <p className='theme' onClick={(e) => {
                                     openChallenge(e)
                                     setPhoneMediaShowGamewindowDiv(true);
                                 }}>{theme.theme}</p>
@@ -408,8 +408,8 @@ const Gamespace = (props) => {
                 
                         {
                             myThemes ? myThemes.map((theme) => (
-                                <div className='themeContainer'>
-                                    <p key={uuid()} className='theme' onClick={openChallenge}>{theme.theme}</p>
+                                <div className='themeContainer' key={uuid()}>
+                                    <p className='theme' onClick={openChallenge}>{theme.theme}</p>
                                 </div>
                             )) : <div className='themeConatainer '>
                                 <Skeleton className='skeleton' />

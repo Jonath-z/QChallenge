@@ -35,9 +35,9 @@ const CustomNotification = (props) => {
 const getUsers = async () => {
     const allUsers = await fetch('../all-users')
     const AllusersFormated = await allUsers.json();
-    const allUsersCrypted = CryptoJS.AES.encrypt(JSON.stringify(AllusersFormated), 'QChallenge001');
+    const allUsersCrypted = CryptoJS.AES.encrypt(JSON.stringify(AllusersFormated), `${process.env.REACT_APP_CRYPTO_KEY}`);
     window.localStorage.setItem('allUsers', allUsersCrypted);
-    // const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
+    // const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8);
     // const usersFormated = JSON.parse(usersDecrypted);
 }
 getUsers();
@@ -56,7 +56,7 @@ const Index = () => {
     const receiverAvatar = useRef();
     const [allMessages,setAllMessages] = useState();
     const [users] = useState(() => {
-        const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), 'QChallenge001').toString(CryptoJS.enc.Utf8);
+        const usersDecrypted = CryptoJS.AES.decrypt(localStorage.getItem('allUsers'), `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8);
         return JSON.parse(usersDecrypted);
     });
     const [newLeftDuelPosition, setNewLeftDuelPosition] = useState('unset');
@@ -82,7 +82,7 @@ const Index = () => {
     const [searchResultPseudo, setSearchResultPseudo] = useState();
     const [searchResultProfile, setSearchResultProfile] = useState();
     useEffect(() => {
-        const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+        const initialGetMessages = CryptoJS.AES.decrypt(getCryptedMessages, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8);
         setAllMessages(JSON.parse(initialGetMessages));
     },[]);
     // **************************SOCKET IO CONNECTION ***********************************//
@@ -110,7 +110,7 @@ const Index = () => {
         });
         socket.on('receive-message', ({ message, senderID, receiver, senderPseudo, time }) => {
             const getNewArrayOfMessage = localStorage.getItem('messages');
-            const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArrayOfMessage, 'QChallenge001').toString(CryptoJS.enc.Utf8));
+            const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArrayOfMessage, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8));
             decryptMessage.push({
                 id: `${Math.random(Math.floor() * 10)}`,
                 message: message,
@@ -119,11 +119,11 @@ const Index = () => {
                 time: time
             });
             
-            const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
+            const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), `${process.env.REACT_APP_CRYPTO_KEY}`);
             localStorage.setItem('messages', encryptedMessages);
             const newDecription = localStorage.getItem('messages');
-            setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-            // console.log('from local storage', JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+            setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription,`${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)));
+            // console.log('from local storage', JSON.parse(CryptoJS.AES.decrypt(newDecription, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)));
             console.log('decrypt message', decryptMessage);
             notify(message, senderPseudo);
             navigator.vibrate([200, 200]);
@@ -230,7 +230,7 @@ const Index = () => {
         socket.emit('send-message', ({ message, senderID, receiverID, senderPseudo, time }));
         newMessage.current = message;
         const getNewArray = localStorage.getItem('messages');
-        const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArray, 'QChallenge001').toString(CryptoJS.enc.Utf8));
+        const decryptMessage = JSON.parse(CryptoJS.AES.decrypt(getNewArray, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8));
         decryptMessage.push({
             id: Math.random(Math.floor() * 10),
             message: message,
@@ -239,11 +239,11 @@ const Index = () => {
             time:time
         })
         
-        const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), 'QChallenge001');
+        const encryptedMessages = CryptoJS.AES.encrypt(JSON.stringify(decryptMessage), `${process.env.REACT_APP_CRYPTO_KEY}`);
         localStorage.setItem('messages', encryptedMessages);
         const newDecription = localStorage.getItem('messages');
-        setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
-        // console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, 'QChallenge001').toString(CryptoJS.enc.Utf8)));
+        setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)));
+        // console.log(JSON.parse(CryptoJS.AES.decrypt(newDecription, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)));
         textarea.value = '';
     }
     const openDuel = (e) => {
@@ -396,7 +396,7 @@ const Index = () => {
             {openDiscution && <Chat
                 closeChatWindow={closeChatWindow}
                 openChat={(e) => {
-                    const getMessages = CryptoJS.AES.decrypt(getCryptedMessages, 'QChallenge001').toString(CryptoJS.enc.Utf8);
+                    const getMessages = CryptoJS.AES.decrypt(getCryptedMessages, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8);
                     setAllMessages(JSON.parse(getMessages));
                     // console.log(JSON.parse(getMessages).length);
                     reciverPseudo.current = e.target.innerText;
@@ -424,7 +424,7 @@ const Index = () => {
                     // console.log('allMessage', allMessages);
                 }}
                 sendMessage={sendMessage}
-                allMessages={JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), 'QChallenge001').toString(CryptoJS.enc.Utf8))}
+                allMessages={JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8))}
                 // allMessages={allMessages}
                 setNewMessages={setAllMessages}
                 messageK = {allMessages} // variable not used (just to remove the warning)

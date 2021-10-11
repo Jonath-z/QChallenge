@@ -99,6 +99,7 @@
         box-shadow: 1px 1px 20px grey;
         animation: open-chat 300ms ease;
         overflow-y: scroll;
+        height: 100vh;
     }
     @keyframes open-chat{
         0%{

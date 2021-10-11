@@ -1,0 +1,81 @@
+.help{
+    /* margin-left: 20px; */
+    background: rgb(3, 4, 56);
+    color: rgb(231, 222, 222);
+    padding: 10px 10px 10px 10px;
+    box-shadow: 1px 1px 10px rgb(3, 4, 56);
+    position: relative;
+    height: 100vh;
+    /* font-family: Arial; */
+}
+.help-subContainer{
+    margin-left: 30%;
+    margin-right: 30%;
+}
+.help-h1{
+    text-align: center;
+    font-family:-apple-system;
+    /* font-family:; */
+    /* BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+}
+.join-duel-para{
+    background:rgb(20, 22, 95);
+    padding: 10px 10px 10px 10px ;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(20, 22, 95);
+}
+.create-duel-para{
+    background:rgb(20, 22, 95);
+    padding: 10px 10px 10px 10px ;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(20, 22, 95);
+}
+.start-para{
+    background: green;
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px green;
+    cursor: pointer;}
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(max-width: 414px){
+.help{
+    /* margin-left: 20px; */
+    background: rgb(3, 4, 56);
+    color: rgb(231, 222, 222);
+    padding: 10px 10px 10px 10px;
+    box-shadow: 1px 1px 10px rgb(3, 4, 56);
+    position: relative;
+    height: 100vh;
+    /* font-family: Arial; */
+}
+.help-subContainer{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.help-h1{
+    text-align: center;
+    font-family:-apple-system;
+    /* font-family:; */
+    /* BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+}
+.join-duel-para{
+    background:rgb(20, 22, 95);
+    padding: 10px 10px 10px 10px ;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(20, 22, 95);
+}
+.create-duel-para{
+    background:rgb(20, 22, 95);
+    padding: 10px 10px 10px 10px ;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(20, 22, 95);
+}
+.start-para{
+    background: green;
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px green;
+    cursor: pointer;
+}
+}

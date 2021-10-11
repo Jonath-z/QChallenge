@@ -10,7 +10,7 @@ import LoginWithGoogle from "./LoginWithGoole";
 const getMessages = async () => {
     const allMessages = await fetch('../all-messages');
     const formatedMessages = await allMessages.json();
-    const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages), 'QChallenge001');
+    const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages), `${process.env.REACT_APP_CRYPTO_KEY}`);
     localStorage.setItem('messages', encryptMessages);
 }
 getMessages();

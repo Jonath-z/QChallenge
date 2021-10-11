@@ -43,7 +43,7 @@
     cursor: pointer;
 }
 
-/* ***************************** MEDIA QUERIES ********************* */
+/****************************** MEDIA QUERIES **************************/
 @media(max-width: 414px){
     .DuelDetails{
         background: rgb(3,4,56);

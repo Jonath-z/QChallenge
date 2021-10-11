@@ -1,12 +1,13 @@
 import './Profile.css';
 const Profile = (props) => {
     return (
-        <div className='profile'
-            stye={{
-                display: 'block'
-            }}
-            onClick={props.stillShowingUserProfileDetails}
-        >
+        <div className='profile-container'>
+            <div className='profile'
+                stye={{
+                    display: 'block'
+                }}
+                onClick={props.stillShowingUserProfileDetails}
+            >
                 <div className='profile-image'>
                     <img src={props.avatar} className='user-profile-image' alt='' />
                 </div>
@@ -24,6 +25,7 @@ const Profile = (props) => {
                     })
                 }
             </div >
+        </div>
     );
 }
 

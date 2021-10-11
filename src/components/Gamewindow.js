@@ -11,7 +11,7 @@ const Gamewindow = (props) => {
                 {/* <div className='chronoContainer'>
                     <p>{props.chrono}S</p>
                 </div> */}
-                {props.challengeTheme === 'Contry and Capital' ? props.showQuestion && <div className='questionContainer'>
+                {props.challengeTheme === 'Country and Capital' ? props.showQuestion && <div className='questionContainer'>
                     <p className='country'> What's the Capital of <span>{props.contry}</span></p>
                 </div> : <p className='question'>{props.question}</p>}
             </div>

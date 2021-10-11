@@ -7,7 +7,7 @@
 // const router = express.Router();
 // router.use(bodyparser.urlencoded({ extended: false }));
 
-// mongoose.connect(`mongodb+srv://joz:2511@butik.qrb2j.mongodb.net/QChallenge?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(`${process.env.REACT_APP_MONGODB_URL}`, { useNewUrlParser: true, useUnifiedTopology: true });
 // const mongodb = mongoose.connection;
 
 
