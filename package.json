@@ -48,6 +48,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "install-client": "npm install",
+    "heroku-postbuild": "npm run intall-client && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

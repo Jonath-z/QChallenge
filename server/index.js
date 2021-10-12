@@ -150,4 +150,8 @@ io.on('connect', (socket) => {
     });
 });
 
-server.listen(5050, () => { console.log('server is running') });
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('./build'));
+}
+
+server.listen(process.env.PORT || 5050, () => { console.log('server is running') });
