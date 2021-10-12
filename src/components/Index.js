@@ -16,7 +16,7 @@ import InputDuelID from "./duelComponent/InputDuelID";
 import DuelPanel from "./duelComponent/DuelPanel";
 import Research from "./Research";
 
-const socket = io('http://localhost:5050');
+const socket = io(`${process.env.REACT_APP_QCHALLENGE_API_URI}`);
 const localSearch = window.location.search;
 const userID = localSearch.replace('?id=', '');
 const getCryptedMessages = localStorage.getItem('messages');
