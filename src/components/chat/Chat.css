@@ -130,3 +130,21 @@
         transition: 200ms;
     }
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(min-width: 1080px){
+    .chat-div-container{
+        position: absolute;
+        right: 70px;
+        width: 50%;
+        top: 280px;
+        bottom: 60px;
+        background: white;
+        z-index: 3;
+        box-shadow: 1px 1px 20px grey;
+        border-top-left-radius:10px ;
+        border-top-right-radius:10px;
+        animation: open-chat 300ms ease;
+        overflow-y: scroll;
+    }
+}

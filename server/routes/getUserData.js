@@ -12,7 +12,7 @@ const mongodb = mongoose.connection;
 
 router.post('/',(req, res) => {
     const userID = req.body.userID
-    console.log('my user', userID);
+    // console.log('my user', userID);
    mongodb.collection('users').find({id:`${userID}`}).toArray((err, data) => {
         if (err) {
             console.log(err);
@@ -20,7 +20,7 @@ router.post('/',(req, res) => {
         }
         else {
             res.send(data[0]);
-            console.log(data);
+            // console.log(data);
         }
     })
 });

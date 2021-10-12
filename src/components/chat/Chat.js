@@ -15,7 +15,7 @@ const Chat = (props) => {
             const usersFormated = JSON.parse(usersDecrypted);
             const usersFormatedFiltered = usersFormated.filter(({ id }) => id !== userID.current);
             setUsers(usersFormatedFiltered);
-            console.log('user for discution', usersFormated)
+            // console.log('user for discution', usersFormated)
         }
         decryptUsers();
     }, []);    

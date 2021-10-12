@@ -28,3 +28,17 @@
         /* box-shadow: 1px 1px 20px 10px  rgb(3,4,56); */
     }
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(min-width: 1080px){
+    .discution-icon{
+        right: 80px;
+        position: absolute;
+        bottom: 100px;
+        margin-right: 10px;
+        font-size: 60px;
+        color: rgb(3,4,56);
+        cursor: pointer;
+        /* box-shadow: 1px 1px 20px 10px  rgb(3,4,56); */
+    }
+}

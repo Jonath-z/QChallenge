@@ -86,3 +86,19 @@
         cursor: pointer;
     }
 }
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media(min-width: 1080px){
+    .DuelDetails{
+        background: rgb(3,4,56);
+        color: white;
+        position: absolute;
+        right: 20px;
+        width: 50%;
+        margin-top: -10px;
+        height: 80px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 10px rgb(3,4,56);
+        animation: openDuel 300ms ease;
+    }
+}

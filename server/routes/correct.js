@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
     //             theme: 'Country and Capital',
     //     }
     //     });
-    console.log(process.env.REACT_APP_MONGODB_URL);
+    // console.log(process.env.REACT_APP_MONGODB_URL);
     res.send('....');
 });
 

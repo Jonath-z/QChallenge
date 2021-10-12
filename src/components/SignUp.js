@@ -56,10 +56,10 @@ const Signup = () => {
                 const response = await data.text();
                 if (response === "error") {
                     setLoginErr('something went wrong,(your password must have 4 characters minimum)');
-                    console.log(response);
+                    // console.log(response);
                 }
                 else if (response === '200') {
-                    console.log(response);
+                    // console.log(response);
                     setShowSignup(!showSignup);
                     setShowLogin(!showLogin);
                 }

@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     const id = req.body.id;
     const Newscore = req.body.score;
     const level = req.body.level;
-    console.log(`score: ${Newscore},level:${level},id: ${id},theme :${theme}`);
+    // console.log(`score: ${Newscore},level:${level},id: ${id},theme :${theme}`);
     
     mongodb.collection('users').updateOne(
         { id: id, "score.theme": `${theme}` },

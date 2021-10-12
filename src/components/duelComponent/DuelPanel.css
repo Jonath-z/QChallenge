@@ -50,3 +50,19 @@
             cursor: pointer;
     }
 }
+/* ***************************** MEDIA QUERIES ********************* */
+@media(min-width: 1080px){
+    .duelPanel{
+        background: rgb(3,4,56);
+        color:white;
+        width: 8em;
+        position: absolute;
+        right: 5%;
+        top: 280px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 10px rgb(3,4,56);
+        text-align: center;
+        /* max-width: ; */
+    }
+}

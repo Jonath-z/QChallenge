@@ -88,7 +88,7 @@ const Index = () => {
     // **************************SOCKET IO CONNECTION ***********************************//
     useEffect(() => {
         socket.on('connect', () => {
-            console.log(socket.id);
+            // console.log(socket.id);
             const socketID = socket.id;
             socket.emit('user-socket-id', ({ userID, socketID }));
             const userData = JSON.parse(localStorage.getItem('user'));
@@ -105,7 +105,7 @@ const Index = () => {
     useEffect(() => {
         socket.on('online-user', ({ userID, status }) => {
             setStatus({ userID, status });
-            console.log('online-user', userID);
+            // console.log('online-user', userID);
             // setNewOnlineUser(userID);
         });
         socket.on('receive-message', ({ message, senderID, receiver, senderPseudo, time }) => {
@@ -124,26 +124,26 @@ const Index = () => {
             const newDecription = localStorage.getItem('messages');
             setAllMessages(JSON.parse(CryptoJS.AES.decrypt(newDecription,`${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)));
             // console.log('from local storage', JSON.parse(CryptoJS.AES.decrypt(newDecription, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)));
-            console.log('decrypt message', decryptMessage);
+            // console.log('decrypt message', decryptMessage);
             notify(message, senderPseudo);
             navigator.vibrate([200, 200]);
         });
         socket.on('request-join-duel', ({ joinDuelID, senderID, senderPseudo }) => {
-            console.log(joinDuelID, senderID, senderPseudo);
+            // console.log(joinDuelID, senderID, senderPseudo);
             const duelCreator = userID;
             if (joinDuelID === localStorage.getItem('duelID')) {
                 const duelTheme = localStorage.getItem('duelTheme');
                 const duelLevel = localStorage.getItem('duelLevel');
                 socket.emit('true-duelID', ({ duelLevel, duelCreator, senderID, duelTheme }));
                 localStorage.setItem('duel-gamer', JSON.stringify({ creator: duelCreator, joiner: senderID }));
-                console.log(duelTheme, duelLevel);
+                // console.log(duelTheme, duelLevel);
             }
             else {
                 socket.emit('false-duelID', (senderID));
             }
         });
         socket.on('joined-duel', ({ duelLevel, senderID, duelCreator, duelTheme }) => {
-            console.log('level:', duelLevel, 'joiner:', senderID, 'duel creator', duelCreator);
+            // console.log('level:', duelLevel, 'joiner:', senderID, 'duel creator', duelCreator);
             setShowDuelInputID(false);
             const creatorPseudo = users.find(({ id }) => id === duelCreator).pseudo;
             setDuelCreator(creatorPseudo);
@@ -152,7 +152,7 @@ const Index = () => {
             localStorage.setItem('joined-duel-theme', duelTheme);
             localStorage.setItem('duel-gamer', JSON.stringify({ creator: duelCreator, joiner: senderID }));
             setDuelSettingReady(true);
-            console.log(duelTheme);
+            // console.log(duelTheme);
             setDuelJoiner(JSON.parse(localStorage.getItem('user')).data.pseudo);
             toast.success('You join the duel, set level to start', {
                 position: toast.POSITION.TOP_CENTER
@@ -173,7 +173,7 @@ const Index = () => {
             setShowDuelDetails(false);
             localStorage.setItem('joined-duel-level', duelLevel);
             localStorage.setItem('joined-duel-theme', duelTheme);
-            console.log('my joiner', joinerPseudo);
+            // console.log('my joiner', joinerPseudo);
             toast.success(`${joinerPseudo} joined your duel,set level to start`, {
                 position: toast.POSITION.TOP_CENTER
             });
@@ -223,10 +223,10 @@ const Index = () => {
         const time = `${today.getHours()}:${today.getMinutes()}`;
         const textarea = document.querySelector('.input-container-textarea');
         const senderID = userID;
-        const receiver = receiverID.current;
-        console.log(senderID, receiver);
+        // const receiver = receiverID.current;
+        // console.log(senderID, receiver);
         const senderPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo;
-        console.log(message);
+        // console.log(message);
         socket.emit('send-message', ({ message, senderID, receiverID, senderPseudo, time }));
         newMessage.current = message;
         const getNewArray = localStorage.getItem('messages');
@@ -277,13 +277,13 @@ const Index = () => {
         e.preventDefault();
         const senderID = userID;
         const receiver = receiverID.current;
-        console.log(senderID, receiver);
+        // console.log(senderID, receiver);
         const senderPseudo = JSON.parse(localStorage.getItem('user')).data.pseudo;
         socket.emit('join-duel', ({ getDuelID, senderID, receiver, senderPseudo }));
         // console.log(getDuelID);
     }
     const startTheDuel = () => {
-        console.log('creator', duelCreator, 'joiner', duelJoiner);
+        // console.log('creator', duelCreator, 'joiner', duelJoiner);
     }
     const stopDuel = () => {
         localStorage.removeItem('duel-gamer');
@@ -298,7 +298,7 @@ const Index = () => {
             setShowDuelDetails(false);
             setShowDuelInputID(false);
             setDuelSettingReady(false);
-            console.log(duelStoperObj);
+            // console.log(duelStoperObj);
         }
         if (duelCreator !== undefined) {
             const duelStoperObj = users.find(({ pseudo }) => pseudo === duelCreator);
@@ -308,7 +308,7 @@ const Index = () => {
             setShowDuelDetails(false);
             setShowDuelInputID(false);
             setDuelSettingReady(false);
-            console.log(duelStoperObj);
+            // console.log(duelStoperObj);
         }
         else {
             window.location.reload();
@@ -402,7 +402,7 @@ const Index = () => {
                     reciverPseudo.current = e.target.innerText;
                     const receiver = users.find(data => data.pseudo === reciverPseudo.current);
                     // console.log(receiver, 'in', allUsers.current, 'with name:', reciverPseudo.current);
-                    console.log(receiver, reciverPseudo.current);
+                    // console.log(receiver, reciverPseudo.current);
                     receiverID.current = receiver.id;
                     receiverAvatar.current = receiver.avatar;
                     setCloseDiscussionWindow(true);

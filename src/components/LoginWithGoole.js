@@ -23,7 +23,7 @@ const LoginWithGoogle = () => {
                         level: 0
                     }
                 });
-                console.log(themeDetails);
+                // console.log(themeDetails);
             
                 await fetch('../login-With-Google', {
                     method: "POST",
@@ -44,10 +44,10 @@ const LoginWithGoogle = () => {
                     .then(data => {
                         const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
                         window.localStorage.setItem('user', JSON.stringify(data));
-                        console.log('all questions :', allQuestions);
+                        // console.log('all questions :', allQuestions);
                         if (allQuestions !== null) {
                             history.push(`/QChallenge/?id=${data.data.id}`);
-                            console.log('question is null');
+                            // console.log('question is null');
                             setWaitForLogin(true);
                         }
                     });
@@ -57,7 +57,8 @@ const LoginWithGoogle = () => {
 
     };
     const onFailure = (res) => {
-        console.log('login failed res:', res);
+        // console.log('login failed res:', res);
+        alert('login failed');
     }
 
     return (

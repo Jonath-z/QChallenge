@@ -14,10 +14,10 @@ const mongodb = mongoose.connection;
 router.post('/', (req, res) => {
     async function getRegisterUSer() {
         const user = await mongodb.collection('users').find({ email: `${req.body.email}` }).toArray();
-        console.log(user[0]);
-        console.log(req.body);
+        // console.log(user[0]);
+        // console.log(req.body);
         if (user.length === 0) {
-            console.log(req.body);
+            // console.log(req.body);
           await  mongodb.collection('users').insertOne(req.body);
             res.send({
                 status: 200,

@@ -27,7 +27,7 @@ router.post('/',
             const email = req.body.email.trim();
             const pseudo = req.body.pseudo.trim();
             let userID = uuid();
-            console.log(email, password, pseudo);
+            // console.log(email, password, pseudo);
             const encryptPassword = async () => {
                 const salt = await bcrypt.genSalt(10);
                 const cryptedPassword = await bcrypt.hash(password, salt);

@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     const userID = req.body.userID;
     const newEmail = req.body.newEmail;
     const newPseudo = req.body.newPseudo
-    console.log('for update', userID, newEmail, newPseudo);
+    // console.log('for update', userID, newEmail, newPseudo);
     if (newEmail !== '') {
         mongodb.collection('users').updateOne(
             {

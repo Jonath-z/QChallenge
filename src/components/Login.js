@@ -67,11 +67,11 @@ const Login = () => {
                     if (data.status === '200') {
 
                         window.localStorage.setItem('user', JSON.stringify(data));
-                        const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
-                        console.log('all questions :', allQuestions);
+                        // const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
+                        // console.log('all questions :', allQuestions);
                         // if (allQuestions !== null) {
                             history.push(`/QChallenge/?id=${data.data.id}`);
-                            console.log('question is null');
+                            // console.log('question is null');
                         // }
                         setIsDisable(true);
                     }

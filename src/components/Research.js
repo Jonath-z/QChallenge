@@ -17,7 +17,7 @@ const Research = (props) => {
         userScoreData = undefined;
     }
     const goToUserProfile = (e) => {
-        console.log(e.target);
+        // console.log(e.target);
         const userProfileUrl = e.target.src;
         const userPseudo = e.target.nextSibling.innerHTML;
         const allUsers = JSON.parse(
@@ -35,12 +35,12 @@ const Research = (props) => {
     }
 
     const goToChat = (e) => {
-        console.log(e.target.parentNode.parentNode);
+        // console.log(e.target.parentNode.parentNode);
         const userProfileUrl = e.target.parentNode.parentNode.previousSibling.previousSibling.src;
         const userPseudo = e.target.parentNode.parentNode.previousSibling.innerHTML;
         props.goToChatUserPseudo(userPseudo)
         props.goToChatUserProfile(userProfileUrl);
-        console.log(userProfileUrl, userPseudo);
+        // console.log(userProfileUrl, userPseudo);
     }
     
     const getAllUsers = () => {

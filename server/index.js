@@ -44,9 +44,9 @@ app.use('/update-user-datails', updateProfileDetails);
 app.use('/correct', correct);
 
 io.on('connect', (socket) => {
-    console.log(socket.id);
+    // console.log(socket.id);
     socket.on('user-socket-id', ({ userID, socketID }) => {
-        console.log(userID, socketID);
+        // console.log(userID, socketID);
         mongodb.collection('users').updateOne(
             { id: `${userID}` },
             {
@@ -61,7 +61,7 @@ io.on('connect', (socket) => {
     })
     socket.on('send-message', ({ message, senderID, receiverID, senderPseudo,time }) => {
         const receiver = `${receiverID.current}`;
-        console.log('my message', message, 'from', senderID, 'to', receiverID.current)
+        // console.log('my message', message, 'from', senderID, 'to', receiverID.current)
         mongodb.collection('messages').insertOne({
             message: message,
             sender: senderID,
@@ -78,7 +78,7 @@ io.on('connect', (socket) => {
         });
     });
     socket.on('join-duel', ({ getDuelID, senderID, receiver, senderPseudo }) => {
-        console.log(getDuelID, senderID, receiver, senderPseudo);
+        // console.log(getDuelID, senderID, receiver, senderPseudo);
         const joinDuelID = getDuelID;
         mongodb.collection('users').find({ id: `${receiver}` }).toArray((err, data) => {
             if (err) {
@@ -90,12 +90,12 @@ io.on('connect', (socket) => {
         });
     });
     socket.on('true-duelID', ({ duelLevel, duelCreator, senderID,duelTheme }) => {
-        console.log(duelLevel, duelCreator, senderID, duelTheme);
+        // console.log(duelLevel, duelCreator, senderID, duelTheme);
         mongodb.collection('users').find({ id: `${senderID}` }).toArray((err, data) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(data);
+                // console.log(data);
                 socket.to(data[0].socketID).emit('joined-duel', ({ duelLevel, senderID, duelCreator,duelTheme }));
             }
         });
@@ -105,7 +105,7 @@ io.on('connect', (socket) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(data);
+                // console.log(data);
                 socket.to(data[0].socketID).emit('join-duel-fail', ('verify the duel ID'));
             }
         });
@@ -115,7 +115,7 @@ io.on('connect', (socket) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(data);
+                // console.log(data);
                 socket.to(data[0].socketID).emit('duel-joiner', ({ joinerPseudo,duelLevel,duelTheme }));
             }
         });
@@ -126,7 +126,7 @@ io.on('connect', (socket) => {
             if (err) console.log(err)
             else {
                 socket.to(data[0].socketID).emit('duel-stoped', ('Duel stoped'));
-                console.log(data);
+                // console.log(data);
             }
         });
     });
@@ -135,7 +135,7 @@ io.on('connect', (socket) => {
             if (err) console.log(err)
             else {
                 socket.to(data[0].socketID).emit('duel-score-joiner', (duelScore));
-                console.log(duelJoiner , duelScore);
+                // console.log(duelJoiner , duelScore);
             }
         });
     });
@@ -144,7 +144,7 @@ io.on('connect', (socket) => {
             if (err) console.log(err)
             else {
                 socket.to(data[0].socketID).emit('duel-score-creator', (duelScore));
-                console.log(duelCreator, duelScore);
+                // console.log(duelCreator, duelScore);
             }
         });
     });

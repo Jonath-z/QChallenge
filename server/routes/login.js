@@ -19,7 +19,7 @@ router.post('/',
         const err = validationResult(req);
         if (!err.isEmpty()) {
             res.send({ status: '404 email' });
-            console.log('login err')
+            // console.log('login err')
         }
         else {
             const password = req.body.password.trim();
@@ -51,7 +51,7 @@ router.post('/',
                     encryptPassword();
                 }
             });
-            console.log(email);
+            // console.log(email);
         }
     }
 );

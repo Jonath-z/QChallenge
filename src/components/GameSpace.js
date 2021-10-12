@@ -66,7 +66,7 @@ const Gamespace = (props) => {
         data();
         const allQuestions = () => {
             const allQuestions = JSON.parse(localStorage.getItem('userQuestions'));
-            console.log(allQuestions);
+            // console.log(allQuestions);
             allQuestions !== null ? questions.current = allQuestions : console.log('loading...');
         }
         allQuestions();
@@ -197,7 +197,7 @@ const Gamespace = (props) => {
         timmer.current = maxTimmer.current;
         setChrono(timmer.current);
         setChronoInterval();
-        console.log('answerChecked');
+        // console.log('answerChecked');
     }
 
 // ****************************** RESET THE CHRONO ***********************************************************/
@@ -209,12 +209,12 @@ const Gamespace = (props) => {
         setOtherQuestion('');
         props.setShowStartButton(true);
         setShowDropLevelList(true);
-        console.log('reset');
+        // console.log('reset');
     }
 
 //**************************** OPEN CHALLENGE EVENT (CLICK ON THEME)********************************************/
     const openChallenge = (e) => {
-        console.log('timmer current', timmer.current);
+        // console.log('timmer current', timmer.current);
         if (prevTheme !== e.target.innerHTML && !props.showStartButton) {
             clearInterval(interval.current);
             prevTheme && setChallengeTheme(prevTheme);
@@ -318,7 +318,7 @@ const Gamespace = (props) => {
                                 props.setShowStartButton(true);
                                 scoreIncrement.current = 1;
                                 setDuelScore(1);
-                                console.log('duel-level:', level);
+                                // console.log('duel-level:', level);
                             }
                             if (localStorage.getItem('joined-duel-level') === 'Medium') {
                                 maxTimmer.current = 10;
@@ -326,7 +326,7 @@ const Gamespace = (props) => {
                                 setChrono(timmer.current);
                                 setDuelLevel('Medium');
                                 props.setShowStartButton(true);
-                                console.log('duel-level', level);
+                                // console.log('duel-level', level);
                                 scoreIncrement.current = 5;
                                 setDuelScore(5);
                             }
@@ -338,7 +338,7 @@ const Gamespace = (props) => {
                                 props.setShowStartButton(true);
                                 scoreIncrement.current = 10;
                                 setDuelScore(10);
-                                console.log('duel-level', level);
+                                // console.log('duel-level', level);
                             }
                         }}
                         success={success}
@@ -469,7 +469,7 @@ const Gamespace = (props) => {
                                     props.setShowStartButton(true);
                                     scoreIncrement.current = 1;
                                     setDuelScore(1);
-                                    console.log('duel-level:', level);
+                                    // console.log('duel-level:', level);
                                 }
                                 if (localStorage.getItem('joined-duel-level') === 'Medium') {
                                     maxTimmer.current = 10;
@@ -477,7 +477,7 @@ const Gamespace = (props) => {
                                     setChrono(timmer.current);
                                     setDuelLevel('Medium');
                                     props.setShowStartButton(true);
-                                    console.log('duel-level', level);
+                                    // console.log('duel-level', level);
                                     scoreIncrement.current = 5;
                                     setDuelScore(5);
                                 }
@@ -489,7 +489,7 @@ const Gamespace = (props) => {
                                     props.setShowStartButton(true);
                                     scoreIncrement.current = 10;
                                     setDuelScore(10);
-                                    console.log('duel-level', level);
+                                    // console.log('duel-level', level);
                                 }
                             }}
                             success={success}
@@ -502,22 +502,25 @@ const Gamespace = (props) => {
                             saveHandler={() => {
                                 if (!props.showStartButton) {
                                     updateUserStat(score.current, prevTheme, questionIndex.current);
-                                    setSaveState('Saved');
-                                    const setToSave = () => { setSaveState('Save') }
+                                    setSaveState(<GrCheckboxSelected/>);
+                                    const setToSave = () => { setSaveState(<GrSave/>) }
                                     setTimeout(setToSave, 2000);
-                                    setPauseState('Pause');
+                                    setPauseState(<AiOutlinePauseCircle/>);
                                     reset();
                                 }
                             }}
                             pauseHandler={() => {
                                 if (!props.showStartButton) {
-                                    if (pauseState === 'Pause') {
+                                    if (pauseString === 'pause') {
                                         clearInterval(interval.current);
-                                        setPauseState('Resume');
-                                    } else {
+                                        setPauseState(<AiOutlinePlayCircle />);
+                                        setPauseString('resume');
+                                    }
+                                    if(pauseString === 'resume'){
                                         setChrono(timmer.current);
                                         setChronoInterval();
-                                        setPauseState('Pause');
+                                        setPauseState(<AiOutlinePauseCircle />);
+                                        setPauseString('pause');
                                     }
                                 }
                             }}

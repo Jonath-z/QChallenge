@@ -27,7 +27,7 @@ const Account = () => {
                 .then((res) => { return res.json() })
                 .then((data) => {
                     setUserProfileEmail(data.email);
-                    console.log(data);
+                    // console.log(data);
                 });
         }
         getUser();
@@ -52,7 +52,7 @@ const Account = () => {
     const uploadProfile = () => {
         inputFile.type = 'file';
         inputFile.click();
-        console.log('profile upload')
+        // console.log('profile upload')
     }
     const openFolder = () => {
         uploadProfile();
@@ -75,7 +75,7 @@ const Account = () => {
                     const user = JSON.parse(localStorage.getItem('user'));
                     user.data.avatar = url;
                     localStorage.setItem('user', JSON.stringify(user));
-                    console.log(url);
+                    // console.log(url);
                     setUserProfile(JSON.parse(localStorage.getItem('user')));
                     fetch('../upgate-profile/image', {
                         method: 'POST',
@@ -139,13 +139,13 @@ const Account = () => {
             const user = JSON.parse(localStorage.getItem('user'));
             user.data.pseudo = newPseudo;
             localStorage.setItem('user', JSON.stringify(user));
-            console.log('newPSeudo', user.data.pseudo);
+            // console.log('newPSeudo', user.data.pseudo);
             document.querySelector('.inputNewPseudo').value = '';
             setNewPseudo('');
         }
         if (newEmail !== '') {
             setUserProfileEmail(newEmail);
-            console.log('newEmail', newEmail);
+            // console.log('newEmail', newEmail);
             setNewEmail('');
             document.querySelector('.inputNewEmail').value = '';
         }

@@ -116,7 +116,7 @@ const Header = (props) => {
                             </li>
                             <li className='documentationHeader option header-li'
                                 onClick={() => {
-                                    console.log('click to push');
+                                    // console.log('click to push');
                                     history.push(`/Help/?id=${JSON.parse(localStorage.getItem('user')).data.id}`);
                                 }}
                             >Help</li>
@@ -149,7 +149,7 @@ const Header = (props) => {
                 
                     <li className='documentationHeader option header-li'
                         onClick={() => {
-                            console.log('click to push');
+                            // console.log('click to push');
                             history.push(`/Help/?id=${JSON.parse(localStorage.getItem('user')).data.id}`);
                         }}
                     >Help</li>

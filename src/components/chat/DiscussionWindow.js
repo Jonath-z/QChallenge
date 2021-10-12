@@ -64,7 +64,7 @@ const DiscussionWindow = (props) => {
         if (messagesForTrash !== null) {
             const allmessages = localStorage.getItem('messages');
             const decryptMessages = JSON.parse(CryptoJS.AES.decrypt(allmessages, `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8));
-            console.log('initial lengeth', decryptMessages.length);
+            // console.log('initial lengeth', decryptMessages.length);
             let newMessages = decryptMessages.filter(({ message}) => message !== messagesForTrash);
 
             localStorage.setItem('messages', CryptoJS.AES.encrypt(JSON.stringify(newMessages), `${process.env.REACT_APP_CRYPTO_KEY}`));

@@ -212,3 +212,27 @@
         border-radius: 10px;
     }
 }
+@media(min-width: 1080px){
+    .searchBar{
+        width: 20em;
+        box-shadow: 1px 1px 5px hsl(199, 41%, 27%);
+        height: 2em;
+        border: 1px solid hsl(199, 41%, 27%);
+        margin-bottom: 30px;
+        margin-top: 30px;
+        margin-right: 0px;
+        color: rgb(3, 4, 56);
+    }
+    .appNameNav{
+        font-size: 25px;
+        padding-top: 0;
+        margin-top: 28px;
+        cursor: pointer;
+       margin-left: 0px;
+    }
+    .option:hover{
+        background: rgb(3, 4, 56);
+        color: white;
+        transition: 200ms;
+    }
+}

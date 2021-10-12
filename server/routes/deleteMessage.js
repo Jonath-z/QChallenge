@@ -13,7 +13,7 @@ router.use(bodyparser.urlencoded({ extended: false }));
 router.post('/', (req, res) => {
     const message = req.body.message;
     const user = req.body.userID;
-    console.log('message deleted', message);
+    // console.log('message deleted', message);
     
     mongodb.collection('messages').deleteOne({
         message: message,
