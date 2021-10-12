@@ -33,7 +33,7 @@ const CustomNotification = (props) => {
 }
 
 const getUsers = async () => {
-    const allUsers = await fetch(`${REACT_APP_QCHALLENGE_API_URI}/all-users`)
+    const allUsers = await fetch(`${process.env.REACT_APP_QCHALLENGE_API_URI}/all-users`)
     const AllusersFormated = await allUsers.json();
     const allUsersCrypted = CryptoJS.AES.encrypt(JSON.stringify(AllusersFormated), `${process.env.REACT_APP_CRYPTO_KEY}`);
     window.localStorage.setItem('allUsers', allUsersCrypted);

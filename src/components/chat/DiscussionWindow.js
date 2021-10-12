@@ -33,7 +33,7 @@ const DiscussionWindow = (props) => {
         user.fontColor = `${e.target.innerHTML}`;
         localStorage.setItem('user', JSON.stringify(user));
         const updateFontColor = async () => {
-            await fetch(`${REACT_APP_QCHALLENGE_API_URI}/update-font-color`, {
+            await fetch(`${process.env.REACT_APP_QCHALLENGE_API_URI}/update-font-color`, {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',
@@ -71,7 +71,7 @@ const DiscussionWindow = (props) => {
             // const chekNewLength = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem('messages'), `${process.env.REACT_APP_CRYPTO_KEY}`).toString(CryptoJS.enc.Utf8)).length;
             // console.log('ckek new lenght:', chekNewLength);
 
-            fetch(`${REACT_APP_QCHALLENGE_API_URI}/delete-messages`, {
+            fetch(`${process.env.REACT_APP_QCHALLENGE_API_URI}/delete-messages`, {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',

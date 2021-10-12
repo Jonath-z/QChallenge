@@ -8,7 +8,7 @@ import storage from "../modules/firbaseConfig";
 import LoginWithGoogle from "./LoginWithGoole";
 
 const getMessages = async () => {
-    const allMessages = await fetch(`${REACT_APP_QCHALLENGE_API_URI}/all-messages`);
+    const allMessages = await fetch(`${process.env.REACT_APP_QCHALLENGE_API_URI}/all-messages`);
     const formatedMessages = await allMessages.json();
     const encryptMessages = CryptoJS.AES.encrypt(JSON.stringify(formatedMessages), `${process.env.REACT_APP_CRYPTO_KEY}`);
     localStorage.setItem('messages', encryptMessages);
@@ -16,7 +16,7 @@ const getMessages = async () => {
 getMessages();
 
 const getQuestions = async () => {
-    await fetch(`${REACT_APP_QCHALLENGE_API_URI}/challenges`)
+    await fetch(`${process.env.REACT_APP_QCHALLENGE_API_URI}/challenges`)
         .then((res) => { return res.json() })
         .then((myQuestions) => {
             localStorage.setItem('userQuestions', JSON.stringify(myQuestions));
@@ -51,7 +51,7 @@ const Login = () => {
     const login = () => {
         setIsDisable(true);
         const postLogins = async () => {
-            await fetch(`${REACT_APP_QCHALLENGE_API_URI}/login`, {
+            await fetch(`${process.env.REACT_APP_QCHALLENGE_API_URI}/login`, {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',
