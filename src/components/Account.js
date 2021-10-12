@@ -16,7 +16,7 @@ const Account = () => {
     // ********************* GET USER DATA ********************************//
     useEffect(() => {
         const getUser = async () => {
-            await fetch('../get-user-data', {
+            await fetch(`${REACT_APP_QCHALLENGE_API_URI}/get-user-data`, {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',
@@ -77,7 +77,7 @@ const Account = () => {
                     localStorage.setItem('user', JSON.stringify(user));
                     // console.log(url);
                     setUserProfile(JSON.parse(localStorage.getItem('user')));
-                    fetch('../upgate-profile/image', {
+                    fetch(`${REACT_APP_QCHALLENGE_API_URI}/upgate-profile/image`, {
                         method: 'POST',
                         headers: {
                             'accept': '*/*',
@@ -121,7 +121,7 @@ const Account = () => {
 // ***************************** UPDATE USER EMAIL && PASSWORD *********************************//
     const updateProfileDetails = () => {
         const update = async () => {
-            await fetch('../update-user-datails', {
+            await fetch(`${REACT_APP_QCHALLENGE_API_URI}/update-user-datails`, {
                 method: 'POST',
                 headers: {
                     'accept': '*/*',

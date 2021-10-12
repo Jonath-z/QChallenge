@@ -14,7 +14,7 @@ const LoginWithGoogle = () => {
         if (res !== null) {
             const registerUSer = async () => {
                 // const fetchData = async () => {
-                const theme = await fetch('../theme');
+                const theme = await fetch(`${REACT_APP_QCHALLENGE_API_URI}/theme`);
                 const responseTheme = await theme.json();
                 const themeDetails = responseTheme.map(theme => {
                     return {
@@ -25,7 +25,7 @@ const LoginWithGoogle = () => {
                 });
                 // console.log(themeDetails);
             
-                await fetch('../login-With-Google', {
+                await fetch(`${REACT_APP_QCHALLENGE_API_URI}/login-With-Google`, {
                     method: "POST",
                     headers: {
                         'accept': '*/*',

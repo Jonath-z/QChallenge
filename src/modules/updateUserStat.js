@@ -8,7 +8,7 @@ const updateUserStat = async (Newscore, challengeTheme, level) => {
     userData.duelLevel = level;
     localStorage.setItem('user', JSON.stringify(userData));
     try {
-        await fetch('../update', {
+        await fetch(`${REACT_APP_QCHALLENGE_API_URI}/update`, {
             method: "POST",
             headers: {
                 'accept': '*/*',

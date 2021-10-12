@@ -28,7 +28,7 @@ const Signup = () => {
     const registerUser = () => {
         if (avatar !== null) {
             const fetchData = async () => {
-                const theme = await fetch('../theme');
+                const theme = await fetch(`${REACT_APP_QCHALLENGE_API_URI}/theme`);
                 const responseTheme = await theme.json();
                 const themeDetails = responseTheme.map(theme => {
                     return {
@@ -38,7 +38,7 @@ const Signup = () => {
                     }
                 });
                 // console.log(themeDetails);
-                const data = await fetch('../signup', {
+                const data = await fetch(`${REACT_APP_QCHALLENGE_API_URI}/signup`, {
                     method: 'POST',
                     headers: {
                         'accept': '*/*',

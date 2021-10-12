@@ -58,7 +58,7 @@ const Gamespace = (props) => {
 // *************************** FETCH INITAL DATA (THEME AND QUESTIONS) ****************************************/  
     useEffect(() => {
         async function data() {
-            const data = await fetch('../theme');
+            const data = await fetch(`${REACT_APP_QCHALLENGE_API_URI}/theme`);
             const themes = await data.json();
             window.localStorage.setItem('theme', JSON.stringify(themes));
             const myThemes = JSON.parse(localStorage.getItem('theme'));
