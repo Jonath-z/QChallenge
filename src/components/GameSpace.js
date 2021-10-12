@@ -18,6 +18,7 @@ import userChallengeProgress from "../modules/userChallengeProgress";
 import updateUserStat from "../modules/updateUserStat";
 import uuid  from "react-uuid";
 
+
 // custome hook
 function usePrevious(data){
     const ref = useRef();
@@ -78,10 +79,14 @@ const Gamespace = (props) => {
             const userData = JSON.parse(localStorage.getItem('user'));
             localStorage.setItem('duelLevel', level);
             localStorage.setItem('duelTheme', challengeTheme);
+            
             // console.log(userScoreState);
-            score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
-            scoreIncrement.current = 5;
-            questionIndex.current = userData.data.score.find(({ theme }) => theme === challengeTheme).level;
+            if (userData.data.score !== undefined) {
+                console.log(userData)
+                score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
+                scoreIncrement.current = 5;
+                questionIndex.current = userData.data.score.find(({ theme }) => theme === challengeTheme).level;
+            }
             // console.log(questionIndex.current);
             clearInterval(interval.current);
             timmer.current = maxTimmer.current;

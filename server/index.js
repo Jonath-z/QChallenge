@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const login = require('./routes/login.js');
 const signup = require('./routes/signup.js');
 const challenges = require('./routes/challenge.js');
-const theme = require('./routes/theme.js');
+const theme = require('./routes/theme');
 const updateScore = require('./routes/updateScore.js');
 const googleLogin = require('./routes/googleLogin.js');
 const getAllUser = require('./routes/getAllUsers.js');
@@ -18,8 +18,8 @@ const getUserData = require('./routes/getUserData.js');
 const updateProfileImage = require('./routes/update/userProfileImage.js');
 const updateProfileDetails = require('./routes/update/updateProfileDetails');
 const correct = require('./routes/correct.js');
-require('dotenv/config');
-require('../server/index');
+
+console.log(process.env.PORT);
 
 mongoose.connect(`${process.env.REACT_APP_MONGODB_URL}`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;

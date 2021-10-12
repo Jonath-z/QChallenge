@@ -17,6 +17,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.env.development
 .env
 
 
@@ -26,6 +27,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#local test files
-./server/routes/correct.js
-./server/routes/math.js
+#server side
+server/routes/correct.js
+server/routes/math.js
+server/node_modules

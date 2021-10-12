@@ -2,8 +2,8 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 
-require('dotenv/config');
-require('../../server/index');
+
+
 
 const router = express.Router();
 router.use(bodyparser.urlencoded({ extended: false }));
@@ -11,14 +11,10 @@ router.use(bodyparser.urlencoded({ extended: false }));
 mongoose.connect(`${process.env.REACT_APP_MONGODB_URL}`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;
 
-router.get('/', async (req, res) => {
-    mongodb.collection('theme').find({}).toArray((err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(data);
-        }
-    })
+router.get('/', async(req, res) => {
+    const themes = await mongodb.collection('theme').find({}).toArray();
+    res.send(themes);
+    console.log(themes);
 });
 
 module.exports = router;

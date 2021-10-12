@@ -1,9 +1,6 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
-const { body, validationResult } = require('express-validator');
-require('dotenv/config');
-require('../../server/index');
 
 const router = express.Router();
 router.use(bodyparser.urlencoded({ extended: false }));
@@ -13,11 +10,10 @@ const mongodb = mongoose.connection;
 
 router.post('/', (req, res) => {
     async function getRegisterUSer() {
-        const user = await mongodb.collection('users').find({ email: `${req.body.email}` }).toArray();
+        const user = await mongodb.collection('users').find({ email: `${req.body.email.trim()}` }).toArray();
         // console.log(user[0]);
-        // console.log(req.body);
+        console.log(req.body);
         if (user.length === 0) {
-            // console.log(req.body);
           await  mongodb.collection('users').insertOne(req.body);
             res.send({
                 status: 200,
@@ -30,7 +26,9 @@ router.post('/', (req, res) => {
                 }
             });
         }
-        else {
+
+        if(user.length !==0) {
+            console.log(user[0]);
             res.send({
                 status: 200,
                 data: {

@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const router = express.Router();
-require('dotenv/config');
-require('../../server/index');
+
+
 
 mongoose.connect(`${process.env.REACT_APP_MONGODB_URL}`, { useNewUrlParser: true, useUnifiedTopology: true });
 const mongodb = mongoose.connection;

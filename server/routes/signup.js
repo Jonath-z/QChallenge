@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const uuid = require('uuid').v4;
 const { body, validationResult } = require('express-validator');
 
-require('dotenv/config');
-require('../../server/index');
+
+
 
 const router = express.Router();
 router.use(bodyparser.urlencoded({ extended: false }));

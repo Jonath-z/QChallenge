@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
-require('dotenv/config');
+
 require('../../index');
 
 const router = express.Router();
