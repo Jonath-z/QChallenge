@@ -13,7 +13,7 @@ Web application of questions challenge.
 - click to save button (to save and exit)
 - click to exit (to exist and save)
 
-# let challenge with your friend 
+# let challenge with a friend 
 
  1. Go to option then Create the duel
  2. Copy the duel ID and send it to your friend
