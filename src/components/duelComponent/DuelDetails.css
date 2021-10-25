@@ -88,7 +88,7 @@
 }
 
 /* ***************************** MEDIA QUERIES ********************* */
-@media(min-width: 1080px){
+@media screen and (width: 1080px){
     .DuelDetails{
         background: rgb(3,4,56);
         color: white;
