@@ -82,7 +82,7 @@ const Gamespace = (props) => {
             
             // console.log(userScoreState);
             if (userData.data.score !== undefined) {
-                console.log(userData)
+                // console.log(userData)
                 score.current = userData.data.score.find(({ theme }) => theme === challengeTheme).score;
                 scoreIncrement.current = 5;
                 questionIndex.current = userData.data.score.find(({ theme }) => theme === challengeTheme).level;
