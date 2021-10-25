@@ -26,6 +26,6 @@ Web application of questions challenge.
  4. Then click to Join
 
 # Ready to start ??
-Wait,before, go to Level and click to Set Level ,to load allparameters about the duel
+Wait,before, go to Level and click to Set Level ,to load all parameters about the duel
 
 ### Here we are ,follow the <a href='https://qc-hallenge.vercel.app'>link to start your challenge</a>
