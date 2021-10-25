@@ -91,62 +91,62 @@ const DiscussionWindow = (props) => {
 
     return (
         <>
-        <div className='discussion-window' style={{ background: DiscussionBacgroungColor }} >
-            <div className='receiver-details'>
-                <div className='receiver-details-profile'>
-                    <FaArrowCircleLeft onClick={props.closeDiscussionWindow} className='faArrow-left' />
-                    <img src={props.receiverAvatar} alt='profile' className='receiver-details-profile-avatar' />
-                    <p className='receiver-details-profile-pseudo'>{props.receiverPseudo}</p>
+            <div className='discussion-window' style={{ background: DiscussionBacgroungColor }} >
+                <div className='receiver-details'>
+                    <div className='receiver-details-profile'>
+                        <FaArrowCircleLeft onClick={props.closeDiscussionWindow} className='faArrow-left' />
+                        <img src={props.receiverAvatar} alt='profile' className='receiver-details-profile-avatar' />
+                        <p className='receiver-details-profile-pseudo'>{props.receiverPseudo}</p>
+                    </div>
+                    <p className='drop-down-option'>
+                        < FiMenu className='menue receiver-details-icon' style={{ display: showMenu }} />
+                        <FaTrash className='trash receiver-details-icon' style={{ display: showTrash }} onClick={moveToTrash} />
+                        {isMenue && <span className='backgroung-color-menu'>
+                            <span>
+                                <li className='color-option' onClick={setBackgroungColor}>White</li>
+                                <li className='color-option' onClick={setBackgroungColor}>Turquoise</li>
+                                <li className='color-option' onClick={setBackgroungColor}>Thistle</li>
+                            </span>
+                        </span>}
+                    </p>
                 </div>
-                <p className='drop-down-option'>
-                    < FiMenu className='menue receiver-details-icon' style={{ display: showMenu }} />
-                    <FaTrash className='trash receiver-details-icon' style={{ display: showTrash }} onClick={moveToTrash} />
-                    {isMenue && <span className='backgroung-color-menu'>
-                        <span>
-                            <li className='color-option' onClick={setBackgroungColor}>White</li>
-                            <li className='color-option' onClick={setBackgroungColor}>Turquoise</li>
-                            <li className='color-option' onClick={setBackgroungColor}>Thistle</li>
-                        </span>
-                    </span>}
-                </p>
-                </div>
-            <div className='message-container'>  
-            <ScrollableFeed className='message-scollableFeed'>
-                {   
-                    props.allMessages.map((message, i) => {
-                        if (message.sender === props.senderID && message.receiver === props.receiverID) {
-                            return(
-                            <p className="outcome-message" key={i}
-                                style={{
-                                    float: 'background: rgb(3,4,56) ',
-                                    background: 'red'
-                                }} {...deleteMessage}>{message.message} <span className='time-outCome'>{message.time}</span></p>
+                <div className='message-container'>
+                    <ScrollableFeed className='message-scollableFeed'>
+                        {
+                            props.allMessages.map((message, i) => {
+                                if (message.sender === props.senderID && message.receiver === props.receiverID) {
+                                    return (
+                                        <p className="outcome-message" key={i}
+                                            style={{
+                                                float: 'background: rgb(3,4,56) ',
+                                                background: 'red'
+                                            }} {...deleteMessage}>{message.message} <span className='time-outCome'>{message.time}</span></p>
                                 
-                            ) 
+                                    )
+                                }
+                                else if (message.receiver === props.senderID && message.sender === props.receiverID) {
+                                    return <p className='income-message' key={i}
+                                        style={{
+                                            float: 'left',
+                                            background: 'green'
+                                        }}{...deleteMessage}>{message.message}  <span className='time-outIncome'>{message.time}</span></p>
+                                }
+                                return '';
+                            })
                         }
-                        else if (message.receiver === props.senderID && message.sender === props.receiverID) {
-                            return <p className='income-message' key={i}
-                                style={{
-                                    float: 'left',
-                                    background: 'green'
-                                }}{...deleteMessage}>{message.message}  <span className='time-outIncome'>{message.time}</span></p>
-                        }
-                        return '';
-                    })
-                }
 
                     </ScrollableFeed>
-                    </div>  
+                </div>
                 <div className='input-container' style={{
-                 background: DiscussionBacgroungColor
-            }}>
+                    background: DiscussionBacgroungColor
+                }}>
                 
-                <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage} />
-                <IoMdSend className='input-container-send-incon' onClick={props.sendMessage} />
+                    <TextareaAutosize placeholder='message...' className='input-container-textarea' onChange={props.getMessage} />
+                    <IoMdSend className='input-container-send-incon' onClick={props.sendMessage} />
                 
+                </div>
             </div>
-            </div>
-            </>
+        </>
     );
 }
 
