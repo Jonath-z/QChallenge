@@ -27,7 +27,7 @@ const Chat = (props) => {
                     {
                         users === null ? <div className='chat-user-div-container' >
                             <Skeleton />
-                        </div> : users.map((user) => {
+                        </div> : users.reverse().map((user) => {
                             return (
                                 <div className='chat-user-div' key={user.id}>
                                     <p>{<img src={user.avatar} className='userAvatar' alt='profile' /> || <Skeleton />}</p>
