@@ -1,290 +1,288 @@
-
-.discussion-window{
-        position: absolute;
-        right: 70px;
-        width: 20%;
-        top: 280px;
-        bottom: 40px;
-        /* background:white; */
-        z-index: 3;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
+.discussion-window {
+  position: absolute;
+  right: 70px;
+  width: 20%;
+  top: 280px;
+  bottom: 40px;
+  /* background:white; */
+  z-index: 3;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
-.message-container{
-    position: absolute;
-    width: 100%;
-    bottom: 50px;
-    top:90px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    display:flex;
-    flex-direction: column;
-    padding-top:20px;
+.message-container {
+  position: absolute;
+  width: 100%;
+  bottom: 50px;
+  top: 90px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
 }
-.message-scollableFeed{
-    width: 100%;
-    bottom: 50px;
-    top:90px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    display:flex;
-    flex-direction: column;
-    padding-top:20px;
+.message-scollableFeed {
+  width: 100%;
+  bottom: 50px;
+  top: 90px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
 }
-.income-message,.outcome-message{
-    width: fit-content;
-    padding: 5px 5px 5px 5px ;
-    border-radius: 10px;
-    margin-top: -10px;
-    max-width: 70%;
-    font-size: 14px;
-    overflow-wrap: break-word;
-    line-height: 1.6;
-    font-family: sans-serif;
+.income-message,
+.outcome-message {
+  width: fit-content;
+  padding: 5px 5px 5px 5px;
+  border-radius: 10px;
+  margin-top: -10px;
+  max-width: 70%;
+  font-size: 14px;
+  overflow-wrap: break-word;
+  line-height: 1.6;
+  font-family: sans-serif;
 }
-.income-message{
-    margin-left:10px;
+.income-message {
+  margin-left: 10px;
 }
-.outcome-message{
+.outcome-message {
   margin-left: auto;
   /* order: 1; */
   margin-right: 10px;
-  background: rgb(3,4,56) !important;
+  background: rgb(3, 4, 56) !important;
   color: white;
 }
-.time-outCome{
-    font-size: 8px;
+.time-outCome {
+  font-size: 8px;
 }
-.time-outIncome{
-    font-size: 8px;
+.time-outIncome {
+  font-size: 8px;
 }
 ::-webkit-scrollbar {
-    width: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: rgb(255, 255, 255);
-    width: 5px;
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgba(3, 4, 56, 0.561);
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(3,4,56);
-  }
-
-
-.receiver-details{
-display:grid;
-grid-template-columns:2fr 1fr;
-width: 100%;
-background: rgb(3,4,56);
-color: white;
-padding-bottom: 10px;
-border-top-left-radius: 10px;
-border-top-right-radius: 10px;
-}
-.faArrow-left{
-    margin-left: 10px;
-    font-size: 25px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-.receiver-details-profile-avatar{
-    width: 50px;
-    margin-left: 20px;
-    border-radius: 50%;
-}
-.receiver-details-profile-pseudo{
-    margin-left: 10px;
+  width: 5px;
 }
 
-.receiver-details-icon{
-    float: right;
-    text-align: right;
-    position: absolute;
-    right: 20px;
-    top:20px;
-    font-size: 30px;
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(255, 255, 255);
+  width: 5px;
 }
-.trash{
-    animation: trashspine 1s ease;
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(3, 4, 56, 0.561);
 }
-@keyframes trashspine{
-    from {
-        transform: rotate(360deg)
-    }
-    to{
-        transform: rotate(0deg);
-    }
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(3, 4, 56);
 }
-.menue{
-    animation: menuspine 1s ease;
+
+.receiver-details {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  width: 100%;
+  background: rgb(3, 4, 56);
+  color: white;
+  padding-bottom: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
-@keyframes menuspine{
-    from {
-        transform: rotate(360deg)
-    }
-    to{
-        transform: rotate(0deg);
-    }
+.faArrow-left {
+  margin-left: 10px;
+  font-size: 25px;
+  margin-top: 10px;
+  cursor: pointer;
 }
-.backgroung-color-menu{
-    display:none ;
-    background: rgb(3, 4, 56);
-    color: white;
-    z-index: 4;
-    margin-top: 50px;
-    position: absolute;
+.receiver-details-profile-avatar {
+  width: 50px;
+  margin-left: 20px;
+  border-radius: 50%;
+}
+.receiver-details-profile-pseudo {
+  margin-left: 10px;
+}
+
+.receiver-details-icon {
+  float: right;
+  text-align: right;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 30px;
+}
+.trash {
+  animation: trashspine 1s ease;
+}
+@keyframes trashspine {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+.menue {
+  animation: menuspine 1s ease;
+}
+@keyframes menuspine {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+.backgroung-color-menu {
+  display: none;
+  background: rgb(3, 4, 56);
+  color: white;
+  z-index: 4;
+  margin-top: 50px;
+  position: absolute;
+  right: 0px;
+  padding-right: 40px;
+  padding-left: 40px;
+  padding-bottom: 20px;
+  box-shadow: 0px 0px 10px 0px rgb(3, 4, 56);
+  margin-top: -10px;
+  border-radius: 10px;
+}
+
+.receiver-details-icon:hover {
+  cursor: pointer;
+}
+.drop-down-option:hover .backgroung-color-menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  cursor: pointer;
+}
+.color-option {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.color-option:hover {
+  font-size: 15px;
+  transition: 100ms;
+}
+.receiver-details-profile {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+.input-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  position: absolute;
+  bottom: 5px;
+}
+.input-container-textarea {
+  width: 20em;
+  margin-left: 5px;
+  height: 3em;
+  outline: none;
+  border-radius: 20px;
+  text-decoration: none;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: rgb(3, 4, 56);
+  color: white;
+  border: none;
+  cursor: pointer;
+  resize: none;
+  max-height: 60px;
+}
+.input-container-send-incon {
+  font-size: 30px;
+  position: absolute;
+  right: 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  color: rgb(3, 4, 56);
+}
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media (max-width: 414px) {
+  .discussion-window {
+    position: fixed;
     right: 0px;
-    padding-right: 40px;
-    padding-left: 40px;
-    padding-bottom: 20px;
-    box-shadow: 0px 0px 10px 0px rgb(3,4,56);
-    margin-top: -10px;
-    border-radius: 10px;
-}
+    width: 100%;
+    top: 0px;
+    bottom: 0px;
+    z-index: 3;
+    height: 100vh;
+  }
 
-.receiver-details-icon:hover{
-    cursor: pointer;
-}
-.drop-down-option:hover .backgroung-color-menu{
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    cursor: pointer;
-}
-.color-option{
-    margin-left: 10px;
-    margin-top: 10px;
-}
-.color-option:hover{
-    font-size: 15px;
-    transition: 100ms;
-}
-.receiver-details-profile{
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
-}
-.input-container{
+  /* div{top:0;}  */
+  .input-container {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    position: absolute;
-    bottom: 5px;
-}
-.input-container-textarea{
+    position: fixed;
+    bottom: 10;
+    z-index: 3;
+  }
+  .message-container {
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    top: 90px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-bottom: 50px;
+  }
+  .input-container-textarea {
     width: 20em;
-    margin-left:5px;
+    margin-left: 5px;
     height: 3em;
     outline: none;
-    border-radius: 20px;
+    border-radius: 2px;
     text-decoration: none;
     padding-left: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    background:rgb(3,4,56);
+    background: rgb(3, 4, 56);
     color: white;
     border: none;
     cursor: pointer;
     resize: none;
     max-height: 60px;
-}
-.input-container-send-incon{
+  }
+  .input-container-send-incon {
     font-size: 30px;
     position: absolute;
     right: 10px;
     margin-top: 5px;
     cursor: pointer;
-    color: rgb(3,4,56);
-}
-
-
-/* ***************************** MEDIA QUERIES ********************* */
-@media(max-width: 414px){
-    .discussion-window{
-        position: fixed;
-        right: 0px;
-        width: 100%;
-        top: 0px;
-        bottom: 0px;
-        z-index: 3;
-        height:100vh;
-}
-
-    /* div{top:0;}  */
-    .input-container{
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        position: fixed;
-        bottom: 10;
-        z-index: 3;
-    }
-    .message-container{
-        position: fixed;
-        width: 100%;
-        bottom: 0px;
-        top:90px;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        display:flex;
-        flex-direction: column;
-        padding-top:20px;
-        padding-bottom: 50px;
-    }
-    .input-container-textarea{
-    width: 20em;
-       margin-left:5px;
-       height: 3em;
-       outline: none;
-       border-radius: 2px;
-       text-decoration: none;
-       padding-left: 10px;
-       padding-top: 10px;
-       padding-bottom: 10px;
-       background:rgb(3,4,56);
-       color: white;
-       border: none;
-       cursor: pointer;
-       resize: none;
-       max-height: 60px;
-   }
-   .input-container-send-incon{
-    font-size: 30px;
-    position: absolute;
-    right: 10px;
-    margin-top: 5px;
-    cursor: pointer;
-    color: rgb(3,4,56);
+    color: rgb(3, 4, 56);
     margin-right: 20px;
-}
+  }
 
-.receiver-details{
-    display:grid;
-    grid-template-columns:2fr 1fr;
+  .receiver-details {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     width: 100%;
-    background: rgb(3,4,56);
+    background: rgb(3, 4, 56);
     color: white;
     padding-bottom: 10px;
     border-radius: 0px;
-    }
+  }
 }
 
 /* ***************************** MEDIA QUERIES ********************* */
 /* @media(min-width: 1080px){ */
-    /* .discussion-window{
+/* .discussion-window{
         position: absolute;
         right: 70px;
         width: 50%;
         top: 280px;
         bottom: 50px;
         /* background:white; */
-        /* z-index: 3;
+/* z-index: 3;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px; */
 /* }

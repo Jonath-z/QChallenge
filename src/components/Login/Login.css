@@ -1,0 +1,95 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  margin-top: 10em;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  width: 20em;
+  text-align: center;
+}
+.signup-div {
+  margin-top: 150px;
+}
+.logPageTitle {
+  margin-left: -200px !important;
+}
+input {
+  margin-top: 30px;
+  outline: rgb(245, 69, 0);
+  outline-color: blue;
+  background: transparent;
+  border: 1px solid black;
+  height: 25px;
+  padding-left: 20px;
+  border-radius: 5px;
+}
+input::placeholder {
+  background: transparent;
+  font-family: sans-serif;
+  padding-left: 30px;
+}
+input:-ms-input-placeholder {
+  background: transparent;
+  font-family: sans-serif;
+}
+input::-webkit-input-placeholder {
+  background: transparent;
+  font-family: sans-serif;
+}
+
+button {
+  margin-top: 30px;
+  font-family: sans-serif;
+  border: none;
+  height: 3em;
+  border-radius: 20px;
+}
+#default-avatar {
+  width: 200px;
+  border-radius: 50%;
+}
+.avatart-container {
+  text-align: center;
+  margin-top: 10em;
+}
+.singup-para {
+  color: blue;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.loginBtn {
+  background: rgba(11, 7, 65, 0.657);
+  color: beige;
+}
+.loginBtn:disabled {
+  background: rgba(11, 7, 65, 0.767);
+}
+.loginBtn:hover {
+  background: rgb(2, 0, 27);
+  color: beige;
+}
+.loginErr {
+  font-family: sans-serif;
+  color: red;
+  font-size: 10px;
+  height: 2em;
+  padding-top: 8px;
+}
+.spaniner {
+  animation: spine infinite 1s linear;
+}
+@keyframes spine {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

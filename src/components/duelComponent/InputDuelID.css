@@ -1,99 +1,99 @@
-.inputDuelID-container{
-    background: rgb(3,4,56);
-    color: white;
-    position: absolute;
-    right: 20px;
+.inputDuelID-container {
+  background: rgb(3, 4, 56);
+  color: white;
+  position: absolute;
+  right: 20px;
+  width: 30%;
+  margin-top: -10px;
+  height: 80px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px rgb(3, 4, 56);
+  animation: openDuelInputID 300ms ease;
+}
+@keyframes openDuelInputID {
+  0% {
+    width: 0%;
+  }
+  25% {
+    width: 10%;
+  }
+  50% {
+    width: 20%;
+  }
+  75% {
+    width: 25%;
+  }
+  100% {
     width: 30%;
+  }
+}
+.inputDuelID-label {
+  margin-left: 10px;
+}
+.inputDuelID {
+  color: white;
+  margin-left: 10px;
+  border-radius: 2px;
+  border-color: gray;
+  box-shadow: 1px 1px -10px rgb(3, 4, 56);
+  width: 300px;
+}
+.sendInputDuelID {
+  border-radius: 2px;
+  margin-left: 10px;
+  padding: 0px 10px 0px 10px;
+  height: 2em;
+  cursor: pointer;
+  background: green;
+  color: white;
+}
+
+/* ***************************** MEDIA QUERIES ********************* */
+@media (max-width: 414px) {
+  .inputDuelID-container {
+    background: rgb(3, 4, 56);
+    color: white;
+    position: relative;
+    right: 0px;
+    width: 100%;
     margin-top: -10px;
     height: 80px;
     border-radius: 10px;
-    box-shadow: 1px 1px 10px rgb(3,4,56);
+    box-shadow: 1px 1px 10px rgb(3, 4, 56);
     animation: openDuelInputID 300ms ease;
-}
-@keyframes openDuelInputID {
-    0%{
-        width: 0%;
-    }
-    25%{
-        width: 10%;
-    }
-    50%{
-        width: 20%;
-    }
-    75%{
-        width: 25%;
-    }
-    100%{
-        width: 30%;
-    }
-}
-.inputDuelID-label{
-    margin-left: 10px;
-}
-.inputDuelID{
+    font-size: 12px;
+  }
+  .inputDuelID {
     color: white;
     margin-left: 10px;
     border-radius: 2px;
     border-color: gray;
-    box-shadow: 1px 1px -10px rgb(3,4,56);
-    width: 300px;
-}
-.sendInputDuelID{
+    box-shadow: 1px 1px -10px rgb(3, 4, 56);
+    width: 230px;
+    margin-top: 0px;
+  }
+  .sendInputDuelID {
     border-radius: 2px;
     margin-left: 10px;
-    padding: 0px 10px 0px 10px;
+    padding: 0px 5px 0px 5px;
     height: 2em;
     cursor: pointer;
     background: green;
     color: white;
-}
-
-/* ***************************** MEDIA QUERIES ********************* */
-@media(max-width: 414px){
-    .inputDuelID-container{
-        background: rgb(3,4,56);
-        color: white;
-        position: relative;
-        right: 0px;
-        width: 100%;
-        margin-top: -10px;
-        height: 80px;
-        border-radius: 10px;
-        box-shadow: 1px 1px 10px rgb(3,4,56);
-        animation: openDuelInputID 300ms ease;
-        font-size: 12px;
-    }
-    .inputDuelID{
-        color: white;
-        margin-left: 10px;
-        border-radius: 2px;
-        border-color: gray;
-        box-shadow: 1px 1px -10px rgb(3,4,56);
-        width: 230px;
-        margin-top: 0px;
-    }
-    .sendInputDuelID{
-        border-radius: 2px;
-        margin-left: 10px;
-        padding: 0px 5px 0px 5px;
-        height: 2em;
-        cursor: pointer;
-        background: green;
-        color: white;
-    }
+  }
 }
 /* ***************************** MEDIA QUERIES ********************* */
-@media(min-width: 1080px){
-    .inputDuelID-container{
-        background: rgb(3,4,56);
-        color: white;
-        position: absolute;
-        right: 20px;
-        width: 50%;
-        margin-top: -10px;
-        height: 80px;
-        border-radius: 10px;
-        box-shadow: 1px 1px 10px rgb(3,4,56);
-        animation: openDuelInputID 300ms ease;
-    }
+@media (min-width: 1080px) {
+  .inputDuelID-container {
+    background: rgb(3, 4, 56);
+    color: white;
+    position: absolute;
+    right: 20px;
+    width: 50%;
+    margin-top: -10px;
+    height: 80px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(3, 4, 56);
+    animation: openDuelInputID 300ms ease;
+  }
 }

@@ -1,68 +1,69 @@
-.duelPanel{
-    background: rgb(3,4,56);
-    color:white;
-    width: 8em;
-    position: absolute;
-    right: 26%;
-    top: 280px;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 1px 1px 10px rgb(3,4,56);
-    text-align: center;
-    /* max-width: ; */
+.duelPanel {
+  background: rgb(3, 4, 56);
+  color: white;
+  width: 8em;
+  position: absolute;
+  right: 26%;
+  top: 280px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px rgb(3, 4, 56);
+  text-align: center;
+  /* max-width: ; */
 }
-.duelPannel-button-controler{
-    display: flex;
-    flex-direction: column;
+.duelPannel-button-controler {
+  display: flex;
+  flex-direction: column;
 }
-.stop-duel,.show-duel-details{
-    padding-left: 5px;
-    padding-right: 5px;
+.stop-duel,
+.show-duel-details {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 /* ***************************** MEDIA QUERIES ********************* */
-@media(max-width: 414px){
-    .duelPanel{
-        background: transparent;
-        color:white;
-        width: 3em;
-        position: absolute;
-        right: 5px;
-        color: rgb(3,4,56);
-        top: 200px;
-        padding: 10px;
-        border-radius: 10px;
-        box-shadow: 1px 1px 10px rgba(3, 4, 56, 0.397);
-        text-align: center;
-        font-size: 12px;
-        word-wrap: break-word;
-        z-index: 3;
-    }
-    .stop-duel-phone-device{
-            width :30px;
-            height: 30px;
-            /* padding-top: 5px; */
-            margin-left: 4px;
-            /* float: right; */
-            border-radius: 5px;
-            font-size: 20px;
-            background: red !important;
-            cursor: pointer;
-    }
+@media (max-width: 414px) {
+  .duelPanel {
+    background: transparent;
+    color: white;
+    width: 3em;
+    position: absolute;
+    right: 5px;
+    color: rgb(3, 4, 56);
+    top: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgba(3, 4, 56, 0.397);
+    text-align: center;
+    font-size: 12px;
+    word-wrap: break-word;
+    z-index: 3;
+  }
+  .stop-duel-phone-device {
+    width: 30px;
+    height: 30px;
+    /* padding-top: 5px; */
+    margin-left: 4px;
+    /* float: right; */
+    border-radius: 5px;
+    font-size: 20px;
+    background: red !important;
+    cursor: pointer;
+  }
 }
 /* ***************************** MEDIA QUERIES ********************* */
-@media(min-width: 1080px){
-    .duelPanel{
-        background: rgb(3,4,56);
-        color:white;
-        width: 8em;
-        position: absolute;
-        right: 5%;
-        top: 280px;
-        padding: 10px;
-        border-radius: 10px;
-        box-shadow: 1px 1px 10px rgb(3,4,56);
-        text-align: center;
-        /* max-width: ; */
-    }
+@media (min-width: 1080px) {
+  .duelPanel {
+    background: rgb(3, 4, 56);
+    color: white;
+    width: 8em;
+    position: absolute;
+    right: 5%;
+    top: 280px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(3, 4, 56);
+    text-align: center;
+    /* max-width: ; */
+  }
 }

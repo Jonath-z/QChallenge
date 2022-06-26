@@ -1,104 +1,106 @@
-.DuelDetails{
-    background: rgb(3,4,56);
-    color: white;
-    position: absolute;
-    right: 20px;
-    width: 30%;
-    margin-top: -10px;
-    height: 80px;
-    border-radius: 10px;
-    box-shadow: 1px 1px 10px rgb(3,4,56);
-    animation: openDuel 300ms ease;
+.DuelDetails {
+  background: rgb(3, 4, 56);
+  color: white;
+  position: absolute;
+  right: 20px;
+  width: 30%;
+  margin-top: -10px;
+  height: 80px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px rgb(3, 4, 56);
+  animation: openDuel 300ms ease;
 }
 @keyframes openDuel {
-    0%{
-        width: 0%;
-    }
-    25%{
-        width: 10%;
-    }
-    50%{
-        width: 20%;
-    }
-    75%{
-        width: 25%;
-    }
-    100%{
-        width: 30%;
-    }
+  0% {
+    width: 0%;
+  }
+  25% {
+    width: 10%;
+  }
+  50% {
+    width: 20%;
+  }
+  75% {
+    width: 25%;
+  }
+  100% {
+    width: 30%;
+  }
 }
-.duelID,.duelLevel{
-    line-height: 5px;
-    margin-top: 20px;
-    margin-left: 10px;
+.duelID,
+.duelLevel {
+  line-height: 5px;
+  margin-top: 20px;
+  margin-left: 10px;
 }
-.cancelIcon{
-    float: right;
-    margin: 10px 10px 0px 0px ;
-    font-size: 20px;
-    cursor: pointer;
+.cancelIcon {
+  float: right;
+  margin: 10px 10px 0px 0px;
+  font-size: 20px;
+  cursor: pointer;
 }
-.copyIcon{
-    margin-left: 10px;
-    cursor: pointer;
+.copyIcon {
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 /****************************** MEDIA QUERIES **************************/
-@media(max-width: 414px){
-    .DuelDetails{
-        background: rgb(3,4,56);
-        color: white;
-        position: absolute;
-        right: 0px;
-        width: 100%;
-        margin-top: -10px;
-        height: 50px;
-        border-radius: 10px;
-        box-shadow: 1px 1px 10px rgb(3,4,56);
-        animation: openDuel 200ms ease;
-        font-size: 12px;
-        z-index: 3;
+@media (max-width: 414px) {
+  .DuelDetails {
+    background: rgb(3, 4, 56);
+    color: white;
+    position: absolute;
+    right: 0px;
+    width: 100%;
+    margin-top: -10px;
+    height: 50px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(3, 4, 56);
+    animation: openDuel 200ms ease;
+    font-size: 12px;
+    z-index: 3;
+  }
+  @keyframes openDuel {
+    0% {
+      width: 0%;
     }
-    @keyframes openDuel {
-        0%{
-            width: 0%;
-        }
-        25%{
-            width: 25%;
-        }
-        50%{
-            width: 50%;
-        }
-        75%{
-            width: 75%;
-        }
-        100%{
-            width: 100%;
-        }
+    25% {
+      width: 25%;
     }
-    .duelID,.duelLevel{
-        line-height: 3px;
-        margin-top: 10px;
-        margin-left: 10px;
+    50% {
+      width: 50%;
     }
-    .copyIcon{
-        margin-left: 10px;
-        cursor: pointer;
+    75% {
+      width: 75%;
     }
+    100% {
+      width: 100%;
+    }
+  }
+  .duelID,
+  .duelLevel {
+    line-height: 3px;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  .copyIcon {
+    margin-left: 10px;
+    cursor: pointer;
+  }
 }
 
 /* ***************************** MEDIA QUERIES ********************* */
-@media screen and (width: 1080px){
-    .DuelDetails{
-        background: rgb(3,4,56);
-        color: white;
-        position: absolute;
-        right: 20px;
-        width: 50%;
-        margin-top: -10px;
-        height: 80px;
-        border-radius: 10px;
-        box-shadow: 1px 1px 10px rgb(3,4,56);
-        animation: openDuel 300ms ease;
-    }
+@media screen and (width: 1080px) {
+  .DuelDetails {
+    background: rgb(3, 4, 56);
+    color: white;
+    position: absolute;
+    right: 20px;
+    width: 50%;
+    margin-top: -10px;
+    height: 80px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px rgb(3, 4, 56);
+    animation: openDuel 300ms ease;
+  }
 }

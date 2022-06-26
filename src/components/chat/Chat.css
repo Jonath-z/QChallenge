@@ -1,33 +1,33 @@
-.chat-div-container{
-    position: absolute;
-    right: 70px;
-    width: 20%;
-    top: 280px;
-    bottom: 40px;
-    background: white;
-    z-index: 3;
-    box-shadow: 1px 1px 20px grey;
-    border-top-left-radius:10px ;
-    border-top-right-radius:10px;
-    animation: open-chat 300ms ease;
-    overflow-y: scroll;
+.chat-div-container {
+  position: absolute;
+  right: 70px;
+  width: 20%;
+  top: 280px;
+  bottom: 40px;
+  background: white;
+  z-index: 3;
+  box-shadow: 1px 1px 20px grey;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  animation: open-chat 300ms ease;
+  overflow-y: scroll;
 }
-@keyframes open-chat{
-    0%{
-        width: 1%;
-    }
-    25%{
-        width: 5%;
-    }
-    50%{
-        width: 10%;
-    }
-    75%{
-        width: 15%;
-    }
-    100%{
-        width: 20%;
-    }
+@keyframes open-chat {
+  0% {
+    width: 1%;
+  }
+  25% {
+    width: 5%;
+  }
+  50% {
+    width: 10%;
+  }
+  75% {
+    width: 15%;
+  }
+  100% {
+    width: 20%;
+  }
 }
 /* @keyframes close-chat{
     0%{
@@ -46,89 +46,89 @@
         width: 1%;
     } 
 } */
-.arrowRight{
-    float : left;
-    margin: 10px 00px 0px 20px;
-    font-size: 25px;
-    cursor: pointer;
+.arrowRight {
+  float: left;
+  margin: 10px 00px 0px 20px;
+  font-size: 25px;
+  cursor: pointer;
 }
-.userAvatar{
-    width: 50px;
-    border-radius: 5px;
+.userAvatar {
+  width: 50px;
+  border-radius: 5px;
 }
-.chat-user-div{
-    display: flex;
-    flex-direction: row;
-    background: white;
-    margin-left: 10px;
-    margin-right: 10px;
+.chat-user-div {
+  display: flex;
+  flex-direction: row;
+  background: white;
+  margin-left: 10px;
+  margin-right: 10px;
 }
-.chat-user-div-container{
-        margin-top: 50px;
+.chat-user-div-container {
+  margin-top: 50px;
 }
-.chat-user-div:hover{
-    box-shadow: 0px 0px 1px gray;
-    transition: 200ms;
+.chat-user-div:hover {
+  box-shadow: 0px 0px 1px gray;
+  transition: 200ms;
 }
 
-.chat-user-div .userAvatar{
-    margin-left: 20px;
+.chat-user-div .userAvatar {
+  margin-left: 20px;
 }
-.pseudo{
-    margin-left: 10px;
-    cursor: pointer;
+.pseudo {
+  margin-left: 10px;
+  cursor: pointer;
 }
-.online-status{
-    margin-left: 10px;
-    margin-top: -10px;
-    font-size: 10px;
-    color: grey;
+.online-status {
+  margin-left: 10px;
+  margin-top: -10px;
+  font-size: 10px;
+  color: grey;
 }
 
 /* ***************************** MEDIA QUERIES ********************* */
-@media(max-width: 414px){
-    .chat-div-container{
-        position: absolute;
-        right: 0px;
-        width: 100%;
-        top: 0px;
-        bottom: 0px;
-        background: white;
-        z-index: 3;
-        border-radius: 0px;
-        box-shadow: 1px 1px 20px grey;
-        animation: open-chat 300ms ease;
-        overflow-y: scroll;
-        height: 100vh;
+@media (max-width: 414px) {
+  .chat-div-container {
+    position: absolute;
+    right: 0px;
+    width: 100%;
+    top: 0px;
+    bottom: 0px;
+    background: white;
+    z-index: 3;
+    border-radius: 0px;
+    box-shadow: 1px 1px 20px grey;
+    animation: open-chat 300ms ease;
+    overflow-y: scroll;
+    height: 100vh;
+  }
+  @keyframes open-chat {
+    0% {
+      width: 10%;
     }
-    @keyframes open-chat{
-        0%{
-            width: 10%;
-        }
-        25%{
-            width: 25%;
-        }
-        50%{
-            width: 50%;
-        }
-        75%{
-            width: 75%;
-        }
-        100%{
-            width: 100%;
-        }
+    25% {
+      width: 25%;
     }
-    .arrowRight{
-        float : left;
-        margin: 10px 00px 0px 20px;
-        font-size: 25px;
-        cursor: pointer;
-        color: rgb(3,4,56);
+    50% {
+      width: 50%;
     }
-    .chat-user-div:hover{
-        box-shadow: 0px 0px 1px rgb(3,4,56);
-        transition: 200ms;
+    75% {
+      width: 75%;
     }
+    100% {
+      width: 100%;
+    }
+  }
+  .arrowRight {
+    float: left;
+    margin: 10px 00px 0px 20px;
+    font-size: 25px;
+    cursor: pointer;
+    color: rgb(3, 4, 56);
+  }
+  .chat-user-div:hover {
+    box-shadow: 0px 0px 1px rgb(3, 4, 56);
+    transition: 200ms;
+  }
 }
 
 /* ***************************** MEDIA QUERIES ********************* */
