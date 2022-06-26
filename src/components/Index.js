@@ -5,7 +5,7 @@ import io from "socket.io-client";
 import CryptoJS from "crypto-js";
 import uuid from "react-uuid";
 import Header from "./Header";
-import Gamespace from "./GameSpace";
+import Gamespace from "./GameWindow/GameSpace";
 import Chat from "./chat/Chat";
 import DiscutionIcon from "./Discution";
 import "./chat/DiscussionWindow.css";
